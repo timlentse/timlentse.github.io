@@ -1,155 +1,23 @@
-	<!DOCTYPE html>
-	<html lang="en" class="no-js">
-		<head>
-			<meta charset="UTF-8" />
-			<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-			<title>Timlentse</title>
-			<link rel="stylesheet" type="text/css" href="css/default.css" />
-			<link rel="stylesheet" type="text/css" href="css/component.css" />
-			<link rel="shortcut icon" href="images/priscilla_chan.ico" type="image/x-icon">
-			<script src="js/modernizr.custom.js"></script>
-			<style>
-			img{vertical-align:middle;}
-			</style>
-			<script>
-			window.onload = function() {
-			document.getElementById("aboutMe").click();
-			}
-			</script>
-			
-		</head>
-		<body>
-			<div class="container">
-				<header class="clearfix">
-					<h3>Timlen Github.io</h3>
-					<p> Hi, all ! Welcome to Timlen's homepage!</p>
-				</header>	
-				<div class="main" style="background:#000">
-					<nav id="cbp-hrmenu" class="cbp-hrmenu">
-						<ul>
-							<li>
-								<a href="#">Repository</a>
-								<div class="cbp-hrsub">
-									<div class="cbp-hrsub-inner"> 
-										<div>
-											<h4>OpenCV</h4>
-											<ul>
-					<li><a href="https://github.com/timlentse/Perceptron_Classifier">Perceptron Classifier</a>
+---
+layout: default
+---
 
-					</li>
-					<li><a href="https://github.com/timlentse/Add_Salt-Pepper_Noise">Add Salt&Pepper Noise</a>
+<div class="home">
 
-					</li>
-					<li><a href="https://github.com/timlentse/Fidelity-Criteria">Fidelity Criteria</a>
+  <h1 class="page-heading">Posts</h1>
 
-					</li>
-					<li><a href="https://github.com/timlentse/Transfrom_Coding">Transform EnCoding</a>
+  <ul class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
 
-					</li>
-					<li><a href="https://github.com/timlentse/SimpleGUI-For-Image-Enhance">Image Enhance</a>
+        <h2>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
 
-					</li>
-											</ul>
-																		<h4>VTK</h4>
-											<ul>
-								<li><a href="https://github.com/timlentse/3D_Reconstruction">3D Reconstruction</a>
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
-				  </li>
-				  <li><a href="https://github.com/timlentse/ReadDCMSeriesByQT">DICOM Reader</a>
-
-				  </li>
-											</ul>
-																					<h4>Socket</h4>
-											<ul>
-							<li><a href="https://github.com/timlentse/Multithread_Socket_Transmission">Socket Transmission</a></li>
-											</ul>
-										</div>
-										<div>
-											<h4>Java</h4>
-											<ul>
-												<li><a href="#">TODO</a></li>
-											</ul>
-										</div>
-																				<div>
-											<h4>Web</h4>
-											<ul>
-												<li><a href="https://github.com/timlentse/HashMap-implementation">HashMap</a></li>
-											</ul>
-											<h4>Python</h4>
-											<ul>
-												<li><a href="#">TODO</a></li>
-											</ul>
-											</div>
-																					<div>
-											<h4>Matlab</h4>
-											<ul>
-											 <li><a href="#">Gaussian Elimination</a> </li>
-											</ul>
-											</div>
-									</div><!-- /cbp-hrsub-inner -->
-								</div><!-- /cbp-hrsub -->
-							</li>
-								<li>
-								<a href="#">Article</a>
-								<div class="cbp-hrsub">
-									<div class="cbp-hrsub-inner">
-										<div>
-											<h4>Blog</h4>
-											<ul>
-	 <li> <a href="https://github.com/timlentse/Install-kinect_for_Windows_sdk-using-Openni-and-NiTE">Kinect Installation</a></li>
-	 <li> <a href="learn_a_language.html">How to learn language quickly</a></li>
-											</ul>
-										</div>
-										
-									</div><!-- /cbp-hrsub-inner -->
-								</div><!-- /cbp-hrsub -->
-							</li>
-							<li>
-								<a id = "aboutMe" href="#">About Me</a>
-								<div class="cbp-hrsub">
-									<div class="cbp-hrsub-inner"> 
-								<div>
-											<h4>Education</h4>
-											<ul>
-												<li><a href="#"><img src="images/school.ico">&nbsp SUN YAT-SEN UNIVERSITY</a></li><br>
-												<li><a href="#"><img src="images/location.ico">&nbsp &nbsp GuangZhou ,GuangDong ,China</a></li><br>
-												<li><a href="mailto:tinglenxan@gmail.com"><img src="images/mail.ico"> &nbsp tinglenxan@gmail.com</a></li><br>
-											</ul>										
-										</div>
-										<div>
-										<h4>Browse My Resume</h4>
-											<ul>
-												<li><a style = "color:yellow" href="resume.html">Click Me!</a></li><br>
-											</ul>
-										</div>		
-										<div>
-										<h4>Follow Me</h4>
-											<ul>
-			   <li><a href="https://www.facebook.com/timlenxan"><img src="images/facebook.ico"> &nbsp Facebook</a></li>
-			   <li><a href="https://twitter.com/tinglentse"><img src="images/twitter.ico"> &nbsp  Twitter</a></li>         
-			   <li><a href="https://github.com/timlentse"><img src="images/gi.ico"> &nbsp Github</a></li>
-			   <li><a href="https://plus.google.com/109672713496715019812"><img src="images/follow.ico"> &nbsp Google+</a></li>
-											</ul>
-										</div>
-										</div>
-										</div>
-							</li>
-								<li>
-								<a href="#">...</a>								
-							</li>
-						</ul>
-					</nav>
-				</div>
-			</div>
-			<script src="js/jquery.min.js"></script>
-			<script src="js/cbpHorizontalMenu.min.js"></script>
-			<script>
-				$(function() {
-					cbpHorizontalMenu.init();
-				});
-			</script>
-	<div style="text-align:center;clear:both">
-	</div>
-		</body>
-	</html>
+</div>
