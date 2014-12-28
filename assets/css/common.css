@@ -1,0 +1,17 @@
+.left_side {
+ 	position: absolute;
+	text-align: left;
+	width: 160px;
+  left:0px
+}
+.right_side {
+ 	position: absolute;
+	text-align: left;
+	width: 400px;
+  right:-150px;
+  top:147px
+}
+
+div ul li {
+list-style:none;
+}
