@@ -1,21 +1,23 @@
 ---
 layout: page
-title: About Me
 permalink: /about/
 ---
-  <div>
-      <div>
-      <h3>Email</h3>
-        <ul>
-          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+ <div>
+      <h3>Email to Me</h3>
+        <div class ='left-email'>
+         <ul>
+          <li ><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
         </ul>
-      </div>
-
-      <div>
-       <h3 >Follow Me</h3>
-      <div>
+        </div>
+        <div class ='left-email'>
         <ul>
+          <li ><a href="mailto:timlenxan@hotmail.com">timlenxan@hotmail.com</a></li>       
+         </ul>      
+        </div>
 
+       <div class="left-social">
+       <h3 >Follow Me</h3>
+        <ul>
           <li>
             <a href="https://facebook.com/{{ site.facebook_name }}">
               <span>
@@ -27,12 +29,9 @@ permalink: /about/
 	              L-208.757-229.662z"/>
                 </svg>
               </span>
-              <span>{{ site.facebook_name }}</span>
             </a>
           </li>
-  
 
-          {% if site.twitter_username %}
           <li>
             <a href="https://twitter.com/{{ site.twitter_username }}">
               <span>
@@ -41,15 +40,9 @@ permalink: /about/
                   c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
                 </svg>
               </span>
-              <span>{{ site.twitter_username }}</span>
             </a>
           </li>
-          {% endif %}
-         </ul>
-       </div>
-       <div class = "right_side">
-        <ul>
-        {% if site.github_username %}
+
           <li>
             <a href="https://github.com/{{ site.github_username }}">
               <span>
@@ -58,15 +51,13 @@ permalink: /about/
                 </svg>
               </span>
 
-              <span >{{ site.github_username }}</span>
             </a>
           </li>
-          {% endif %}
 
-         <li>
+          <li>
             <a href="https://plus.google.com.com/109672713496715019812">
               <span>
-                <svg width="18px" height="18px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+                <svg width="20px" height="20px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
                 <g>
                 	<path style="fill:#828282;" d="M7.9,4.6c-0.6,0-1.2,0.3-1.5,0.7C6,5.8,5.9,6.4,5.9,6.9c0,1.4,0.8,3.8,2.7,3.8
                 		c0.5,0,1.1-0.3,1.5-0.6c0.5-0.5,0.5-1.2,0.5-1.5C10.6,7,9.7,4.6,7.9,4.6z"/>
@@ -80,10 +71,15 @@ permalink: /about/
                 </g>
                 </svg>
               </span>
-              <span>{{ site.google_plus_name }}</span>
             </a>
           </li>
-
+        </ul>
+      </div>
+     
+      <div class="left-social">
+       <h3 >Description</h3>
+        <p>Try it and learn it. </p>
+          <ul>
           <li>
               <span>
                 <svg width="22px" height="21px" viewBox="0 0 37.463 27.425" enable-background="new 0 0 37.463 27.425" xml:space="preserve">
@@ -101,13 +97,16 @@ permalink: /about/
               </span>
               <span> SUN Yat-Sen University</span>
           </li>
+         <li>
+          <span>
+          <svg width="24px" height="24px" viewBox="0 0 512 512">
+          <g>
+          </g>
+          	<path fill="#828282" d="M256.032 283.936c52.944 0 96-43.072 96-96s-43.056-96-96-96c-52.944 0-96 43.056-96 96s43.056 96 96 96zM256.032 107.936c44.128 0 80 35.872 80 80s-35.872 80-80 80c-44.128 0-80-35.872-80-80s35.872-80 80-80zM256 0c-105.888 0-192 85.056-192 192.016 0 112 96.016 226.576 166.016 307.104 0.256 0.32 11.488 12.88 25.376 12.88 0.032 0 1.168 0 1.232 0 13.872 0 25.12-12.56 25.376-12.88 70.032-80.528 166.032-195.088 166.032-307.104 0-106.96-86.128-192.016-192.032-192.016zM257.872 478.128c-0.336 0.32-1.312 1.024-2.16 1.568-0.16-0.432-1.344-1.376-2.064-2.128-58.64-67.472-157.648-181.344-157.648-285.552 0-88.224 71.792-160.016 160-160.016 88.256 0 160.032 71.792 160.032 160.032 0 104.192-99.008 218.064-158.16 286.096z"/>
+          </svg>
+            </span>
+              <span>Guangzhou, Guangdong, China</span>
+          </li>
         </ul>
-      </div>
      </div>
-
-      <div>
-      <h3 >Description</h3>
-        <p>Try it and learn it. </p>
-      </div>
-
-  </div>
+</div>
