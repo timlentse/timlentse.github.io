@@ -3,6 +3,8 @@ layout: post
 title: "Change gem sources"
 date: 2015-02-05 14:15
 ---
+简单介绍修改ruby gems 下载源的方法
+
 ####<b>为什么需要换ruby gems 安装源</b>
 由于国内网络原因（你懂的），导致 rubygems.org 存放在 Amazon S3 上面的资源文件间歇性连接失败,
 很多时候，在安装gem的过程中会出现找不到资源的error，我们需要从另外一个gem服务器下载安装。
