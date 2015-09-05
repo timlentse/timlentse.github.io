@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <description>Put website description for your home page. (about 50 words or more)</description>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 05 Sep 2015 16:40:26 +0800</pubDate>
+    <lastBuildDate>Sat, 05 Sep 2015 16:40:26 +0800</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Elegant way to deploy your rails app</title>
+        <description>&lt;h3 id=&quot;capistranounicornnginxrailszero-down-time-restart&quot;&gt;介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目,实现zero down time restart&lt;/h3&gt;
+
+&lt;h4 id=&quot;capistrano&quot;&gt;关于capistrano&lt;/h4&gt;
+&lt;p&gt;capistrano 是一款能完成自动化部署工作的工具，它能把代码部署到远程服务器上的同时可以执行一些预定义的任务，这些任务可以是capistrano的buildin tasks 也可以是用户自定义的一些任务程序（比如&lt;code&gt;部署完重启服务器&lt;/code&gt;)
+本文介绍如何使用capistrano部署一个unicor+nginx+rails的项目,并且实现unicorn的zero down time restart.&lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;假设你已经。。。&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;有一个rails项目(并且已经被版本控制工具管理起来(git svn))&lt;/li&gt;
+  &lt;li&gt;已经安装capistrano依赖&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;config&quot;&gt;在项目根目录执行，生成config文件夹&lt;/h4&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;configunicronrb-&quot;&gt;config/unicron.rb 文件的配置&lt;/h4&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Basic variables&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;../&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;__FILE__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pid&lt;/span&gt;         &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/tmp/pids/unicorn.pid&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stderr_path&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/log/unicorn.err&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stdout_path&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/log/unicorn.log&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/tmp/unicorn.example_app.sock&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;preload_a&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;working_directory&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;worker_processes&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;timeout&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;120&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Writing Before_fork&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;before_fork&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;worker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# the following is highly recomended for Rails + &amp;quot;preload_a true&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# as there&amp;#39;s no need for the master process to hold a connection&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;disconnect!&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;##&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# When sent a USR2, Unicorn will suffix its pidfile with .oldbin and&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# immediately start loading up a new version of itself (loaded with a new&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# version of our a). When this new Unicorn is completely loadedded&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# it will begin spawning workers. The first worker spawned will check to&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# see if an .oldbin pidfile exists. If so, this means we&amp;#39;ve just booted up&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# a new Unicorn and need to tell the old one that it can now die. To do so&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# we send it a QUIT.&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Using this method we get 0 downtime deploys.&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;old_pid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/tmp/pids/unicorn.pid.oldbin&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exists?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;old_pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;old_pid&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;Process&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kill&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;QUIT&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;old_pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Errno&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ENOENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Errno&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ESRCH&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# someone else did our job for us&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;after_fork&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;worker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;##&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Unicorn master loads the a then forks off workers - because of the way&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Unix forking works, we need to make sure we aren&amp;#39;t using any of the parent&amp;#39;s&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# sockets, e.g. db connection&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;##&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;establish_connection&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Redis and Memcached would go here but their connections are established&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# on demand, so the master never opens a socket&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;configunicorninitsh-unicorn&quot;&gt;config/unicorn.init.sh 脚本的配置(用于启动、重启、停止unicorn服务器)&lt;/h4&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#!/bin/sh&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;### BEGIN INIT INFO&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Provides:          unicorn&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Required-Start:    $remote_fs $syslog&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Required-Stop:     $remote_fs $syslog&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Default-Start:     2 3 4 5&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Default-Stop:      0 1 6&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Short-Description: Manage unicorn server&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Description:       Start, stop, restart unicorn server for a specific alication.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;### END INIT INFO&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;APP_ROOT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;your_app_absolute_path&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$APP_ROOT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pids&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unicorn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pid&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;CMD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;cd $APP_ROOT &amp;amp;&amp;amp; bundle exec unicorn -c $APP_ROOT/config/unicorn.rb -E production -D&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;AS_USER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$USER&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;OLD_PIN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$PID.oldbin&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$PID&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kill&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`cat $PID`&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$(id -un)&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$AS_USER&amp;quot;&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$1&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;su&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$1&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$AS_USER&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;fi&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$1&amp;quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Already running&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$CMD&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;QUIT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Not running&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;force&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;TERM&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Not running&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;HUP&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reloaded&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OK&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Couldn&amp;#39;t reload, starting &amp;#39;$CMD&amp;#39; instead&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$CMD&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;upgrade&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;USR2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$TIMEOUT&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$OLD_PIN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ge&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lt&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$OLD_PIN&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$OLD_PIN still exists after $TIMEOUT seconds&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;fi&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;fi&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Couldn&amp;#39;t upgrade, starting &amp;#39;$CMD&amp;#39; instead&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$CMD&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;reopen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;USR1&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Usage: $0 &amp;lt;start|stop|restart|upgrade|force-stop|reopen-logs&amp;gt;&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;esac&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;configdeployrb-&quot;&gt;config/deploy.rb 的配置&lt;/h4&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;3.4.0&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:alication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;your_app_name&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:repo_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;your_app_git_url&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:deploy_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;your_deploy_dir&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Default value for :linked_files is []&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# set :linked_file, %w{Gemfile Gemfile.lock}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Default value for linked_dirs is []&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:linked_dirs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:linked_dirs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;log&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;tmp/pids&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;tmp/cache&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;tmp/sockets&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;vendor/bundle&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;public/sitemap&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:deploy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# Restart unicorn when finishing deploying&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:published&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:start_unicorn&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;roles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:web&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:groups&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;wait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;cd &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deploy_to&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/current &amp;amp;&amp;amp; bundle install --gemfile=./Gemfile --path &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deploy_to&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/shared/vendor/bundle&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deploy_to&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/current/config/unicorn.init.sh upgrade&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;开始部署你的应用&lt;/h4&gt;
+&lt;p&gt;在项目的根目录下执行&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;production&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deploy&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 29 Aug 2015 00:00:00 +0800</pubDate>
+        <link>/2015/08/29/elegant-way-to-deploy-you-rails-app.html</link>
+        <guid isPermaLink="true">/2015/08/29/elegant-way-to-deploy-you-rails-app.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Get the real remote ip in nginx</title>
+        <description>&lt;h2 id=&quot;nginxip&quot;&gt;多层nginx中获取真实ip&lt;/h2&gt;
+
+&lt;p&gt;在多层nginx中，若在后层的代理服务器中获得真实的用户IP，而不是上一层的代理服务器的IP，在反向代理服务器在转发请求的http头信息中，可以增加x_forwarded_for信息，用以记录原有客户端的IP地址和原来客户端的请求的服务器地址；即如下添加：&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt;            &lt;span class=&quot;no&quot;&gt;Host&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Real&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Ip&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$remote_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt;            &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Forwarded&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;For&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for 一句会一层一层的记录转发信息
+$http_x_forwarded_for记录的是原始用户的IP&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 17 Aug 2015 02:00:00 +0800</pubDate>
+        <link>/2015/08/17/get-the-real-ip-nginx.html</link>
+        <guid isPermaLink="true">/2015/08/17/get-the-real-ip-nginx.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>ActiveRecord connection via ssh</title>
+        <description>&lt;p&gt;Making a ssh connection of ActiveRecord is very easy and the following will show 
+you how to achieve it&lt;/p&gt;
+
+&lt;h4 id=&quot;gems-dependencies&quot;&gt;gems dependencies&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;active_record&lt;/li&gt;
+  &lt;li&gt;mysql2&lt;/li&gt;
+  &lt;li&gt;net-ssh-gateway&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;make-a-ssh-connection&quot;&gt;make a ssh connection&lt;/h4&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;net/ssh/gateway&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;active_record&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;mysql2&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SSH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gateway&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;&amp;#39;host&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#Host which could connect to desired database&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;&amp;#39;user&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Username of the host&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;your vps password&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;port&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;sem3&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;3306&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# database configuration&lt;/span&gt;
+&lt;span class=&quot;vg&quot;&gt;$CONFIG&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;adapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;s2&quot;&gt;&amp;quot;mysql2&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;s2&quot;&gt;&amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;public_user&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;public_user&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;production&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;pool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;reconnect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BaseGeneralHotelPoi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;establish_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$CONFIG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;BaseGeneralHotelPoi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;take&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shutdown!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;use-ssh-authentication&quot;&gt;Use ssh authentication&lt;/h4&gt;
+&lt;p&gt;Just like ssh-login, we can also use ssh key as the identification&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SSH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gateway&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;seo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;op&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:keys&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/Users/timlen/.ssh/id_rsa&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You get it !&lt;/p&gt;
+</description>
+        <pubDate>Sat, 13 Jun 2015 18:00:00 +0800</pubDate>
+        <link>/2015/06/13/active_record-connection-via-ssh.html</link>
+        <guid isPermaLink="true">/2015/06/13/active_record-connection-via-ssh.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Bad ownership or modes for file authorized_keys</title>
+        <description>&lt;p&gt;It is a good thing to set ssh keys for the remote host. We can login a remote host via 
+public key we have set so that no need to enter password every time we try to connect remote
+server.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-to-set-a-ssh-key&quot;&gt;How to set a ssh-key&lt;/h2&gt;
+&lt;p&gt;If you google for a bit , you will find some many tutorials about how to set ssh keys.
+A good article about that is &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;still-need-to-enter-password-even-though-ssh-key-was-set&quot;&gt;Still need to enter password even though ssh-key was set?&lt;/h2&gt;
+
+&lt;p&gt;In some case, though ssh-keys was properly set, we still need enter password as if ssh-key not existed.
+SSH has a verbose mode , just add the &lt;code&gt;-v&lt;/code&gt; option.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/screenshot/ssh_keys_error/verbose-ssh.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The above way seems told nothing, but &lt;code&gt;cat /var/log/secure&lt;/code&gt; will give more useful information.
+In the terminal of remote host, type :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/var/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;secure&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;we found something as the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Apr&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;19&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;54&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;19&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iZ94z0jz2inZ&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sshd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5704&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Authentication&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;refused&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bad&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ownership&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modes&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/home/&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;authorized_keys&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For security reason, the mode of files under .ssh directorys is strictly set. SSH doesn’t like it if your home or ~/.ssh directories
+or ~./ssh/authorized_keys have group write permissions. Your home directory should be writable only by you, ~/.ssh should be 700, 
+and authorized_keys should be 600.&lt;/p&gt;
+
+&lt;p&gt;The following shot is the wrong mode:
+&lt;img src=&quot;/img/screenshot/ssh_keys_error/wrong_mode.png&quot; alt=&quot;alt&quot; /&gt; &lt;br /&gt;
+we can see that authorized_keys file has writable permissions for group, which is not allowed by ssh:&lt;/p&gt;
+
+&lt;p&gt;Change to right mode:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/screenshot/ssh_keys_error/right_mode.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now you can login you remote host without entering  passwd, enjoy!&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 19 Apr 2015 10:02:00 +0800</pubDate>
+        <link>/2015/04/19/SSH-Authentication-Refused-Bad-Ownership-or-Modes-for-Authorized_keys.html</link>
+        <guid isPermaLink="true">/2015/04/19/SSH-Authentication-Refused-Bad-Ownership-or-Modes-for-Authorized_keys.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Change gem sources</title>
+        <description>&lt;p&gt;简单介绍修改ruby gems 下载源的方法&lt;/p&gt;
+
+&lt;h4 id=&quot;bruby-gems-b&quot;&gt;&lt;b&gt;为什么需要换ruby gems 安装源&lt;/b&gt;&lt;/h4&gt;
+&lt;p&gt;在国内网络环境中安装gems经常会失败，这是因为rubygems.org 中的资源文件是存放在 Amazon S3 上面的,
+很多时候，在安装gem的过程中会出现资源文件间歇性连接失败，为了避免这些问题，我们需要从另外一个gem服务器下载安装。
+通过gem sources命令配置源，或通过修改Gemfile中的source语句可以实现。&lt;/p&gt;
+
+&lt;h4 id=&quot;bb&quot;&gt;&lt;b&gt;常用的源&lt;/b&gt;&lt;/h4&gt;
+&lt;p&gt;https://rubygems.org/ 官方下载源
+https://ruby.taobao.org 淘宝的下载源，这是一个完整 rubygems.org 镜像，
+你可以用此代替官方版本，同步频率目前为15分钟一次以保证尽量与官方服务同步。&lt;/p&gt;
+
+&lt;p&gt;显示当前使用的sources&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sources&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;添加一个source&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sources&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#{url}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;删除一个source&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sources&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#{url}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;更新source cache&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sources&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;从固定地址安装gem&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bundler&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ruby&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taobao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;org&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 05 Feb 2015 14:15:00 +0800</pubDate>
+        <link>/2015/02/05/Change-gem-sources.html</link>
+        <guid isPermaLink="true">/2015/02/05/Change-gem-sources.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Fix conflict when updating git</title>
+        <description>&lt;p&gt;It is a cool thing to use git for version control. The idea is simple, when the developers update it I simply have to update 
+the local repository to the recent HEAD in the master branch and I have the up-to-date stuff to link against.&lt;/p&gt;
+
+&lt;h3&gt;But how to do this?&lt;/h3&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pull&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Should do the trick when executed in the directory where the &lt;code&gt;.git&lt;/code&gt; is located (find this with ls -lah to show hidden files).&lt;/p&gt;
+
+&lt;p&gt;You may get an error like:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;timlentse&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@timlentse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;~/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Gitpro&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;daodao&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pull&lt;/span&gt;   
+&lt;span class=&quot;n&quot;&gt;Updating&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d9319e1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ce366f&lt;/span&gt;   
+&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Your&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changes&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;following&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;files&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;would&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;overwritten&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;merge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;   
+	&lt;span class=&quot;n&quot;&gt;daodao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gemspec&lt;/span&gt;   
+&lt;span class=&quot;n&quot;&gt;Please&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;your&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changes&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stash&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;them&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;before&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;you&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;can&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;merge&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;   
+&lt;span class=&quot;n&quot;&gt;Aborting&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;How to fix?&lt;/h3&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;timlentse&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@timlentse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;~/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Gitpro&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;daodao&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stash&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;save&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;update the daodao.gemspec&amp;quot;&lt;/span&gt;   
+&lt;span class=&quot;n&quot;&gt;Saved&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;working&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;directory&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;On&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;update&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;daodao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gemspec&lt;/span&gt;   
+&lt;span class=&quot;n&quot;&gt;HEAD&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;now&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;at&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d9319e1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reserve&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pure&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Finished!&lt;/h3&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;Updating&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d9319e1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ce366f&lt;/span&gt;   
+&lt;span class=&quot;n&quot;&gt;Fast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt;   
+ &lt;span class=&quot;n&quot;&gt;daodao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gemspec&lt;/span&gt;           &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+++++++--&lt;/span&gt;   
+ &lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;daodao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;            &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++++&lt;/span&gt;   
+ &lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;daodao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hotel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+++---&lt;/span&gt;   
+ &lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;daodao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hotel_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+++---&lt;/span&gt;   
+ &lt;span class=&quot;n&quot;&gt;lib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;daodao&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rank&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++++----&lt;/span&gt;   
+ &lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hotel_list_spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+++--&lt;/span&gt;   
+ &lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hotel_spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+++--&lt;/span&gt;   
+ &lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rank_spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++--&lt;/span&gt;   
+ &lt;span class=&quot;n&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spec_helper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rb&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+-&lt;/span&gt;   
+ &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;files&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insertions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;19&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deletions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 08 Jan 2015 03:31:00 +0800</pubDate>
+        <link>/2015/01/08/Fix-conflict-when-updating-git.html</link>
+        <guid isPermaLink="true">/2015/01/08/Fix-conflict-when-updating-git.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Strip() to remove non-space characters from a string</title>
+        <description>&lt;p&gt;The following method can &lt;code&gt;strip&lt;/code&gt; non-space characters from a string as well.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;strip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;new_str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each_byte&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;new_str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;char&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;new_str&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Example&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;strip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Hello World&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;o&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &amp;#39;Hell wrld&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Tue, 06 Jan 2015 01:55:00 +0800</pubDate>
+        <link>/2015/01/06/Strip()-to-remove-non-space-characters-from-a-string.html</link>
+        <guid isPermaLink="true">/2015/01/06/Strip()-to-remove-non-space-characters-from-a-string.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>How to learn 50% of a language</title>
+        <description>&lt;h4 id=&quot;section&quot;&gt;这篇文章来源于以前的上司，内容关于“快速掌握一个语言最常用的50%”&lt;/h4&gt;
+
+&lt;p style=&quot;line-height: 1.4&quot;&gt;  现在的开发工作要求我们能够快速掌握一门语言。一般来说应对这种挑战有两种态度：   
+ 其一，粗粗看看语法，就撸起袖子开干，边查Google边学习；其二是花很多时间完整地把整个语言学习一遍，做到胸有成竹，然后再开始做实际工作。然而这两种方法都有弊病。第二种方法的问题当然很明显，不仅浪费了时间，偏离了目标，而且学习效率不高。因为没有实际问题驱动的语言学习通常是不牢固不深入的。有的人学着学着成了语言专家，反而忘了自己原本是要解决问题来的。第一种路子也有问题，在对于这种语言的脾气秉性还没有了解的情况下大刀阔斧地拼凑代码，写出来的东西肯定不入流。说穿新鞋走老路，新瓶装旧酒，那都是小问题，真正严重的是这样的程序员可以在短时间内堆积大量充满缺陷的垃圾代码。由于通常开发阶段的测试完备程度有限，这些垃圾代码往往能通过这个阶段，从而潜伏下来，在后期成为整个项目的毒瘤，反反复复让后来的维护者陷入西西弗斯困境。
+实际上语言学习有一定规律可循，对于已经掌握一门语言的开发者来说，对于一般的语言，完全可以以最快的速度，在几天至一周之内掌握其最常用的50%，而且保证路子基本正宗，没有出偏的弊病。其实真正写程序不怕完全不会，最怕一知半解的去攒解决方案。因为你完全不会，就自然会去认真查书学习，如果学习能力好的话，写出来的代码质量不会差。而一知半解，自己动手土法炼钢，那搞出来的基本上都是废铜烂铁。比如错误处理和序列化，很多人不去了解“正路子”，而是凭借自己的一知半解去攒野路子，这是最危险的。因此，即使时间再紧张，这些内容也是必须首先完整了解一遍的。掌握这些内容之后进入实际开发，即使有问题，也基本不会伤及项目大体。而开发者本人则可以安步当车，慢慢在实践中提高自己。
+以下列出一个学习提纲，主要针对的是有经验的人，初学者不合适。这个提纲只能用于一般的庸俗编程语言学习，目前在流行编程语言排行榜上排前20的基本上都是庸俗语言。如果你要学的是LISP之类非庸俗语言，或是某个软件中的二次开发语言，这里的建议未必合适。还是那句话，仅供参考。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;首先了解该语言的基本数据类型，基本语法和主要语言构造，主要数学运算符和print函数的使用，达到能够写谭浩强程序设计书课后数学习题的程度；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;其次掌握数组和其他集合类的使用，有基础的话可以理解一下泛型，如果理解不了也问题不大，后面可以补；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;简单字符串处理。所谓简单，就是Regex和Parser以下的内容，什么查找替换，截断去字串之类的。不过这个阶段有一个难点，就是字符编码问题。如果理解不了，可以先跳过，否则的话最好在这时候把这个问题搞定，免留后患；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基本面向对象或者函数式编程的特征，无非是什么继承、多态、Lambda函数之类的，如果有经验的话很快就明白了；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;异常、错误处理、断言、日志和调试支持，对单元测试的支持。你不一定要用TDD，但是在这个时候应该掌握在这个语言里做TDD的基本技能；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;程序代码和可执行代码的组织机制，运行时模块加载、符号查找机制，这是初学时的一个难点，因为大部分书都不太注意介绍这个极为重要的内容；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基本输入输出和文件处理，输入输出流类的组织，这通常是比较繁琐的一部分，可以提纲挈领学一下，搞清楚概念，用到的时候查就是了。到这个阶段可以写大部分控制台应用了；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;该语言如何进行callback方法调用，如何支持事件驱动编程模型。在现代编程环境下，这个问题是涉及开发思想的一个核心问题，几乎每种语言在这里都会用足功夫，.NET的delegate，Java的anonymous inner class，Java 7的closure，五花八门。如果能彻底理解这个问题，不但程序就不至于写得太走样，而且对该语言的设计思路也能有比较好的认识；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果有必要，可在这时研究regex和XML处理问题，如无必要可跳过；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;序列化和反序列化，掌握一下缺省的机制就可以了；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果必要，可了解一下线程、并发和异步调用机制，主要是为了读懂别人的代码，如果自己要写这类代码，必须专门花时间严肃认真系统地学习，严禁半桶水上阵；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;动态编程，反射和元数据编程，数据和程序之间的相互转化机制，运行时编译和执行的机制，有抱负的开发者在这块可以多下些功夫，能够使你对语言的认识高出一个层面；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果有必要，可研究一下该语言对于泛型的支持，不必花太多时间，只要能使用现成的泛型集合和泛型函数就可以了，可在以后闲暇时抽时间系统学习。需要注意的是，泛型技术跟多线程技术一样，用不好就成为万恶之源，必须系统学习，谨慎使用，否则不如不学不用；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果还有时间，最好咨询一下有经验的人，看看这个语言较常用的特色features是什么，如果之前没学过，应当补一下。比如Ruby的block interator, Java的dynamic proxy，C#的LINQ和extension method。没时间的话，我认为也可以边做边学，没有大问题。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;有必要的话，在工作的闲暇时间，可以着重考察两个问题，第一，这个语言有哪些惯用法和模式，第二，这个语言的编译/解释执行机制。
+至此语言的基本部分就可以说掌握了，之后是做数据库、网络还是做图形，可以根据具体需求去搞，找相应的成熟框架或库，边做边学，加深理解。对于一个庸俗语言，我自己把上面的内容走一遍大概要花2-3周时间，不能算很快，但也耽误不了太多事情，毕竟不是每个月都学新语言。掌握了以上的内容，就给练武术打好了基本功，虽然不见得有多优秀，但是肯定是根正苗红，将来不必绕大弯子。就算是临时使用的语言，把上面这个提纲精简一下，只看蓝色重体字的部分，大致能在几天到一周内搞定，不算是太耗时，而且写出来的代码不会太不靠谱。
+以上提纲未设及内存模型。对于C/C++，这个问题很重要，要放在显著位置来考虑，但对于其他语言，这个问题被透明化了，除非你要做hardcore项目，否则不必太关注。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Mon, 29 Dec 2014 00:03:33 +0800</pubDate>
+        <link>/2014/12/29/How-to-learn-50%25-of-a-language.html</link>
+        <guid isPermaLink="true">/2014/12/29/How-to-learn-50%25-of-a-language.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Welcome to Jekyll!</title>
+        <description>&lt;p&gt;You’ll find this post in your &lt;code&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Tom&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &amp;#39;Hi, Tom&amp;#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://github.com/jekyll/jekyll-help&quot;&gt;Jekyll’s dedicated Help repository&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 28 Dec 2014 04:46:33 +0800</pubDate>
+        <link>/jekyll/update/2014/12/28/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">/jekyll/update/2014/12/28/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+  </channel>
+</rss>
