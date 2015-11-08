@@ -1,0 +1,102 @@
+<p>This blog instructs about how to create user and grant different privileges to different users in mysql.</p>
+
+<h4 id="how-to-create-a-user-in-mysql">How to create a user in mysql</h4>
+<p>First you should login mysql server with root account or other account with grant options</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mysql -uroot -p</code></pre></div>
+
+<p>Show existed accounts:
+<img src="/img/5F32B806-C381-4F9C-AB9B-252949C325EC.png" alt="show accounts" /></p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; SELECT Host, User FROM mysql.user<span class="p">;</span></code></pre></div>
+
+<p>create a new account call “timlen” and it can only connect to server at localhost</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; CREATE USER <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span> IDENTIFIED BY <span class="s1">&#39;foo&#39;</span><span class="p">;</span></code></pre></div>
+
+<p>Now we can see the new account existed in table <code>mysql.user</code></p>
+
+<p>If you want to connect mysql server remotely, just run the following command:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; CREATE USER <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;%&#39;</span> IDENTIDIED BY <span class="s1">&#39;foo&#39;</span><span class="p">;</span></code></pre></div>
+
+<h4 id="grant-privileges-to-the-new-account">Grant privileges to the new account</h4>
+<p>We can grant account ‘timlen’ with all privileges, which means it can perform <code>select, delete, update, create ...</code> on target table and the sql as the following:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; GRANT ALL PRIVILEGES ON *.* TO <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span> WITH GRANT OPTION<span class="p">;</span></code></pre></div>
+
+<p>Flush privileges and show the grants for <code>timlen</code></p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; FLUSH PRIVILEGES<span class="p">;</span>
+mysql&gt; SHOW GRANTS <span class="k">for</span> <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span><span class="p">;</span></code></pre></div>
+
+<p><img src="/img/CF730E2D-5C45-423F-9A1D-9366B5FCB828.png" alt="show grant" /></p>
+
+<h4 id="how-to-grant-readonly-permission-to-new-user">How to grant readonly permission to new user</h4>
+<p>Mysql offer many options for us to set different privileges for different users and we can easily do this:
+remove the <code>all privileges</code> that we have just granted for <code>timlen</code></p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; REVOKE ALL PRIVILEGES  ON *.* FROM <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+mysql&gt; FLUSH PRIVILEGES<span class="p">;</span></code></pre></div>
+
+<p>Now we can grant <code>select</code> to <code>timlen</code></p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; GRANT SELECT ON *.* TO <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span><span class="p">;</span></code></pre></div>
+
+<h4 id="other-privileges-are-as-following">Other privileges are as following</h4>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Privilege</td>
+      <td>Meaning</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>ALL PRIVILEGES — Sets all simple privileges except GRANT OPTION</p>
+
+<p>ALTER — Enables use of ALTER TABLE</p>
+
+<p>CREATE  — Enables use of CREATE TABLE</p>
+
+<p>CREATE — TEMPORARY TABLES Enables use of CREATE TEMPORARY TABLE</p>
+
+<p>DELETE  — Enables use of DELETE</p>
+
+<p>DROP  — Enables use of DROP TABLE</p>
+
+<p>EXECUTE — Not implemented</p>
+
+<p>FILE  — Enables use of SELECT … INTO OUTFILE and LOAD DATA INFILE</p>
+
+<p>INDEX — Enables use of CREATE INDEX and DROP INDEX</p>
+
+<p>INSERT  — Enables use of INSERT</p>
+
+<p>LOCK TABLES — Enables use of LOCK TABLES on tables for which you have the SELECT privilege</p>
+
+<p>PROCESS — Enables the user to see all processes with SHOW PROCESSLIST</p>
+
+<p>REFERENCES — Not implemented</p>
+
+<p>RELOAD  — Enables use of FLUSH</p>
+
+<p>REPLICATION CLIENT  — Enables the user to ask where slave or master servers are</p>
+
+<p>REPLICATION SLAVE — Needed for replication slaves (to read binary log events from the master)</p>
+
+<p>SELECT  — Enables use of SELECT</p>
+
+<p>SHOW DATABASES — shows all databases</p>
+
+<p>SHUTDOWN  — Enables use of MySQLadmin shutdown</p>
+
+<p>SUPER — Enables use of CHANGE MASTER, KILL, PURGE MASTER LOGS, and SET GLOBAL statements, the MySQLadmin debug command; allows you to connect (once) even if max_connections is reached</p>
+
+<p>UPDATE  — Enables use of UPDATE</p>
+
+<p>USAGE — Synonym for privileges</p>
+
+<p>GRANT OPTION  — Enables privileges to be granted</p>
+

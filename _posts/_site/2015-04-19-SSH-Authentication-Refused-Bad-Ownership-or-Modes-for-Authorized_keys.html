@@ -1,0 +1,39 @@
+<p>It is a good thing to set ssh keys for the remote host. We can login a remote host via 
+public key we have set so that no need to enter password every time we try to connect remote
+server.</p>
+
+<h2 id="how-to-set-a-ssh-key">How to set a ssh-key</h2>
+<p>If you google for a bit , you will find some many tutorials about how to set ssh keys.
+A good article about that is <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2">here</a>.</p>
+
+<h2 id="still-need-to-enter-password-even-though-ssh-key-was-set">Still need to enter password even though ssh-key was set?</h2>
+
+<p>In some case, though ssh-keys was properly set, we still need enter password as if ssh-key not existed.
+SSH has a verbose mode , just add the <code>-v</code> option.</p>
+
+<p><img src="/img/screenshot/ssh_keys_error/verbose-ssh.png" alt="alt" /></p>
+
+<p>The above way seems told nothing, but <code>cat /var/log/secure</code> will give more useful information.
+In the terminal of remote host, type :</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">cat</span> <span class="sr">/var/</span><span class="n">log</span><span class="o">/</span><span class="n">secure</span></code></pre></div>
+
+<p>we found something as the following:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Apr</span> <span class="mi">19</span> <span class="mi">09</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">19</span> <span class="n">iZ94z0jz2inZ</span> <span class="n">sshd</span><span class="o">[</span><span class="mi">5704</span><span class="o">]</span><span class="p">:</span> <span class="no">Authentication</span> <span class="ss">refused</span><span class="p">:</span> <span class="n">bad</span> <span class="n">ownership</span> <span class="ow">or</span> <span class="n">modes</span> 
+<span class="k">for</span> <span class="n">file</span> <span class="sr">/home/</span><span class="nb">test</span><span class="o">/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">authorized_keys</span></code></pre></div>
+
+<p>For security reason, the mode of files under .ssh directorys is strictly set. SSH doesn’t like it if your home or ~/.ssh directories
+or ~./ssh/authorized_keys have group write permissions. Your home directory should be writable only by you, ~/.ssh should be 700, 
+and authorized_keys should be 600.</p>
+
+<p>The following shot is the wrong mode:
+<img src="/img/screenshot/ssh_keys_error/wrong_mode.png" alt="alt" /> <br />
+we can see that authorized_keys file has writable permissions for group, which is not allowed by ssh:</p>
+
+<p>Change to right mode:</p>
+
+<p><img src="/img/screenshot/ssh_keys_error/right_mode.png" alt="alt" /></p>
+
+<p>Now you can login you remote host without entering  passwd, enjoy!</p>
+
