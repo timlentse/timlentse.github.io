@@ -6,5 +6,5 @@ sitemap:
     changefreq: weekly
     lastmod: 2014-09-07T16:31:30+05:30
 ---
-# About
-View my [reusme](./resume.html)!
+<h1 style="text-align:center"> About Me</h1>
+<p style="text-align:center">View my <a href="./resume.html">reusme</a></p>
