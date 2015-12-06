@@ -5,7 +5,7 @@ title: "How to create user and grant privileges in mysql"
 
 This blog instructs about how to create user and grant different privileges to different users in mysql.
 
-#### How to create a user in mysql
+### How to create a user in mysql
 First you should login mysql server with root account or other account with grant options
 {% highlight bash %}
 $ mysql -uroot -p
@@ -29,7 +29,7 @@ If you want to connect mysql server remotely, just run the following command:
 mysql> CREATE USER 'timlen'@'%' IDENTIDIED BY 'foo';
 {% endhighlight %}
 
-#### Grant privileges to the new account
+### Grant privileges to the new account
 We can grant account 'timlen' with all privileges, which means it can perform `select, delete, update, create ...` on target table and the sql as the following:
 {% highlight bash %}
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'timlen'@'localhost' WITH GRANT OPTION;
@@ -42,7 +42,7 @@ mysql> SHOW GRANTS for 'timlen'@'localhost';
 {% endhighlight %}
 ![show grant](/img/CF730E2D-5C45-423F-9A1D-9366B5FCB828.png)
 
-#### How to grant readonly permission to new user
+### How to grant readonly permission to new user
 Mysql offer many options for us to set different privileges for different users and we can easily do this:
 remove the `all privileges` that we have just granted for `timlen`
 {% highlight bash %}
@@ -53,7 +53,7 @@ Now we can grant `select` to `timlen`
 {% highlight bash %}
 mysql> GRANT SELECT ON *.* TO 'timlen'@'localhost';
 {% endhighlight %}
-#### Other privileges are as following
+### Other privileges are as following
 
 |Privilege| Meaning|
 

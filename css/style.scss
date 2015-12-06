@@ -26,6 +26,9 @@ pre {
   border-radius:2px;
 }
 
+.highlight .err {
+  background-color:#333;
+}
 .wrap .grid,
 .grid.wrap {
   max-width: $body-width;
@@ -133,6 +136,7 @@ nav ul {
   h3{
     margin: 0.3em 0;
     font-style: normal;
+    font-weight: bold;
   }
   a{
     color: #08c;
@@ -238,9 +242,9 @@ a {
 }
 
 code{
-  background-color: #dbdbdb;
+  background-color: #ccc;
   color: #000;
-  padding: 0 3px;
+  padding: 3px 3px;
   word-break: break-all;
 }
 
