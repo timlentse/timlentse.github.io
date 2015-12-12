@@ -1,7 +1,7 @@
 <p>Making a ssh connection of ActiveRecord is very easy and the following will show 
 you how to achieve it</p>
 
-<h4 id="gems-dependencies">gems dependencies</h4>
+<h3 id="gems-dependencies">gems dependencies</h3>
 
 <ul>
   <li>active_record</li>
@@ -9,7 +9,7 @@ you how to achieve it</p>
   <li>net-ssh-gateway</li>
 </ul>
 
-<h4 id="make-a-ssh-connection">make a ssh connection</h4>
+<h3 id="make-a-ssh-connection">make a ssh connection</h3>
 
 <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;net/ssh/gateway&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;active_record&#39;</span>
@@ -40,7 +40,7 @@ you how to achieve it</p>
 <span class="nb">p</span> <span class="no">BaseGeneralHotelPoi</span><span class="o">.</span><span class="n">take</span>
 <span class="n">tunnel</span><span class="o">.</span><span class="n">shutdown!</span></code></pre></div>
 
-<h4 id="use-ssh-authentication">Use ssh authentication</h4>
+<h3 id="use-ssh-authentication">Use ssh authentication</h3>
 <p>Just like ssh-login, we can also use ssh key as the identification</p>
 
 <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">tunnel</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">SSH</span><span class="o">::</span><span class="no">Gateway</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;seo&#39;</span><span class="p">,</span><span class="s1">&#39;op&#39;</span><span class="p">,</span> <span class="ss">:keys</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;/Users/timlen/.ssh/id_rsa&#39;</span><span class="o">]</span><span class="p">)</span></code></pre></div>

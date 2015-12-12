@@ -1,6 +1,6 @@
 <p>This blog instructs about how to create user and grant different privileges to different users in mysql.</p>
 
-<h4 id="how-to-create-a-user-in-mysql">How to create a user in mysql</h4>
+<h3 id="how-to-create-a-user-in-mysql">How to create a user in mysql</h3>
 <p>First you should login mysql server with root account or other account with grant options</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mysql -uroot -p</code></pre></div>
@@ -20,7 +20,7 @@
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; CREATE USER <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;%&#39;</span> IDENTIDIED BY <span class="s1">&#39;foo&#39;</span><span class="p">;</span></code></pre></div>
 
-<h4 id="grant-privileges-to-the-new-account">Grant privileges to the new account</h4>
+<h3 id="grant-privileges-to-the-new-account">Grant privileges to the new account</h3>
 <p>We can grant account ‘timlen’ with all privileges, which means it can perform <code>select, delete, update, create ...</code> on target table and the sql as the following:</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; GRANT ALL PRIVILEGES ON *.* TO <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span> WITH GRANT OPTION<span class="p">;</span></code></pre></div>
@@ -32,7 +32,7 @@ mysql&gt; SHOW GRANTS <span class="k">for</span> <span class="s1">&#39;timlen&#3
 
 <p><img src="/img/CF730E2D-5C45-423F-9A1D-9366B5FCB828.png" alt="show grant" /></p>
 
-<h4 id="how-to-grant-readonly-permission-to-new-user">How to grant readonly permission to new user</h4>
+<h3 id="how-to-grant-readonly-permission-to-new-user">How to grant readonly permission to new user</h3>
 <p>Mysql offer many options for us to set different privileges for different users and we can easily do this:
 remove the <code>all privileges</code> that we have just granted for <code>timlen</code></p>
 
@@ -43,7 +43,7 @@ mysql&gt; FLUSH PRIVILEGES<span class="p">;</span></code></pre></div>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; GRANT SELECT ON *.* TO <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span><span class="p">;</span></code></pre></div>
 
-<h4 id="other-privileges-are-as-following">Other privileges are as following</h4>
+<h3 id="other-privileges-are-as-following">Other privileges are as following</h3>
 
 <table>
   <tbody>
