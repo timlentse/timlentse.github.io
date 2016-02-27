@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:og="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>How to create user and grant privileges in mysql | Timlentse</title>
+        
+          <meta name="author" content="timlentse">
+        
+        <meta name="title" content="How to create user and grant privileges in mysql" >
+        <link rel="icon" type="image/ico" href="/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="How to create user and grant privileges in mysql" />
+<meta name="twitter:title" content="How to create user and grant privileges in mysql" />
+
+<meta name="keywords" content="mysql, ruby, nginx, ssh" />
+
+
+<meta name="description" content="This blog instructs about how to create user and grant different privileges to different users in mysql.
+
+">
+<meta property="og:description" content="This blog instructs about how to create user and grant different privileges to different users in mysql.
+
+" />
+<meta name="twitter:description" content="This blog instructs about how to create user and grant different privileges to different users in mysql.
+
+" />
+<meta property="og:type" content="article" />
+<link rel="canonical" href="https://timlentse.github.io/2015/10/26/Grant-permission-to-user-in-mysql.html" />
+
+<meta property="og:image" content="https://timlentse.github.io/sharer.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://timlentse.github.io/sharer.png" />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    </head>
+    <body class="wrap">
+      <!--[if lt IE 8]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <![endif]-->
+      <header>
+  <nav class="main-nav">
+    <a href="#" class="opener show-on-mobiles">...</a>
+    <div class="clear-opener show-on-mobiles"></div>
+    <div class="grid">
+      <ul>
+        <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+        <li><a href="/about.html"><i class="fa fa-info-circle"></i>About</a></li>
+        <li><a href="https://github.com/timlentse"><i class="fa fa-github"></i>Github</a></li>
+        <li><a href="https://twitter.com/tinglentse"><i class="fa fa-twitter"></i>Twitter</a></li>
+        <li><a href="https://www.facebook.com/timlenxan"><i class="fa fa-facebook"></i>Facebook</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+      <section class="content">
+        <div id="home" class="grid post">
+<div class="unit whole">
+<article>
+	<header>
+		<h1>How to create user and grant privileges in mysql</h1>
+		<p class="meta">
+			<time class="timeago postlist-meta" datetime="2015-10-26"><i class="fa fa-calendar"></i>October 26, 2015</time>
+			<a class="sharer facebook" href="#" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+window.location.href,'_blank','height=300,width=600');return false;"><i class="fa fa-facebook"></i></a>
+			
+				<a class="sharer twitter" href="#" target="_blank" onclick="window.open('https://twitter.com/share?url='+window.location.href,'_blank','height=300,width=600');return false;"><i class="fa fa-twitter"></i></a>
+			
+		</p>
+	</header>
+	<section>
+		
+		<p>This blog instructs about how to create user and grant different privileges to different users in mysql.</p>
+
+<h3 id="how-to-create-a-user-in-mysql">How to create a user in mysql</h3>
+<p>First you should login mysql server with root account or other account with grant options</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mysql -uroot -p</code></pre></figure>
+
+<p>Show existed accounts:
+<img src="/img/5F32B806-C381-4F9C-AB9B-252949C325EC.png" alt="show accounts" /></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; SELECT Host, User FROM mysql.user<span class="p">;</span></code></pre></figure>
+
+<p>create a new account call “timlen” and it can only connect to server at localhost</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; CREATE USER <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span> IDENTIFIED BY <span class="s1">&#39;foo&#39;</span><span class="p">;</span></code></pre></figure>
+
+<p>Now we can see the new account existed in table <code>mysql.user</code></p>
+
+<p>If you want to connect mysql server remotely, just run the following command:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; CREATE USER <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;%&#39;</span> IDENTIDIED BY <span class="s1">&#39;foo&#39;</span><span class="p">;</span></code></pre></figure>
+
+<h3 id="grant-privileges-to-the-new-account">Grant privileges to the new account</h3>
+<p>We can grant account ‘timlen’ with all privileges, which means it can perform <code>select, delete, update, create ...</code> on target table and the sql as the following:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; GRANT ALL PRIVILEGES ON *.* TO <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span> WITH GRANT OPTION<span class="p">;</span></code></pre></figure>
+
+<p>Flush privileges and show the grants for <code>timlen</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; FLUSH PRIVILEGES<span class="p">;</span>
+mysql&gt; SHOW GRANTS <span class="k">for</span> <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span><span class="p">;</span></code></pre></figure>
+
+<p><img src="/img/CF730E2D-5C45-423F-9A1D-9366B5FCB828.png" alt="show grant" /></p>
+
+<h3 id="how-to-grant-readonly-permission-to-new-user">How to grant readonly permission to new user</h3>
+<p>Mysql offer many options for us to set different privileges for different users and we can easily do this:
+remove the <code>all privileges</code> that we have just granted for <code>timlen</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; REVOKE ALL PRIVILEGES  ON *.* FROM <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+mysql&gt; FLUSH PRIVILEGES<span class="p">;</span></code></pre></figure>
+
+<p>Now we can grant <code>select</code> to <code>timlen</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mysql&gt; GRANT SELECT ON *.* TO <span class="s1">&#39;timlen&#39;</span>@<span class="s1">&#39;localhost&#39;</span><span class="p">;</span></code></pre></figure>
+
+<h3 id="other-privileges-are-as-following">Other privileges are as following</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Privilege</td>
+      <td>Meaning</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>ALL PRIVILEGES — Sets all simple privileges except GRANT OPTION</p>
+
+<p>ALTER — Enables use of ALTER TABLE</p>
+
+<p>CREATE  — Enables use of CREATE TABLE</p>
+
+<p>CREATE — TEMPORARY TABLES Enables use of CREATE TEMPORARY TABLE</p>
+
+<p>DELETE  — Enables use of DELETE</p>
+
+<p>DROP  — Enables use of DROP TABLE</p>
+
+<p>EXECUTE — Not implemented</p>
+
+<p>FILE  — Enables use of SELECT … INTO OUTFILE and LOAD DATA INFILE</p>
+
+<p>INDEX — Enables use of CREATE INDEX and DROP INDEX</p>
+
+<p>INSERT  — Enables use of INSERT</p>
+
+<p>LOCK TABLES — Enables use of LOCK TABLES on tables for which you have the SELECT privilege</p>
+
+<p>PROCESS — Enables the user to see all processes with SHOW PROCESSLIST</p>
+
+<p>REFERENCES — Not implemented</p>
+
+<p>RELOAD  — Enables use of FLUSH</p>
+
+<p>REPLICATION CLIENT  — Enables the user to ask where slave or master servers are</p>
+
+<p>REPLICATION SLAVE — Needed for replication slaves (to read binary log events from the master)</p>
+
+<p>SELECT  — Enables use of SELECT</p>
+
+<p>SHOW DATABASES — shows all databases</p>
+
+<p>SHUTDOWN  — Enables use of MySQLadmin shutdown</p>
+
+<p>SUPER — Enables use of CHANGE MASTER, KILL, PURGE MASTER LOGS, and SET GLOBAL statements, the MySQLadmin debug command; allows you to connect (once) even if max_connections is reached</p>
+
+<p>UPDATE  — Enables use of UPDATE</p>
+
+<p>USAGE — Synonym for privileges</p>
+
+<p>GRANT OPTION  — Enables privileges to be granted</p>
+
+
+	</section>
+	
+</article>
+</div>
+</div>
+      </section>
+      <footer class="grid site-footer">
+        <p>&copy;&nbsp;Timlentse</p>
+        <p><a  href="http://www.tan90.cn">酒店预订</a><a href="http://www.timlentse.com">民宿预订</a></p>
+        <p><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme.</small></p>
+      </footer>
+      
+        <script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-67464730-1', 'auto');
+	ga('require', 'displayfeatures');
+	ga('send', 'pageview');
+</script>
+
+      
+      <script src="/js/script.js"></script>
+    </body>
+</html>
