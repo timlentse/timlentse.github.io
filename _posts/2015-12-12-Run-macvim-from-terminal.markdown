@@ -18,6 +18,7 @@ $ brew install macvim --with-override-system-vim
 {% endhighlight%}
 it will create `vi` and `vim` command under `/usr/local/bin/`
 and if you want to open a file from terminal using macvim, just type 'vi file' or 'vim file '. These two commands acted as `mvim -v`. That's all.
+
 #### Don't want to reinstall macvim?
 If you don't want to reinstall your macvim, making a alias is a recommend way. And a line to you `bashrc` or `zshrc`.
 {% highlight bash %}

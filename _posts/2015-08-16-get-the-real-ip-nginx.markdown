@@ -4,7 +4,7 @@ title: "Get the real remote ip in nginx"
 date: 2015-08-16 18:00:00
 ---
 
-##多层nginx中获取真实ip
+### 多层nginx中获取真实ip
 
 在多层nginx中，若在后层的代理服务器中获得真实的用户IP，而不是上一层的代理服务器的IP，在反向代理服务器在转发请求的http头信息中，可以增加x_forwarded_for信息，用以记录原有客户端的IP地址和原来客户端的请求的服务器地址；即如下添加：
 
