@@ -1,11 +1,7 @@
----
----
-
 @import 'normalize';
 @import 'gridism';
 @import 'markdown';
 @import 'variables';
-//@import 'buttons';
 @import 'anims';
 @import 'monokai';
 
@@ -25,7 +21,9 @@ pre {
   padding-bottom:2%;
   border-radius:2px;
 }
-
+.highlight{
+  background-color:#000;
+}
 .highlight .err {
   background-color:#333;
 }

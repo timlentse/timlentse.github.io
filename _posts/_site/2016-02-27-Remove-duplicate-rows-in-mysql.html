@@ -1,0 +1,9 @@
+<p>This is a simple sql of removing duplicate rows from a table and just keep only one having the lowest <code class="highlighter-rouge">id</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">DELETE r1 FROM table_name r1, table_name r2 WHERE r1.id &gt; r2.id AND r1.name <span class="o">=</span> r2.name</code></pre></figure>
+
+<p>Note that the <code class="highlighter-rouge">name</code> is the field name you want to ensure values are unique</p>
+
+<p>reference 
+http://stackoverflow.com/questions/4685173/delete-all-duplicate-rows-except-for-one-in-mysql</p>
+
