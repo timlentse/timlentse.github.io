@@ -76,21 +76,21 @@
 <h4 id="confusing-about-opening-a-gui-windows-when-run-mvim">Confusing about opening a gui windows when run ‘mvim’?</h4>
 <p>After you had your macvim installed and try to run the folllowing command:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mvim</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>mvim</code></pre></figure>
 
 <p>A new gui window will be opened instead of just staying on terminal.</p>
 
-<h4 id="try-to-reinstall-your-macvim-with-option---with-override-system-vim">Try to reinstall your macvim with option <code>--with-override-system-vim</code></h4>
+<h4 id="try-to-reinstall-your-macvim-with-option---with-override-system-vim">Try to reinstall your macvim with option <code class="highlighter-rouge">--with-override-system-vim</code></h4>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>brew install macvim --with-override-system-vim</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>brew install macvim --with-override-system-vim</code></pre></figure>
 
-<p>it will create <code>vi</code> and <code>vim</code> command under <code>/usr/local/bin/</code>
-and if you want to open a file from terminal using macvim, just type ‘vi file’ or ‘vim file ‘. These two commands acted as <code>mvim -v</code>. That’s all.</p>
+<p>it will create <code class="highlighter-rouge">vi</code> and <code class="highlighter-rouge">vim</code> command under <code class="highlighter-rouge">/usr/local/bin/</code>
+and if you want to open a file from terminal using macvim, just type ‘vi file’ or ‘vim file ‘. These two commands acted as <code class="highlighter-rouge">mvim -v</code>. That’s all.</p>
 
 <h4 id="dont-want-to-reinstall-macvim">Don’t want to reinstall macvim?</h4>
-<p>If you don’t want to reinstall your macvim, making a alias is a recommend way. And a line to you <code>bashrc</code> or <code>zshrc</code>.</p>
+<p>If you don’t want to reinstall your macvim, making a alias is a recommend way. And a line to you <code class="highlighter-rouge">bashrc</code> or <code class="highlighter-rouge">zshrc</code>.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">alias </span><span class="nv">vi</span><span class="o">=</span><span class="s1">&#39;mvim -v&#39;</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span><span class="nb">alias </span><span class="nv">vi</span><span class="o">=</span><span class="s1">'mvim -v'</span></code></pre></figure>
 
 
 	</section>

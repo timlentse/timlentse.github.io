@@ -1,3 +1,6 @@
+---
+---
+
 @import 'normalize';
 @import 'gridism';
 @import 'markdown';
@@ -20,9 +23,7 @@ pre {
   padding-top:2%;
   padding-bottom:2%;
   border-radius:2px;
-}
-.highlight {
-  background-color:#000;
+  background-color:#333;
 }
 .highlight .err {
   background-color:#333;

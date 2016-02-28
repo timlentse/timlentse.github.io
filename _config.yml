@@ -3,7 +3,7 @@ name: Timlentse
 ##Markdown processor
 markdown: kramdown
 ##syntax highlighter. change it to pygments
-highlighter: pygments
+highlighter: rouge
 
 ##define base_url for valid usage in sitemap.xml and robots.txt
 base_url: https://timlentse.github.io
@@ -33,4 +33,4 @@ links:
 
 ##put desired image in img/ directory and set the value accordingly. If not defined, a placeholder image will be used.
 about_image: profile.jpg
-gems: [jekyll-paginate]
+gems: [jekyll-paginate,jekyll-sass-converter]
