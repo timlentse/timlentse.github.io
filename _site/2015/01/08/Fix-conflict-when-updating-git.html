@@ -43,19 +43,19 @@ the local repository to the recent HEAD in the master branch and I have the up-t
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
       <![endif]-->
       <header>
-  <nav class="main-nav">
-    <a href="#" class="opener show-on-mobiles">...</a>
-    <div class="clear-opener show-on-mobiles"></div>
-    <div class="grid">
-      <ul>
-        <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
-        <li><a href="/about.html"><i class="fa fa-info-circle"></i>About</a></li>
-        <li><a href="https://github.com/timlentse"><i class="fa fa-github"></i>Github</a></li>
-        <li><a href="https://twitter.com/tinglentse"><i class="fa fa-twitter"></i>Twitter</a></li>
-        <li><a href="https://www.facebook.com/timlenxan"><i class="fa fa-facebook"></i>Facebook</a></li>
-      </ul>
-    </div>
-  </nav>
+    <nav class="main-nav">
+        <a href="#" class="opener show-on-mobiles">...</a>
+        <div class="clear-opener show-on-mobiles"></div>
+        <div class="grid">
+            <ul>
+                <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="https://github.com/timlentse"><i class="fa fa-github"></i>Github</a></li>
+                <li><a href="https://twitter.com/tinglentse"><i class="fa fa-twitter"></i>Twitter</a></li>
+                <li><a href="https://www.facebook.com/timlenxan"><i class="fa fa-facebook"></i>Facebook</a></li>
+                <li><a href="/about.html"><i class="fa fa-info-circle"></i>About</a></li>
+            </ul>
+        </div>
+    </nav>
 </header>
 
       <section class="content">
@@ -79,15 +79,13 @@ the local repository to the recent HEAD in the master branch and I have the up-t
 
 <h3>But how to do this?</h3>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python">  
-  <span class="err">$</span> <span class="n">git</span> <span class="n">pull</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="err">$</span> <span class="n">git</span> <span class="n">pull</span></code></pre></figure>
 
 <p>Should do the trick when executed in the directory where the <code class="highlighter-rouge">.git</code> is located (find this with ls -lah to show hidden files).</p>
 
 <p>You may get an error like:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"> 
-<span class="n">timlentse</span><span class="nd">@timlentse</span><span class="p">:</span><span class="o">~/</span><span class="n">Gitpro</span><span class="o">/</span><span class="n">daodao</span><span class="err">$</span> <span class="n">git</span> <span class="n">pull</span>   
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">timlentse</span><span class="nd">@timlentse</span><span class="p">:</span><span class="o">~/</span><span class="n">Gitpro</span><span class="o">/</span><span class="n">daodao</span><span class="err">$</span> <span class="n">git</span> <span class="n">pull</span>   
 <span class="n">Updating</span> <span class="n">d9319e1</span><span class="o">..</span><span class="mi">3</span><span class="n">ce366f</span>   
 <span class="n">error</span><span class="p">:</span> <span class="n">Your</span> <span class="n">local</span> <span class="n">changes</span> <span class="n">to</span> <span class="n">the</span> <span class="n">following</span> <span class="n">files</span> <span class="n">would</span> <span class="n">be</span> <span class="n">overwritten</span> <span class="n">by</span> <span class="n">merge</span><span class="p">:</span>   
 	<span class="n">daodao</span><span class="o">.</span><span class="n">gemspec</span>   
@@ -96,15 +94,13 @@ the local repository to the recent HEAD in the master branch and I have the up-t
 
 <h3>How to fix?</h3>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python">  
-<span class="n">timlentse</span><span class="nd">@timlentse</span><span class="p">:</span><span class="o">~/</span><span class="n">Gitpro</span><span class="o">/</span><span class="n">daodao</span><span class="err">$</span> <span class="n">git</span> <span class="n">stash</span> <span class="n">save</span> <span class="s">"update the daodao.gemspec"</span>   
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">timlentse</span><span class="nd">@timlentse</span><span class="p">:</span><span class="o">~/</span><span class="n">Gitpro</span><span class="o">/</span><span class="n">daodao</span><span class="err">$</span> <span class="n">git</span> <span class="n">stash</span> <span class="n">save</span> <span class="s">"update the daodao.gemspec"</span>   
 <span class="n">Saved</span> <span class="n">working</span> <span class="n">directory</span> <span class="ow">and</span> <span class="n">index</span> <span class="n">state</span> <span class="n">On</span> <span class="n">master</span><span class="p">:</span> <span class="n">update</span> <span class="n">the</span> <span class="n">daodao</span><span class="o">.</span><span class="n">gemspec</span>   
 <span class="n">HEAD</span> <span class="ow">is</span> <span class="n">now</span> <span class="n">at</span> <span class="n">d9319e1</span> <span class="n">reserve</span> <span class="n">the</span> <span class="n">pure</span> <span class="n">gem</span>   </code></pre></figure>
 
 <h3>Finished!</h3>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python">  
-<span class="n">Updating</span> <span class="n">d9319e1</span><span class="o">..</span><span class="mi">3</span><span class="n">ce366f</span>   
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">Updating</span> <span class="n">d9319e1</span><span class="o">..</span><span class="mi">3</span><span class="n">ce366f</span>   
 <span class="n">Fast</span><span class="o">-</span><span class="n">forward</span>   
  <span class="n">daodao</span><span class="o">.</span><span class="n">gemspec</span>           <span class="o">|</span> <span class="mi">9</span> <span class="o">+++++++--</span>   
  <span class="n">lib</span><span class="o">/</span><span class="n">daodao</span><span class="o">.</span><span class="n">rb</span>            <span class="o">|</span> <span class="mi">4</span> <span class="o">++++</span>   
@@ -125,9 +121,8 @@ the local repository to the recent HEAD in the master branch and I have the up-t
 </div>
       </section>
       <footer class="grid site-footer">
-        <p>&copy;&nbsp;Timlentse</p>
         <p><a  href="http://www.tan90.cn">酒店预订</a><a href="http://www.timlentse.com">民宿预订</a></p>
-        <p><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme.</small></p>
+        <p><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme &copy; timelntse.github.io.</small></p>
       </footer>
       
         <script>

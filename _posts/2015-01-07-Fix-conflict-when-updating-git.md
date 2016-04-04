@@ -9,14 +9,14 @@ the local repository to the recent HEAD in the master branch and I have the up-t
 
 <h3>But how to do this?</h3>   
 
-{% highlight python %}  
-  $ git pull
+{% highlight python %}
+$ git pull
 {% endhighlight %}    
 Should do the trick when executed in the directory where the `.git` is located (find this with ls -lah to show hidden files).
 
 You may get an error like: 
 
-{% highlight python %} 
+{% highlight python %}
 timlentse@timlentse:~/Gitpro/daodao$ git pull   
 Updating d9319e1..3ce366f   
 error: Your local changes to the following files would be overwritten by merge:   
@@ -26,7 +26,7 @@ Aborting
 {% endhighlight %}  
 <h3>How to fix?</h3>   
 
-{% highlight python %}  
+{% highlight python %}
 timlentse@timlentse:~/Gitpro/daodao$ git stash save "update the daodao.gemspec"   
 Saved working directory and index state On master: update the daodao.gemspec   
 HEAD is now at d9319e1 reserve the pure gem   
@@ -34,7 +34,7 @@ HEAD is now at d9319e1 reserve the pure gem
 
 <h3>Finished!</h3>       
 
-{% highlight python %}  
+{% highlight python %}
 Updating d9319e1..3ce366f   
 Fast-forward   
  daodao.gemspec           | 9 +++++++--   

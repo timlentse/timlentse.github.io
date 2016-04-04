@@ -40,19 +40,19 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
       <![endif]-->
       <header>
-  <nav class="main-nav">
-    <a href="#" class="opener show-on-mobiles">...</a>
-    <div class="clear-opener show-on-mobiles"></div>
-    <div class="grid">
-      <ul>
-        <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
-        <li><a href="/about.html"><i class="fa fa-info-circle"></i>About</a></li>
-        <li><a href="https://github.com/timlentse"><i class="fa fa-github"></i>Github</a></li>
-        <li><a href="https://twitter.com/tinglentse"><i class="fa fa-twitter"></i>Twitter</a></li>
-        <li><a href="https://www.facebook.com/timlenxan"><i class="fa fa-facebook"></i>Facebook</a></li>
-      </ul>
-    </div>
-  </nav>
+    <nav class="main-nav">
+        <a href="#" class="opener show-on-mobiles">...</a>
+        <div class="clear-opener show-on-mobiles"></div>
+        <div class="grid">
+            <ul>
+                <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="https://github.com/timlentse"><i class="fa fa-github"></i>Github</a></li>
+                <li><a href="https://twitter.com/tinglentse"><i class="fa fa-twitter"></i>Twitter</a></li>
+                <li><a href="https://www.facebook.com/timlenxan"><i class="fa fa-facebook"></i>Facebook</a></li>
+                <li><a href="/about.html"><i class="fa fa-info-circle"></i>About</a></li>
+            </ul>
+        </div>
+    </nav>
 </header>
 
       <section class="content">
@@ -79,34 +79,40 @@
 通过gem sources命令配置源，或通过修改Gemfile中的source语句可以实现。</p>
 
 <h3 id="section">常用的源</h3>
-<p>https://rubygems.org/ 官方下载源
-https://ruby.taobao.org 淘宝的下载源，这是一个完整 rubygems.org 镜像，
-你可以用此代替官方版本，同步频率目前为15分钟一次以保证尽量与官方服务同步。</p>
+<ul>
+  <li>官方下载源：https://rubygems.org/</li>
+  <li>
+    <p>淘宝镜像下载源：https://ruby.taobao.org
+这是一个完整 rubygems.org 镜像，你可以用此代替官方版本，同步频率目前为15分钟一次以保证尽量与官方服务同步。</p>
+  </li>
+  <li>显示当前使用的sources</li>
+</ul>
 
-<p>显示当前使用的sources</p>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="n">sources</span>    </code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">  
-  <span class="n">gem</span> <span class="n">sources</span>    </code></pre></figure>
+<ul>
+  <li>添加一个source</li>
+</ul>
 
-<p>添加一个source</p>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="n">sources</span> <span class="o">-</span><span class="n">a</span> <span class="c1">#{url}    </span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> 
-  <span class="n">gem</span> <span class="n">sources</span> <span class="o">-</span><span class="n">a</span> <span class="c1">#{url}    </span></code></pre></figure>
+<ul>
+  <li>删除一个source</li>
+</ul>
 
-<p>删除一个source</p>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="n">sources</span> <span class="o">-</span><span class="n">r</span> <span class="c1">#{url}      </span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">   
-  <span class="n">gem</span> <span class="n">sources</span> <span class="o">-</span><span class="n">r</span> <span class="c1">#{url}      </span></code></pre></figure>
+<ul>
+  <li>更新source cache</li>
+</ul>
 
-<p>更新source cache</p>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="n">sources</span> <span class="o">-</span><span class="n">u</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> 
-  <span class="n">gem</span> <span class="n">sources</span> <span class="o">-</span><span class="n">u</span></code></pre></figure>
+<ul>
+  <li>从固定地址安装gem</li>
+</ul>
 
-<p>从固定地址安装gem</p>
-
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> 
-  <span class="n">gem</span> <span class="n">install</span> <span class="n">bundler</span> <span class="o">-</span><span class="nb">p</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">ruby</span><span class="p">.</span><span class="nf">taobao</span><span class="p">.</span><span class="nf">org</span><span class="o">/</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="n">install</span> <span class="n">bundler</span> <span class="o">-</span><span class="nb">p</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">ruby</span><span class="p">.</span><span class="nf">taobao</span><span class="p">.</span><span class="nf">org</span><span class="o">/</span></code></pre></figure>
 
 
 	</section>
@@ -116,9 +122,8 @@ https://ruby.taobao.org 淘宝的下载源，这是一个完整 rubygems.org 镜
 </div>
       </section>
       <footer class="grid site-footer">
-        <p>&copy;&nbsp;Timlentse</p>
         <p><a  href="http://www.tan90.cn">酒店预订</a><a href="http://www.timlentse.com">民宿预订</a></p>
-        <p><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme.</small></p>
+        <p><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme &copy; timelntse.github.io.</small></p>
       </footer>
       
         <script>

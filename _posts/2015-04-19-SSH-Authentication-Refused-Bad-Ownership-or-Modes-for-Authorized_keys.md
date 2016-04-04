@@ -24,15 +24,13 @@ The above way seems told nothing, but `cat /var/log/secure` will give more usefu
 In the terminal of remote host, type :
 
 {% highlight ruby %}
-
-  sudo cat /var/log/secure  
-
+sudo cat /var/log/secure  
 {% endhighlight %}
 
 we found something as the following:
 
 {% highlight ruby %}
-  Apr 19 09:54:19 iZ94z0jz2inZ sshd[5704]: Authentication refused: bad ownership or modes 
+Apr 19 09:54:19 iZ94z0jz2inZ sshd[5704]: Authentication refused: bad ownership or modes 
 for file /home/test/.ssh/authorized_keys
 {% endhighlight %}
 

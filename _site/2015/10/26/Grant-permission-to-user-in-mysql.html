@@ -40,19 +40,19 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
       <![endif]-->
       <header>
-  <nav class="main-nav">
-    <a href="#" class="opener show-on-mobiles">...</a>
-    <div class="clear-opener show-on-mobiles"></div>
-    <div class="grid">
-      <ul>
-        <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
-        <li><a href="/about.html"><i class="fa fa-info-circle"></i>About</a></li>
-        <li><a href="https://github.com/timlentse"><i class="fa fa-github"></i>Github</a></li>
-        <li><a href="https://twitter.com/tinglentse"><i class="fa fa-twitter"></i>Twitter</a></li>
-        <li><a href="https://www.facebook.com/timlenxan"><i class="fa fa-facebook"></i>Facebook</a></li>
-      </ul>
-    </div>
-  </nav>
+    <nav class="main-nav">
+        <a href="#" class="opener show-on-mobiles">...</a>
+        <div class="clear-opener show-on-mobiles"></div>
+        <div class="grid">
+            <ul>
+                <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="https://github.com/timlentse"><i class="fa fa-github"></i>Github</a></li>
+                <li><a href="https://twitter.com/tinglentse"><i class="fa fa-twitter"></i>Twitter</a></li>
+                <li><a href="https://www.facebook.com/timlenxan"><i class="fa fa-facebook"></i>Facebook</a></li>
+                <li><a href="/about.html"><i class="fa fa-info-circle"></i>About</a></li>
+            </ul>
+        </div>
+    </nav>
 </header>
 
       <section class="content">
@@ -73,7 +73,7 @@
 		
 		<p>This blog instructs about how to create user and grant different privileges to different users in mysql.</p>
 
-<h3 id="how-to-create-a-user-in-mysql">How to create a user in mysql</h3>
+<h3 id="how-to-create-a-user-in-mysql">1. How to create a user in mysql</h3>
 <p>First you should login mysql server with root account or other account with grant options</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>mysql -uroot -p</code></pre></figure>
@@ -93,7 +93,7 @@
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">mysql&gt; </span>CREATE USER <span class="s1">'timlen'</span>@<span class="s1">'%'</span> IDENTIDIED BY <span class="s1">'foo'</span>;</code></pre></figure>
 
-<h3 id="grant-privileges-to-the-new-account">Grant privileges to the new account</h3>
+<h3 id="grant-privileges-to-the-new-account">2. Grant privileges to the new account</h3>
 <p>We can grant account ‘timlen’ with all privileges, which means it can perform <code class="highlighter-rouge">select, delete, update, create ...</code> on target table and the sql as the following:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">mysql&gt; </span>GRANT ALL PRIVILEGES ON <span class="k">*</span>.<span class="k">*</span> TO <span class="s1">'timlen'</span>@<span class="s1">'localhost'</span> WITH GRANT OPTION;</code></pre></figure>
@@ -105,74 +105,122 @@
 
 <p><img src="/img/CF730E2D-5C45-423F-9A1D-9366B5FCB828.png" alt="show grant" /></p>
 
-<h3 id="how-to-grant-readonly-permission-to-new-user">How to grant readonly permission to new user</h3>
+<h3 id="how-to-grant-readonly-permission-to-a-new-user">3. How to grant readonly permission to a new user</h3>
 <p>Mysql offer many options for us to set different privileges for different users and we can easily do this:
 remove the <code class="highlighter-rouge">all privileges</code> that we have just granted for <code class="highlighter-rouge">timlen</code></p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">mysql&gt; </span>REVOKE ALL PRIVILEGES  ON <span class="k">*</span>.<span class="k">*</span> FROM <span class="s1">'timlen'</span>@<span class="s1">'localhost'</span>;
 <span class="gp">mysql&gt; </span>FLUSH PRIVILEGES;</code></pre></figure>
 
-<p>Now we can grant <code class="highlighter-rouge">select</code> to <code class="highlighter-rouge">timlen</code></p>
+<p>Now we can grant <code class="highlighter-rouge">select</code> to <code class="highlighter-rouge">timlen</code> on all databases</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">mysql&gt; </span>GRANT SELECT ON <span class="k">*</span>.<span class="k">*</span> TO <span class="s1">'timlen'</span>@<span class="s1">'localhost'</span>;</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">mysql&gt; </span>GRANT SELECT ON <span class="k">*</span>.<span class="k">*</span> TO <span class="s1">'timlen'</span>@<span class="s1">'localhost'</span>;
+<span class="gp">mysql&gt; </span>FLUSH PRIVILEGES;</code></pre></figure>
 
-<h3 id="other-privileges-are-as-following">Other privileges are as following</h3>
+<h3 id="other-privileges-are-as-following">4. Other privileges are as following</h3>
 
 <table>
+  <thead>
+    <tr>
+      <th>Privilege</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
-      <td>Privilege</td>
-      <td>Meaning</td>
+      <td>ALL PRIVILEGES</td>
+      <td>Sets all simple privileges except GRANT OPTION</td>
+    </tr>
+    <tr>
+      <td>ALTER</td>
+      <td>Enables use of ALTER TABLE</td>
+    </tr>
+    <tr>
+      <td>CREATE</td>
+      <td>Enables use of CREATE TABLE</td>
+    </tr>
+    <tr>
+      <td>CREATE</td>
+      <td>TEMPORARY TABLES Enables use of CREATE TEMPORARY TABLE</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>Enables use of DELETE</td>
+    </tr>
+    <tr>
+      <td>DROP</td>
+      <td>Enables use of DROP TABLE</td>
+    </tr>
+    <tr>
+      <td>EXECUTE</td>
+      <td>Not implemented</td>
+    </tr>
+    <tr>
+      <td>FILE</td>
+      <td>Enables use of SELECT … INTO OUTFILE and LOAD DATA INFILE</td>
+    </tr>
+    <tr>
+      <td>INDEX</td>
+      <td>Enables use of CREATE INDEX and DROP INDEX</td>
+    </tr>
+    <tr>
+      <td>INSERT</td>
+      <td>Enables use of INSERT</td>
+    </tr>
+    <tr>
+      <td>LOCK TABLES</td>
+      <td>Enables use of LOCK TABLES on tables for which you have the SELECT privilege</td>
+    </tr>
+    <tr>
+      <td>PROCESS</td>
+      <td>Enables the user to see all processes with SHOW PROCESSLIST</td>
+    </tr>
+    <tr>
+      <td>REFERENCES</td>
+      <td>Not implemented</td>
+    </tr>
+    <tr>
+      <td>RELOAD</td>
+      <td>Enables use of FLUSH</td>
+    </tr>
+    <tr>
+      <td>REPLICATION CLIENT</td>
+      <td>Enables the user to ask where slave or master servers are</td>
+    </tr>
+    <tr>
+      <td>REPLICATION SLAVE</td>
+      <td>Needed for replication slaves (to read binary log events from the master)</td>
+    </tr>
+    <tr>
+      <td>SELECT</td>
+      <td>Enables use of SELECT</td>
+    </tr>
+    <tr>
+      <td>SHOW DATABASES</td>
+      <td>shows all databases</td>
+    </tr>
+    <tr>
+      <td>SHUTDOWN</td>
+      <td>Enables use of MySQLadmin shutdown</td>
+    </tr>
+    <tr>
+      <td>SUPER</td>
+      <td>Enables use of CHANGE MASTER, KILL, PURGE MASTER LOGS and SET GLOBAL statements.</td>
+    </tr>
+    <tr>
+      <td>UPDATE</td>
+      <td>Enables use of UPDATE</td>
+    </tr>
+    <tr>
+      <td>USAGE</td>
+      <td>Synonym for privileges</td>
+    </tr>
+    <tr>
+      <td>GRANT OPTION</td>
+      <td>Enables privileges to be granted</td>
     </tr>
   </tbody>
 </table>
-
-<p>ALL PRIVILEGES — Sets all simple privileges except GRANT OPTION</p>
-
-<p>ALTER — Enables use of ALTER TABLE</p>
-
-<p>CREATE  — Enables use of CREATE TABLE</p>
-
-<p>CREATE — TEMPORARY TABLES Enables use of CREATE TEMPORARY TABLE</p>
-
-<p>DELETE  — Enables use of DELETE</p>
-
-<p>DROP  — Enables use of DROP TABLE</p>
-
-<p>EXECUTE — Not implemented</p>
-
-<p>FILE  — Enables use of SELECT … INTO OUTFILE and LOAD DATA INFILE</p>
-
-<p>INDEX — Enables use of CREATE INDEX and DROP INDEX</p>
-
-<p>INSERT  — Enables use of INSERT</p>
-
-<p>LOCK TABLES — Enables use of LOCK TABLES on tables for which you have the SELECT privilege</p>
-
-<p>PROCESS — Enables the user to see all processes with SHOW PROCESSLIST</p>
-
-<p>REFERENCES — Not implemented</p>
-
-<p>RELOAD  — Enables use of FLUSH</p>
-
-<p>REPLICATION CLIENT  — Enables the user to ask where slave or master servers are</p>
-
-<p>REPLICATION SLAVE — Needed for replication slaves (to read binary log events from the master)</p>
-
-<p>SELECT  — Enables use of SELECT</p>
-
-<p>SHOW DATABASES — shows all databases</p>
-
-<p>SHUTDOWN  — Enables use of MySQLadmin shutdown</p>
-
-<p>SUPER — Enables use of CHANGE MASTER, KILL, PURGE MASTER LOGS, and SET GLOBAL statements, the MySQLadmin debug command; allows you to connect (once) even if max_connections is reached</p>
-
-<p>UPDATE  — Enables use of UPDATE</p>
-
-<p>USAGE — Synonym for privileges</p>
-
-<p>GRANT OPTION  — Enables privileges to be granted</p>
-
 
 	</section>
 	
@@ -181,9 +229,8 @@ remove the <code class="highlighter-rouge">all privileges</code> that we have ju
 </div>
       </section>
       <footer class="grid site-footer">
-        <p>&copy;&nbsp;Timlentse</p>
         <p><a  href="http://www.tan90.cn">酒店预订</a><a href="http://www.timlentse.com">民宿预订</a></p>
-        <p><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme.</small></p>
+        <p><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme &copy; timelntse.github.io.</small></p>
       </footer>
       
         <script>

@@ -11,29 +11,27 @@ date: 2015-02-05 14:15
 通过gem sources命令配置源，或通过修改Gemfile中的source语句可以实现。
 
 ### 常用的源
-https://rubygems.org/ 官方下载源
-https://ruby.taobao.org 淘宝的下载源，这是一个完整 rubygems.org 镜像，
-你可以用此代替官方版本，同步频率目前为15分钟一次以保证尽量与官方服务同步。
+* 官方下载源：https://rubygems.org/
+* 淘宝镜像下载源：https://ruby.taobao.org
+这是一个完整 rubygems.org 镜像，你可以用此代替官方版本，同步频率目前为15分钟一次以保证尽量与官方服务同步。
 
-显示当前使用的sources       
-{% highlight ruby %}  
-  gem sources    
-{% endhighlight %}   
-添加一个source    
-{% highlight ruby %} 
-  gem sources -a #{url}    
-{% endhighlight %}  
-删除一个source    
-{% highlight ruby %}   
-  gem sources -r #{url}      
+* 显示当前使用的sources       
+{% highlight ruby %}
+gem sources    
 {% endhighlight %}
-
-更新source cache  
-{% highlight ruby %} 
-  gem sources -u
+* 添加一个source    
+{% highlight ruby %}
+gem sources -a #{url}    
+{% endhighlight %}  
+* 删除一个source    
+{% highlight ruby %}
+gem sources -r #{url}      
+{% endhighlight %}
+* 更新source cache  
+{% highlight ruby %}
+gem sources -u
 {% endhighlight %} 
-
-从固定地址安装gem   
-{% highlight ruby %} 
-  gem install bundler -p https://ruby.taobao.org/
+* 从固定地址安装gem   
+{% highlight ruby %}
+gem install bundler -p https://ruby.taobao.org/
 {% endhighlight %}  
