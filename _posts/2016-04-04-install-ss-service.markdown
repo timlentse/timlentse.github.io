@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "VPS搭建shadowsocks服务以及配置shadowsocks多用户"
-date: 2016-04-04 15:02
+date: "2016-04-04"
 ---
 介绍在VPS中（虚拟主机）搭建shadowsocks服务，从而实现科学上网，配置多个shadowsocks用户实现多用户共享。
 

@@ -16,13 +16,13 @@
 <meta name="keywords" content="mysql, ruby, nginx, ssh" />
 
 
-<meta name="description" content="介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目,实现zero down time restart
+<meta name="description" content="介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目, 实现zero down time restart
 
 ">
-<meta property="og:description" content="介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目,实现zero down time restart
+<meta property="og:description" content="介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目, 实现zero down time restart
 
 " />
-<meta name="twitter:description" content="介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目,实现zero down time restart
+<meta name="twitter:description" content="介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目, 实现zero down time restart
 
 " />
 <meta property="og:type" content="article" />
@@ -71,21 +71,23 @@
 	</header>
 	<section>
 		
-		<p>介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目,实现zero down time restart</p>
+		<p>介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目, 实现zero down time restart</p>
 
-<p>###关于capistrano
-  capistrano 是一款能完成自动化部署工作的工具，它能把代码部署到远程服务器上的同时可以执行一些预定义的任务，这些任务可以是capistrano的buildin tasks 也可以是用户自定义的一些任务程序（比如<code class="highlighter-rouge">部署完重启服务器</code>)
+<h3 id="capistrano">关于capistrano</h3>
+<p>capistrano 是一款能完成自动化部署工作的工具，它能把代码部署到远程服务器上的同时可以执行一些预定义的任务，这些任务可以是capistrano的buildin tasks 也可以是用户自定义的一些任务程序（比如<code class="highlighter-rouge">部署完重启服务器</code>)
 本文介绍如何使用capistrano部署一个unicor+nginx+rails的项目,并且实现unicorn的zero down time restart.</p>
 
-<p>###假设你已经。。。
-* 有一个rails项目(并且已经被版本控制工具管理起来(git svn))
-* 已经安装capistrano依赖</p>
+<h3 id="section">假设你已经。。。</h3>
+<ul>
+  <li>有一个rails项目(并且已经被版本控制工具管理起来(git/svn))</li>
+  <li>已经安装capistrano依赖</li>
+</ul>
 
-<p>###在项目根目录执行，生成config文件夹</p>
+<h3 id="config">在项目根目录执行，生成config文件夹</h3>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="err">$</span> <span class="n">cap</span> <span class="n">install</span></code></pre></figure>
 
-<p>###config/unicron.rb 文件的配置</p>
+<h3 id="configunicronrb-">config/unicron.rb 文件的配置</h3>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Basic variables</span>
 <span class="n">rails_root</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">dirname</span><span class="p">(</span><span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="s2">"../"</span><span class="p">,</span><span class="kp">__FILE__</span><span class="p">))</span>
@@ -141,7 +143,7 @@
   <span class="c1"># on demand, so the master never opens a socket</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>###config/unicorn.init.sh 脚本的配置(用于启动、重启、停止unicorn服务器)</p>
+<h3 id="configunicorninitsh-unicorn">config/unicorn.init.sh 脚本的配置(用于启动、重启、停止unicorn服务器)</h3>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#!/bin/sh</span>
 
@@ -228,7 +230,7 @@
 <span class="p">;;</span>
   <span class="n">esac</span></code></pre></figure>
 
-<p>###config/deploy.rb 的配置</p>
+<h3 id="configdeployrb-">config/deploy.rb 的配置</h3>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">lock</span> <span class="s1">'3.4.0'</span>
 
@@ -253,8 +255,8 @@
   <span class="k">end</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>###开始部署你的应用
-在项目的根目录下执行</p>
+<h3 id="section-1">开始部署你的应用</h3>
+<p>在项目的根目录下执行</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="err">$</span> <span class="n">cap</span> <span class="n">production</span> <span class="n">deploy</span></code></pre></figure>
 

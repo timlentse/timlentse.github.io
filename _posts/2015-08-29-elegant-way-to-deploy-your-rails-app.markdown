@@ -3,22 +3,22 @@ layout: post
 title: "Elegant way to deploy your rails app"
 date: 2015-08-29
 ---
-介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目,实现zero down time restart
+介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目, 实现zero down time restart
 
-###关于capistrano
+### 关于capistrano
   capistrano 是一款能完成自动化部署工作的工具，它能把代码部署到远程服务器上的同时可以执行一些预定义的任务，这些任务可以是capistrano的buildin tasks 也可以是用户自定义的一些任务程序（比如`部署完重启服务器`)
 本文介绍如何使用capistrano部署一个unicor+nginx+rails的项目,并且实现unicorn的zero down time restart.
 
-###假设你已经。。。
-* 有一个rails项目(并且已经被版本控制工具管理起来(git svn))
+### 假设你已经。。。
+* 有一个rails项目(并且已经被版本控制工具管理起来(git/svn))
 * 已经安装capistrano依赖
   
-###在项目根目录执行，生成config文件夹
+### 在项目根目录执行，生成config文件夹
 {% highlight ruby %}
 $ cap install
 {% endhighlight %}
 
-###config/unicron.rb 文件的配置
+### config/unicron.rb 文件的配置
 
 {% highlight ruby %}
 # Basic variables
@@ -77,7 +77,7 @@ end
 
 {% endhighlight %}
 
-###config/unicorn.init.sh 脚本的配置(用于启动、重启、停止unicorn服务器)
+### config/unicorn.init.sh 脚本的配置(用于启动、重启、停止unicorn服务器)
 
 {% highlight ruby%}
 #!/bin/sh
@@ -166,7 +166,7 @@ reopen-logs)
   esac
 {% endhighlight %}
 
-###config/deploy.rb 的配置
+### config/deploy.rb 的配置
 
 {% highlight ruby %}
 
@@ -196,7 +196,7 @@ end
 {% endhighlight%}
 
 
-###开始部署你的应用
+### 开始部署你的应用
 在项目的根目录下执行
 {% highlight ruby %}
 $ cap production deploy

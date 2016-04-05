@@ -5,8 +5,8 @@
     <description>Put website description for your home page. (about 50 words or more)</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 04 Apr 2016 17:13:50 +0800</pubDate>
-    <lastBuildDate>Mon, 04 Apr 2016 17:13:50 +0800</lastBuildDate>
+    <pubDate>Tue, 05 Apr 2016 10:31:13 +0800</pubDate>
+    <lastBuildDate>Tue, 05 Apr 2016 10:31:13 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -81,7 +81,7 @@
   &lt;li&gt;如何使用客户端懒得啰嗦&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Mon, 04 Apr 2016 15:02:00 +0800</pubDate>
+        <pubDate>Mon, 04 Apr 2016 00:00:00 +0800</pubDate>
         <link>/2016/04/04/install-ss-service.html</link>
         <guid isPermaLink="true">/2016/04/04/install-ss-service.html</guid>
         
@@ -380,21 +380,23 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
     
       <item>
         <title>Elegant way to deploy your rails app</title>
-        <description>&lt;p&gt;介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目,实现zero down time restart&lt;/p&gt;
+        <description>&lt;p&gt;介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目, 实现zero down time restart&lt;/p&gt;
 
-&lt;p&gt;###关于capistrano
-  capistrano 是一款能完成自动化部署工作的工具，它能把代码部署到远程服务器上的同时可以执行一些预定义的任务，这些任务可以是capistrano的buildin tasks 也可以是用户自定义的一些任务程序（比如&lt;code class=&quot;highlighter-rouge&quot;&gt;部署完重启服务器&lt;/code&gt;)
+&lt;h3 id=&quot;capistrano&quot;&gt;关于capistrano&lt;/h3&gt;
+&lt;p&gt;capistrano 是一款能完成自动化部署工作的工具，它能把代码部署到远程服务器上的同时可以执行一些预定义的任务，这些任务可以是capistrano的buildin tasks 也可以是用户自定义的一些任务程序（比如&lt;code class=&quot;highlighter-rouge&quot;&gt;部署完重启服务器&lt;/code&gt;)
 本文介绍如何使用capistrano部署一个unicor+nginx+rails的项目,并且实现unicorn的zero down time restart.&lt;/p&gt;
 
-&lt;p&gt;###假设你已经。。。
-* 有一个rails项目(并且已经被版本控制工具管理起来(git svn))
-* 已经安装capistrano依赖&lt;/p&gt;
+&lt;h3 id=&quot;section&quot;&gt;假设你已经。。。&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;有一个rails项目(并且已经被版本控制工具管理起来(git/svn))&lt;/li&gt;
+  &lt;li&gt;已经安装capistrano依赖&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;###在项目根目录执行，生成config文件夹&lt;/p&gt;
+&lt;h3 id=&quot;config&quot;&gt;在项目根目录执行，生成config文件夹&lt;/h3&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;###config/unicron.rb 文件的配置&lt;/p&gt;
+&lt;h3 id=&quot;configunicronrb-&quot;&gt;config/unicron.rb 文件的配置&lt;/h3&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Basic variables&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;../&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;__FILE__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
@@ -450,7 +452,7 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
   &lt;span class=&quot;c1&quot;&gt;# on demand, so the master never opens a socket&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;###config/unicorn.init.sh 脚本的配置(用于启动、重启、停止unicorn服务器)&lt;/p&gt;
+&lt;h3 id=&quot;configunicorninitsh-unicorn&quot;&gt;config/unicorn.init.sh 脚本的配置(用于启动、重启、停止unicorn服务器)&lt;/h3&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#!/bin/sh&lt;/span&gt;
 
@@ -537,7 +539,7 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;esac&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;###config/deploy.rb 的配置&lt;/p&gt;
+&lt;h3 id=&quot;configdeployrb-&quot;&gt;config/deploy.rb 的配置&lt;/h3&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;3.4.0&#39;&lt;/span&gt;
 
@@ -562,8 +564,8 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;###开始部署你的应用
-在项目的根目录下执行&lt;/p&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;开始部署你的应用&lt;/h3&gt;
+&lt;p&gt;在项目的根目录下执行&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;production&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deploy&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
