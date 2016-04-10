@@ -5,8 +5,8 @@
     <description>Put website description for your home page. (about 50 words or more)</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 05 Apr 2016 10:31:13 +0800</pubDate>
-    <lastBuildDate>Tue, 05 Apr 2016 10:31:13 +0800</lastBuildDate>
+    <pubDate>Sun, 10 Apr 2016 14:22:44 +0800</pubDate>
+    <lastBuildDate>Sun, 10 Apr 2016 14:22:44 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -289,8 +289,8 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
       &lt;td&gt;Enables use of CREATE TABLE&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;CREATE&lt;/td&gt;
-      &lt;td&gt;TEMPORARY TABLES Enables use of CREATE TEMPORARY TABLE&lt;/td&gt;
+      &lt;td&gt;CREATE TEMPORARY TABLES&lt;/td&gt;
+      &lt;td&gt;Enables use of CREATE TEMPORARY TABLE&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;DELETE&lt;/td&gt;

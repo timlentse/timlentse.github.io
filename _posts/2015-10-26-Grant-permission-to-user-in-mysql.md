@@ -61,7 +61,7 @@ mysql> FLUSH PRIVILEGES;
 | ALL PRIVILEGES     | Sets all simple privileges except GRANT OPTION                                                                                                                                |
 | ALTER              | Enables use of ALTER TABLE                                                                                                                                                    |
 | CREATE             | Enables use of CREATE TABLE                                                                                                                                                   |
-| CREATE             | TEMPORARY TABLES Enables use of CREATE TEMPORARY TABLE                                                                                                                        |
+| CREATE TEMPORARY TABLES              | Enables use of CREATE TEMPORARY TABLE                                                                                                                        |
 | DELETE             | Enables use of DELETE                                                                                                                                                         |
 | DROP               | Enables use of DROP TABLE                                                                                                                                                     |
 | EXECUTE            | Not implemented                                                                                                                                                               |

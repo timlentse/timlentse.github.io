@@ -9,7 +9,8 @@
 @import 'monokai';
 
 html, body{
-  background-color: #eee;
+  background-color: #fdfdfd;
+  font-family:arial,Verdana, Geneva, Helvetica;
 }
 body{
   text-align: left;
@@ -198,11 +199,10 @@ a {
 .unit.posts, .posts{
   padding: 0;
   h2{
-    font-size: 2em;
+    font-size: 1.2em;
     margin: 0.2em 0 0.2em 0;
     line-height: 1.1em;
     a{
-      color: #0B5485;
       &:hover{
         color: #149797;
         text-decoration: none;
@@ -215,17 +215,18 @@ a {
   margin-bottom: 1.5em;
   padding: $single-post-padding;
   padding-left: $single-post-padding*2;
-  background-color: #ffffff;
-  -webkit-box-shadow: 0px 1px 2px #B1B1B1;
-  box-shadow: 0px 1px 2px #B1B1B1;
-  border-radius: 3px;
+  // background-color: #ffffff;
+  // -webkit-box-shadow: 0px 1px 2px #B1B1B1;
+  // box-shadow: 0px 1px 2px #B1B1B1;
+  // border-radius: 3px;
   transition: all 0.2s;
-  border: 1px solid transparent;
+  // border: 1px solid transparent;
 
   .description{
     margin: 0px;
     padding: 0.5em 0em;
-    font-size: 1.1em;
+    font-size: 1.0em;
+    color:#666;
     border-top: 1px solid #ccc;
   }
 }
@@ -243,7 +244,6 @@ a {
 code{
   background-color: #ccc;
   color: #000;
-  padding: 3px 3px;
   word-break: break-all;
 }
 
@@ -473,5 +473,11 @@ article{
   }
 }
 figure{
-margin:0px 0px;  
+  margin:0px 0px;  
+}
+.footer{
+  color:#999;
+}
+tr>td:nth-child(2) {
+  color:#999;
 }
