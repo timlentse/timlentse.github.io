@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:og="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>使用df, du查看磁盘空间使用情况的区别 | Timlentse</title>
+        
+        <meta name="author" content="timlentse">
+        
+        <meta name="title" content="使用df, du查看磁盘空间使用情况的区别" >
+        <link rel="icon" type="image/ico" href="/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="使用df, du查看磁盘空间使用情况的区别" />
+<meta name="twitter:title" content="使用df, du查看磁盘空间使用情况的区别" />
+
+<meta name="keywords" content="mysql, ruby, nginx, ssh" />
+
+
+<meta name="description" content="剖析使用df,du查看磁盘空间使用情况的区别。
+
+">
+<meta property="og:description" content="剖析使用df,du查看磁盘空间使用情况的区别。
+
+" />
+<meta name="twitter:description" content="剖析使用df,du查看磁盘空间使用情况的区别。
+
+" />
+<meta property="og:type" content="article" />
+<link rel="canonical" href="https://timlentse.github.io/2016/06/30/difference-between-df-and-du.html" />
+
+<meta property="og:image" content="https://timlentse.github.io/sharer.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://timlentse.github.io/sharer.png" />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    </head>
+    <body class="wrap">
+        <!--[if lt IE 8]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <header>
+    <nav class="main-nav">
+        <a href="#" class="opener show-on-mobiles">...</a>
+        <div class="clear-opener show-on-mobiles"></div>
+        <div class="grid">
+            <ul>
+                <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="https://github.com/timlentse"><i class="fa fa-github"></i>Github</a></li>
+                <li><a href="https://twitter.com/timlentse"><i class="fa fa-twitter"></i>Twitter</a></li>
+                <li><a href="https://www.facebook.com/timlentse"><i class="fa fa-facebook"></i>Facebook</a></li>
+                <li><a href="/about.html"><i class="fa fa-info-circle"></i>About</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+        <section class="content">
+            <div id="home" class="grid post">
+<div class="unit whole">
+<article>
+	<header>
+		<h1>使用df, du查看磁盘空间使用情况的区别</h1>
+		<p class="meta">
+			<time class="timeago postlist-meta" datetime="2016-06-30"><i class="fa fa-calendar"></i>June 30, 2016</time>
+			<a class="sharer facebook" href="#" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+window.location.href,'_blank','height=300,width=600');return false;"><i class="fa fa-facebook"></i></a>
+			
+				<a class="sharer twitter" href="#" target="_blank" onclick="window.open('https://twitter.com/share?url='+window.location.href,'_blank','height=300,width=600');return false;"><i class="fa fa-twitter"></i></a>
+			
+		</p>
+	</header>
+	<section>
+		
+		<p>剖析使用df,du查看磁盘空间使用情况的区别。</p>
+
+<h3 id="why-this-blog">1. Why this blog</h3>
+<p>最近在工作中遇到一个问题，就是公司线上服务器磁盘空间满了，导致nginx无法继续写入日志。于是尝试手动清空一些不需要的文件以腾出磁盘空间，后来发现事情远远不是这么简单，其他不需要的文件和历史日志文件加起来不过3-4G左右，不可能是导致磁盘满的罪魁祸首，于是想到 <code class="highlighter-rouge">du</code> 来查看究竟是那些文件占满了磁盘。</p>
+
+<h3 id="du--df">2. 奇怪的 <code class="highlighter-rouge">du</code> 跟 <code class="highlighter-rouge">df</code></h3>
+
+<p>使用 <code class="highlighter-rouge">du</code> 查看根目录下每一个文件夹占用的空间</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>du / --max-depth<span class="o">=</span>1 -h</code></pre></figure>
+
+<p>结果输出:</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">0    /sys
+806M    /var
+20K    /data
+8.0K    /opt
+7.6M    /bin
+42M    /boot
+26M    /etc
+12K    /tmp
+.......
+.......
+3.5G    /home
+4.0K    /media
+172K    /dev
+
+4.0K    /selinux
+1.3G    /usr
+4.0K    /srv
+21M    /lib64
+14M    /sbin
+6.4G    /</code></pre></figure>
+
+<p>使用 <code class="highlighter-rouge">df</code> 查看磁盘剩余情况</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>df -h</code></pre></figure>
+
+<p>结果是：</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">Filesystem            Size  Used Avail Use% Mounted on
+/dev/vda2              40G  39.7G 300M  100% /
+tmpfs                 1.9G     0  1.9G   0% /dev/shm
+/dev/vda1             504M   58M  421M  13% /boot
+/dev/vda5             1.5G   35M  1.4G   3% /data</code></pre></figure>
+
+<p>使用 <code class="highlighter-rouge">du</code> 显示总共使用了 6.4G ,但是 <code class="highlighter-rouge">df</code> 显示却是磁盘已经满了,为什么会显示不同的结果？Google 一下 在<a href="http://askubuntu.com/questions/280342/why-do-df-and-du-commands-show-different-disk-usage">这里</a>找到答案。</p>
+
+<h3 id="df--du-">3. <code class="highlighter-rouge">df</code> 跟 <code class="highlighter-rouge">du</code> 的区别</h3>
+<ul>
+  <li>df 报告整个文件系统的使用情况，针对的是磁盘</li>
+  <li>du 计算文件，文件夹的占用的空间大小</li>
+</ul>
+
+<p>那么为什么 <code class="highlighter-rouge">df</code> 跟 <code class="highlighter-rouge">du /</code> 相差这么大呢？</p>
+
+<p>原因在于不正当删除文件。当删除一个正在被其他进程使用的文件，其实这个文件描述符并没有被系统释放，也就是说这个文件占用的磁盘空间并没有被释放，而且进程仍然会不断往这个文件里面写入东西，导致占用的磁盘空间会越来越大，从而占满这个磁盘。但是由于这个文件的硬链接被删除了，<code class="highlighter-rouge">du</code> 是没法统计到这类型文件的大小的(因为没法找到文件名)，从而导致上面的诡异事件。</p>
+
+<h3 id="section">4. 列出被删除但是仍然被使用的文件</h3>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>lsof | grep <span class="s1">'(deleted)'</span></code></pre></figure>
+
+<p>结果我的机器显示一大堆：</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">ruby       5132        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby       5132        work    2w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby       5132        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      14597        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      14597        work    2w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      14597        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      14646        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      14646        work    2w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      14646        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      15367        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      15367        work    2w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      15367        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      15530        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      15530        work    2w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log <span class="o">(</span>deleted<span class="o">)</span>
+ruby      15530        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log <span class="o">(</span>deleted<span class="o">)</span></code></pre></figure>
+
+<p>上面显示很多虽然被删除但仍然被进程使用的文件</p>
+
+<p>如果需要释放这些文件，需要把进程上面的进程关闭，如：</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span><span class="nb">kill</span> -9 5132</code></pre></figure>
+
+<p>或者使用awk把所有相关进程关闭</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">lsof | grep <span class="s1">'(deleted)'</span> | awk <span class="s1">'{print $2}'</span> | xargs <span class="nb">kill</span> -9</code></pre></figure>
+
+
+	</section>
+	
+</article>
+</div>
+</div>
+        </section>
+        <footer class="grid site-footer">
+            <p><span style="padding:0px 10px 0px 10px"><a href="http://www.tan90.cn">酒店预订</a></span> | <span style="padding:0px 10px 0px 10px"><a href="http://www.timlentse.com">民宿预订</a></span></p>
+            <p class="footer"><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme &copy; timelntse.github.io.</small></p>
+        </footer>
+        
+        <script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-67464730-1', 'auto');
+	ga('require', 'displayfeatures');
+	ga('send', 'pageview');
+</script>
+
+        
+        <script src="/js/script.js"></script>
+    </body>
+</html>
