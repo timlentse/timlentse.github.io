@@ -5,9 +5,329 @@
     <description>Put website description for your home page. (about 50 words or more)</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 Jul 2016 09:56:21 +0800</pubDate>
-    <lastBuildDate>Fri, 01 Jul 2016 09:56:21 +0800</lastBuildDate>
+    <pubDate>Sun, 17 Jul 2016 15:06:11 +0800</pubDate>
+    <lastBuildDate>Sun, 17 Jul 2016 15:06:11 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>我的vimrc和zshrc配置</title>
+        <description>&lt;p&gt;Vim跟zsh(配合oh-my-zsh)是*unix生态下的两大神器。如果懂得把vim跟zsh配置好，不仅能打造一个舒适的开发环境，而且大大提高开发效率。&lt;/p&gt;
+
+&lt;h3 id=&quot;vimrc&quot;&gt;Vimrc&lt;/h3&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; Vundle automatical installation&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; iCanHazVundle&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; vundle_readme&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;expand&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;~/.vim/bundle/Vundle.vim/README.md&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!&lt;/span&gt;filereadable&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;vundle_readme&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  echo &lt;span class=&quot;s2&quot;&gt;&quot;Installing Vundle for current user&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;silent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!&lt;/span&gt;mkdir &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/.vim/&lt;/span&gt;bundle
+  &lt;span class=&quot;k&quot;&gt;silent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!&lt;/span&gt;git clone https&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;//&lt;/span&gt;github&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/gmarik/&lt;/span&gt;Vundle&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;git &lt;span class=&quot;p&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/.vim/&lt;/span&gt;bundle/Vundle&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; iCanHazVundle&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;endif&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Vim basic setting&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Use dark background and enable syntax highlight&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; nocompatible
+  syntax enable
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; background&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;dark&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Highlight match case&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; showmatch
+
+  &lt;span class=&quot;c&quot;&gt;&quot;command autocomplete suggestions&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; wildmenu
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; wildmode&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;longest&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;full&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;full
+
+  &lt;span class=&quot;c&quot;&gt;&quot;scrolling&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; scrolloff&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; backspace&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;indent&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;eol&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;start&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; showcmd		  &quot; Show &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;partial&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; command &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; status line&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; showmatch		&quot; Show matching brackets&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; ignorecase	&quot; Do case insensitive matching
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; smartcase		&quot; Do smart case matching
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; incsearch		&quot; Incremental search
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; autowrite		&quot; Automatically &lt;span class=&quot;k&quot;&gt;save&lt;/span&gt; before commands like &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;next and &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;make&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; hidden		  &quot; Hide &lt;span class=&quot;k&quot;&gt;buffers&lt;/span&gt; when they are abandoned
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;number&lt;/span&gt; 
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; formatoptions&lt;span class=&quot;p&quot;&gt;-=&lt;/span&gt;cro &quot; Disable continue comment
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Don&#39;t use .swp files, git commit a lot and log your changes&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; nobackup
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; noswapfile
+
+  &lt;span class=&quot;c&quot;&gt;&quot;Hightlight search&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; hlsearch
+
+  &lt;span class=&quot;c&quot;&gt;&quot; folding feature setting&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; foldmethod&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;marker
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; foldlevel&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; modelines&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Default indetation&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&quot; size of a hard tabstop&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; autoindent
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; tabstop&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&quot; Always uses spaces instead of tab characters&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; expandtab
+  &lt;span class=&quot;c&quot;&gt;&quot; size of an indent &quot; &lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; shiftwidth&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Indetation setting according filetype&lt;/span&gt;
+  autocmd &lt;span class=&quot;nb&quot;&gt;FileType&lt;/span&gt; php &lt;span class=&quot;k&quot;&gt;setlocal&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; expandtab
+  autocmd &lt;span class=&quot;nb&quot;&gt;FileType&lt;/span&gt; html &lt;span class=&quot;k&quot;&gt;setlocal&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; expandtab
+  autocmd &lt;span class=&quot;nb&quot;&gt;FileType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ruby&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;setlocal&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; expandtab
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Source a global configuration file if available&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; filereadable&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/etc/vim/vimrc.local&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  source &lt;span class=&quot;sr&quot;&gt;/etc/&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;/vimrc&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;local
+  &lt;span class=&quot;k&quot;&gt;endif&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Vundle plugin management&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;filetype&lt;/span&gt; off                  &quot; required
+
+  &lt;span class=&quot;c&quot;&gt;&quot; set the runtime path to include Vundle and initialize&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; rtp&lt;span class=&quot;p&quot;&gt;+=~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/.vim/&lt;/span&gt;bundle/Vundle&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; vundle#begin&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&quot; alternatively, pass a path where Vundle should install plugins&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&quot;call vundle#begin(&#39;~/some/path/here&#39;)&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; let Vundle manage Vundle, required and keep Plugin commands between vundle#begin/end.&lt;/span&gt;
+
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;gmarik/Vundle.vim&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;rstacruz/sparkup&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;rtp&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;vim/&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;paradigm/vim-multicursor&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tpope/vim-fugitive&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;Valloric/YouCompleteMe&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;scrooloose/nerdtree&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;bling/vim-airline&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;ryanoasis/vim-webdevicons&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;ervandew/supertab&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;vim-ruby/vim-ruby&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tpope/vim-endwise&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;m2ym/rsense&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tpope/vim-repeat&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tpope/vim-rails&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tomtom/tcomment_vim&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;MarcWeber/vim-addon-mw-utils&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tomtom/tlib_vim&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;garbas/vim-snipmate&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;ecomba/vim-ruby-refactoring&#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; snippets&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;honza/vim-snippets&#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Fast navigate file tool&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;kien/ctrlp.vim&#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot;auto saves file, quite useful when I choose not to use swap files&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;vim-scripts/vim-auto-save&#39;&lt;/span&gt;
+
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;altercation/vim-colors-solarized&#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot;Vim substitute preview tool&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;osyo-manga/vim-over&#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot;Ack &lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;mileszs/ack.vim&#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot;easymotion&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;easymotion/vim-easymotion&#39;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&quot; Autoclose&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;jiangmiao/auto-pairs&#39;&lt;/span&gt;
+
+  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;Chiel92/vim-autoformat&#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; All of your Plugins must be added before the following line&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; vundle#&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;            &quot; required
+
+  &lt;span class=&quot;c&quot;&gt;&quot; File level setting &lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;filetype&lt;/span&gt; plugin indent &lt;span class=&quot;k&quot;&gt;on&lt;/span&gt;    &quot; required
+  &lt;span class=&quot;c&quot;&gt;&quot;open a NERDTree automatically when vim starts up if no files were specified?&lt;/span&gt;
+  autocmd &lt;span class=&quot;nb&quot;&gt;StdinReadPre&lt;/span&gt; * &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;s:std_in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+  autocmd &lt;span class=&quot;nb&quot;&gt;VimEnter&lt;/span&gt; * &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; argc&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &amp;amp;&amp;amp; &lt;span class=&quot;p&quot;&gt;!&lt;/span&gt;exists&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;s:std_in&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; NERDTree &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;endif&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&quot; File type icon&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; guifont&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;Literation\ Mono\ Powerline\ Plus\ Nerd\ File\ Types&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;h11
+  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;g:snipMate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;g:snipMate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;scope_aliases &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;g:snipMate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;scope_aliases&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;ruby&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;ruby,rails&#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot;Mapping Key&lt;/span&gt;
+  map &lt;span class=&quot;k&quot;&gt;t&lt;/span&gt; ^
+  nnoremap &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; $
+  nnoremap rf gg^vG^&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;
+  map ; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  map &lt;span class=&quot;k&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;CR&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+  map cm &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; nonumber&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;CR&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+  nnoremap fp &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;OverCommandLine&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;CR&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;%s/
+  map qi &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;!&lt;/span&gt;
+  map &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;C&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; ggVG
+  map &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;C&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; system&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;pbcopy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; getreg&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;\&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&amp;lt;&lt;/span&gt;CR&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+  map vp &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vsplit&lt;/span&gt;
+
+  &lt;span class=&quot;c&quot;&gt;&quot; For rails-vim &lt;/span&gt;
+  map &lt;span class=&quot;k&quot;&gt;em&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;Emodel
+  map ev &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;Eview
+  map &lt;span class=&quot;k&quot;&gt;ec&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;Econtroller
+  map ej &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;Ejavascript
+  map es &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;Estylesheet
+  map ei &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;Eimages
+  map cap ca&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  map caq ca&quot;
+  map cip ci&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  map ciq ci&quot;
+  map ct &lt;span class=&quot;k&quot;&gt;c&lt;/span&gt;^
+  map &lt;span class=&quot;k&quot;&gt;cb&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;c&lt;/span&gt;$
+  nnoremap dt &lt;span class=&quot;k&quot;&gt;d&lt;/span&gt;^
+  nnoremap db &lt;span class=&quot;k&quot;&gt;d&lt;/span&gt;$
+  nnoremap &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;Space&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;C&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; 
+  nnoremap fs &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;CtrlPMRU&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;CR&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+  nnoremap &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;leader&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;NERDTreeToggle&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;CR&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+  nmap s &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;Plug&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;easymotion&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;s2&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;g:EasyMotion_smartcase&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+  imap &lt;span class=&quot;k&quot;&gt;pp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;esc&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;Plug&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;snipMateNextOrTrigger
+  &lt;span class=&quot;k&quot;&gt;smap&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;pp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;Plug&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;snipMateNextOrTrigger
+  nnoremap &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt; %
+  nnoremap &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; za
+  nnoremap &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; zO
+  nnoremap &lt;span class=&quot;p&quot;&gt;,,&lt;/span&gt; zC
+
+  &lt;span class=&quot;c&quot;&gt;&quot; Set vim as the default editor for crontab &lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; $VIM_CRONTAB &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; nobackup
+    &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; nowritebackup
+  &lt;span class=&quot;k&quot;&gt;endif&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;zshrc&quot;&gt;Zshrc&lt;/h3&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-zsh&quot; data-lang=&quot;zsh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ZSH variable setting&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Set name of the theme to load.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ZSH_THEME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;powerline&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;POWERLINE_DEFAULT_USER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$USER&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Use case-sensitive completion.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;CASE_SENSITIVE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Update every two week&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;UPDATE_ZSH_DAYS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;14
+
+&lt;span class=&quot;c&quot;&gt;# Uncomment the following line to enable command auto-correction.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ENABLE_CORRECTION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Uncomment the following line to display red dots whilst waiting for completion.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;COMPLETION_WAITING_DOTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;plugins&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;git bundler osx rake rails ruby fasd z&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# User configuration&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Coustomize highlight in zsh&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$TERM&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; xterm &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TERM&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;xterm-256color; &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Environment variable setting {&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Path to your oh-my-zsh installation.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ZSH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;~/.oh-my-zsh
+
+&lt;span class=&quot;c&quot;&gt;# PATH ENV&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Set language environment&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;LANG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;en_US.UTF-8
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;LC_CTYPE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;en_US.UTF-8&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Set Vim as default editor&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;EDITOR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vim
+
+&lt;span class=&quot;c&quot;&gt;# ssh&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SSH_KEY_PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;~/.ssh&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ZSH&lt;/span&gt;/oh-my-zsh.sh
+
+&lt;span class=&quot;c&quot;&gt;# cd foo with `cd` &lt;/span&gt;
+setopt AUTO_CD
+
+&lt;span class=&quot;c&quot;&gt;# Set alias command shortcut {&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;gs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;git status&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;brew install&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bru&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;brew update&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;brd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;brew doctor&#39;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# for linux {&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;sai&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo apt-get install&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;syi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo yum install&#39;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# }&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vz&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;vi ~/.zshrc&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;vi ~/.vimrc&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo bundle install --verbose&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;gi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo gem install --verbose&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;gtr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;cd &quot;$(git rev-parse --show-toplevel)&quot; &#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;fuck&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vih&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo vi /etc/hosts&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;php-cli&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;php -a&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;tail -f&#39;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# }&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Command highlight for zsh {&lt;/span&gt;
+setopt extended_glob
+&lt;span class=&quot;nv&quot;&gt;TOKENS_FOLLOWED_BY_COMMANDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;|&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;||&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;;&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;&amp;amp;&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;&amp;amp;&amp;amp;&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;sudo&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;do&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;time&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;strace&#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+recolor-cmd&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;region_highlight&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=()&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;colorize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;start_pos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;arg &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(z)BUFFER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;((start_pos+=${#BUFFER[$start_pos+1,-1]}-${#${BUFFER[$start_pos+1,-1]## &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#}}))&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;end_pos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$start_pos&lt;/span&gt;+&lt;span class=&quot;k&quot;&gt;${#&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$colorize&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;colorize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;LC_ALL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;C &lt;span class=&quot;nb&quot;&gt;builtin type&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arg&lt;/span&gt; 2&amp;gt;/dev/null&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$res&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;reserved word&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=magenta,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;alias for&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=cyan,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;shell builtin&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=yellow,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;shell function&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=green,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$arg&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; is&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;sudo&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=red,bold&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=blue,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                   &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;none,bold&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;esac&lt;/span&gt;
+region_highlight+&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$start_pos&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$end_pos&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$style&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TOKENS_FOLLOWED_BY_COMMANDS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[(r)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;//|/\|&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;:+yes&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;yes&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;colorize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;start_pos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$end_pos&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+check-cmd-self-insert&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; zle .self-insert &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; recolor-cmd &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+check-cmd-backward-delete-char&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; zle .backward-delete-char &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; recolor-cmd &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+zle -N self-insert check-cmd-self-insert
+zle -N backward-delete-char check-cmd-backward-delete-char
+
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;crontab&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;VIM_CRONTAB=true crontab&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# }&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;what-it-looks&quot;&gt;What it looks&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;in iterm2 (mac os x)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/shell.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;vim&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/vim.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 02 Jul 2016 00:00:00 +0800</pubDate>
+        <link>/2016/07/02/my-vimrc-and-zshrc.html</link>
+        <guid isPermaLink="true">/2016/07/02/my-vimrc-and-zshrc.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>使用df, du查看磁盘空间使用情况的区别</title>
@@ -758,55 +1078,6 @@ you how to achieve it&lt;/p&gt;
         <pubDate>Sat, 13 Jun 2015 18:00:00 +0800</pubDate>
         <link>/2015/06/13/active_record-connection-via-ssh.html</link>
         <guid isPermaLink="true">/2015/06/13/active_record-connection-via-ssh.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Bad ownership or modes for file authorized_keys</title>
-        <description>&lt;p&gt;It is a good thing to set ssh keys for the remote host. We can login a remote host via 
-public key we have set so that no need to enter password every time we try to connect remote
-server.&lt;/p&gt;
-
-&lt;h2 id=&quot;how-to-set-a-ssh-key&quot;&gt;How to set a ssh-key&lt;/h2&gt;
-&lt;p&gt;If you google for a bit , you will find some many tutorials about how to set ssh keys.
-A good article about that is &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;still-need-to-enter-password-even-though-ssh-key-was-set&quot;&gt;Still need to enter password even though ssh-key was set?&lt;/h2&gt;
-
-&lt;p&gt;In some case, though ssh-keys was properly set, we still need enter password as if ssh-key not existed.
-SSH has a verbose mode , just add the &lt;code class=&quot;highlighter-rouge&quot;&gt;-v&lt;/code&gt; option.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/screenshot/ssh_keys_error/verbose-ssh.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The above way seems told nothing, but &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /var/log/secure&lt;/code&gt; will give more useful information.
-In the terminal of remote host, type :&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/var/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;secure&lt;/span&gt;  &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;we found something as the following:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Apr&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;19&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;54&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;19&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iZ94z0jz2inZ&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sshd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5704&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Authentication&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;refused: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bad&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ownership&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modes&lt;/span&gt; 
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/home/&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ssh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;authorized_keys&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;For security reason, the mode of files under .ssh directorys is strictly set. SSH doesn’t like it if your home or ~/.ssh directories
-or ~./ssh/authorized_keys have group write permissions. Your home directory should be writable only by you, ~/.ssh should be 700, 
-and authorized_keys should be 600.&lt;/p&gt;
-
-&lt;p&gt;The following shot is the wrong mode:
-&lt;img src=&quot;/img/screenshot/ssh_keys_error/wrong_mode.png&quot; alt=&quot;alt&quot; /&gt; &lt;br /&gt;
-we can see that authorized_keys file has writable permissions for group, which is not allowed by ssh:&lt;/p&gt;
-
-&lt;p&gt;Change to right mode:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/screenshot/ssh_keys_error/right_mode.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now you can login you remote host without entering  passwd, enjoy!&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 19 Apr 2015 10:02:00 +0800</pubDate>
-        <link>/2015/04/19/SSH-Authentication-Refused-Bad-Ownership-or-Modes-for-Authorized_keys.html</link>
-        <guid isPermaLink="true">/2015/04/19/SSH-Authentication-Refused-Bad-Ownership-or-Modes-for-Authorized_keys.html</guid>
         
         
       </item>
