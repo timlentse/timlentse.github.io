@@ -5,9 +5,59 @@
     <description>Put website description for your home page. (about 50 words or more)</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Jul 2016 15:06:11 +0800</pubDate>
-    <lastBuildDate>Sun, 17 Jul 2016 15:06:11 +0800</lastBuildDate>
-    <generator>Jekyll v3.1.2</generator>
+    <pubDate>Mon, 19 Sep 2016 22:31:36 +0800</pubDate>
+    <lastBuildDate>Mon, 19 Sep 2016 22:31:36 +0800</lastBuildDate>
+    <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>使用SSH ProxyCommand 配置跳板机登录生产环境机器</title>
+        <description>&lt;p&gt;在公司开发中，为了安全起见，生产环境跟开发环境是相互隔离开来的。也就是说在开发环境网络中无法直接ssh登录到生产环境的机器，
+如果需要登录生产环境的机器，通常会需要借助跳板机，先登录到跳板机，然后通过跳板机登录到生产环境。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;大致的过程如下面的图示：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;+-------------+       +----------+      +--------------+
+| 开发环境机器  | &amp;lt;---&amp;gt; |   跳板机  | &amp;lt;--&amp;gt; | 生产环境机器   |
++-------------+       +----------+      +--------------+&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;换成shell 命令就是&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@jumphost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-----&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@production_host&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;两步操作变一步操作&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;正如上面说到的，如果你需要登录生产环境的机器，你需要输入两个命令
+。那能不能一个命令就搞定呢？答案是肯定的。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;ssh -tt foo@jumphost ssh -tt bar@production_host&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;借助&lt;code class=&quot;highlighter-rouge&quot;&gt; ProxyCommand&lt;/code&gt; 把配置写到config文件里面&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如果我们把配置写到 ~/.ssh/config 文件里面，这样就更加减轻我们敲键盘的工作了&lt;/p&gt;
+
+&lt;p&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/config&lt;/code&gt; 文件里面加上：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;Host production
+hostname &lt;span class=&quot;m&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;168&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;100&lt;/span&gt;
+user bar
+ProxyCommand ssh foo@jumphost &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;W %&lt;span class=&quot;k&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;%&lt;span class=&quot;k&quot;&gt;p&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;加入之后，直接执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh producton&lt;/code&gt; 就可以登录到生产环境。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 19 Sep 2016 00:00:00 +0800</pubDate>
+        <link>/2016/09/19/SSH-ProxyCommand-%E9%85%8D%E7%BD%AE%E8%B7%B3%E6%9D%BF%E6%9C%BA%E7%99%BB%E5%BD%95%E7%94%9F%E6%88%90%E7%8E%AF%E5%A2%83%E6%9C%BA%E5%99%A8.html</link>
+        <guid isPermaLink="true">/2016/09/19/SSH-ProxyCommand-%E9%85%8D%E7%BD%AE%E8%B7%B3%E6%9D%BF%E6%9C%BA%E7%99%BB%E5%BD%95%E7%94%9F%E6%88%90%E7%8E%AF%E5%A2%83%E6%9C%BA%E5%99%A8.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>我的vimrc和zshrc配置</title>
@@ -17,7 +67,7 @@
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; Vundle automatical installation&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; iCanHazVundle&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; vundle_readme&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;expand&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;~/.vim/bundle/Vundle.vim/README.md&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; vundle_readme&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;expand&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'~/.vim/bundle/Vundle.vim/README.md'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!&lt;/span&gt;filereadable&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;vundle_readme&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   echo &lt;span class=&quot;s2&quot;&gt;&quot;Installing Vundle for current user&quot;&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;silent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!&lt;/span&gt;mkdir &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/.vim/&lt;/span&gt;bundle
@@ -53,7 +103,7 @@
   &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;number&lt;/span&gt; 
   &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; formatoptions&lt;span class=&quot;p&quot;&gt;-=&lt;/span&gt;cro &quot; Disable continue comment
 
-  &lt;span class=&quot;c&quot;&gt;&quot; Don&#39;t use .swp files, git commit a lot and log your changes&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&quot; Don't use .swp files, git commit a lot and log your changes&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; nobackup
   &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; noswapfile
 
@@ -91,53 +141,53 @@
   &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; rtp&lt;span class=&quot;p&quot;&gt;+=~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/.vim/&lt;/span&gt;bundle/Vundle&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; vundle#begin&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
   &lt;span class=&quot;c&quot;&gt;&quot; alternatively, pass a path where Vundle should install plugins&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;&quot;call vundle#begin(&#39;~/some/path/here&#39;)&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&quot;call vundle#begin('~/some/path/here')&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;&quot; let Vundle manage Vundle, required and keep Plugin commands between vundle#begin/end.&lt;/span&gt;
 
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;gmarik/Vundle.vim&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;rstacruz/sparkup&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;rtp&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;vim/&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;paradigm/vim-multicursor&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tpope/vim-fugitive&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;Valloric/YouCompleteMe&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;scrooloose/nerdtree&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;bling/vim-airline&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;ryanoasis/vim-webdevicons&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;ervandew/supertab&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;vim-ruby/vim-ruby&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tpope/vim-endwise&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;m2ym/rsense&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tpope/vim-repeat&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tpope/vim-rails&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tomtom/tcomment_vim&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;MarcWeber/vim-addon-mw-utils&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;tomtom/tlib_vim&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;garbas/vim-snipmate&#39;&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;ecomba/vim-ruby-refactoring&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'gmarik/Vundle.vim'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'rstacruz/sparkup'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'rtp'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'vim/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'paradigm/vim-multicursor'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'tpope/vim-fugitive'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'Valloric/YouCompleteMe'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'scrooloose/nerdtree'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'bling/vim-airline'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'ryanoasis/vim-webdevicons'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'ervandew/supertab'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'vim-ruby/vim-ruby'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'tpope/vim-endwise'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'m2ym/rsense'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'tpope/vim-repeat'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'tpope/vim-rails'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'tomtom/tcomment_vim'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'MarcWeber/vim-addon-mw-utils'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'tomtom/tlib_vim'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'garbas/vim-snipmate'&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'ecomba/vim-ruby-refactoring'&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;&quot; snippets&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;honza/vim-snippets&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'honza/vim-snippets'&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;&quot; Fast navigate file tool&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;kien/ctrlp.vim&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'kien/ctrlp.vim'&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;&quot;auto saves file, quite useful when I choose not to use swap files&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;vim-scripts/vim-auto-save&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'vim-scripts/vim-auto-save'&lt;/span&gt;
 
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;altercation/vim-colors-solarized&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'altercation/vim-colors-solarized'&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;&quot;Vim substitute preview tool&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;osyo-manga/vim-over&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'osyo-manga/vim-over'&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;&quot;Ack &lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;mileszs/ack.vim&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'mileszs/ack.vim'&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;&quot;easymotion&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;easymotion/vim-easymotion&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'easymotion/vim-easymotion'&lt;/span&gt;
   &lt;span class=&quot;c&quot;&gt;&quot; Autoclose&lt;/span&gt;
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;jiangmiao/auto-pairs&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'jiangmiao/auto-pairs'&lt;/span&gt;
 
-  Plugin &lt;span class=&quot;s1&quot;&gt;&#39;Chiel92/vim-autoformat&#39;&lt;/span&gt;
+  Plugin &lt;span class=&quot;s1&quot;&gt;'Chiel92/vim-autoformat'&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;&quot; All of your Plugins must be added before the following line&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; vundle#&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;            &quot; required
@@ -151,7 +201,7 @@
   &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; guifont&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;Literation\ Mono\ Powerline\ Plus\ Nerd\ File\ Types&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;h11
   &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;g:snipMate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;g:snipMate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;scope_aliases &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;g:snipMate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;scope_aliases&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;ruby&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;ruby,rails&#39;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;g:snipMate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;scope_aliases&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'ruby'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ruby,rails'&lt;/span&gt;
 
   &lt;span class=&quot;c&quot;&gt;&quot;Mapping Key&lt;/span&gt;
   map &lt;span class=&quot;k&quot;&gt;t&lt;/span&gt; ^
@@ -251,28 +301,28 @@
 setopt AUTO_CD
 
 &lt;span class=&quot;c&quot;&gt;# Set alias command shortcut {&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;gs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;git status&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;brew install&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bru&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;brew update&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;brd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;brew doctor&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;gs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'git status'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'brew install'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bru&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'brew update'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;brd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'brew doctor'&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# for linux {&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;sai&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo apt-get install&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;syi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo yum install&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;sai&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sudo apt-get install'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;syi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sudo yum install'&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# }&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vz&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;vi ~/.zshrc&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;vi ~/.vimrc&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo bundle install --verbose&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;gi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo gem install --verbose&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;gtr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;cd &quot;$(git rev-parse --show-toplevel)&quot; &#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;fuck&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vih&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sudo vi /etc/hosts&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;php-cli&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;php -a&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;tail -f&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vz&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'vi ~/.zshrc'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'vi ~/.vimrc'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sudo bundle install --verbose'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;gi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sudo gem install --verbose'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;gtr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cd &quot;$(git rev-parse --show-toplevel)&quot; '&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;fuck&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vih&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sudo vi /etc/hosts'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;php-cli&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'php -a'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tail -f'&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# }&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# Command highlight for zsh {&lt;/span&gt;
 setopt extended_glob
-&lt;span class=&quot;nv&quot;&gt;TOKENS_FOLLOWED_BY_COMMANDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;|&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;||&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;;&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;&amp;amp;&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;&amp;amp;&amp;amp;&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;sudo&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;do&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;time&#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;strace&#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;TOKENS_FOLLOWED_BY_COMMANDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'|'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'||'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;';'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;amp;'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;amp;&amp;amp;'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sudo'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'do'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'time'&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'strace'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
 recolor-cmd&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;region_highlight&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=()&lt;/span&gt;
@@ -285,17 +335,17 @@ recolor-cmd&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;
 &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;colorize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false
 &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;LC_ALL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;C &lt;span class=&quot;nb&quot;&gt;builtin type&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arg&lt;/span&gt; 2&amp;gt;/dev/null&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$res&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;reserved word&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=magenta,bold&quot;&lt;/span&gt;;
-  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;alias for&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=cyan,bold&quot;&lt;/span&gt;;
-  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;shell builtin&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=yellow,bold&quot;&lt;/span&gt;;
-  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;shell function&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=green,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'reserved word'&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=magenta,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'alias for'&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;       &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=cyan,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'shell builtin'&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=yellow,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'shell function'&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=green,bold&quot;&lt;/span&gt;;
   &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$arg&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; is&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;sudo&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=red,bold&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=blue,bold&quot;&lt;/span&gt;;
-  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                   &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;none,bold&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sudo'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=red,bold&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fg=blue,bold&quot;&lt;/span&gt;;
+  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                   &lt;span class=&quot;nv&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'none,bold'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;esac&lt;/span&gt;
 region_highlight+&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$start_pos&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$end_pos&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$style&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TOKENS_FOLLOWED_BY_COMMANDS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[(r)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;//|/\|&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;:+yes&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;yes&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;colorize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+&lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TOKENS_FOLLOWED_BY_COMMANDS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[(r)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;//|/\|&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;:+yes&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'yes'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;colorize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
 &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;start_pos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$end_pos&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
@@ -391,7 +441,7 @@ tmpfs                 1.9G     0  1.9G   0% /dev/shm
 
 &lt;h3 id=&quot;section&quot;&gt;4. 列出被删除但是仍然被使用的文件&lt;/h3&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;lsof | grep &lt;span class=&quot;s1&quot;&gt;&#39;(deleted)&#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;lsof | grep &lt;span class=&quot;s1&quot;&gt;'(deleted)'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;结果我的机器显示一大堆：&lt;/p&gt;
 
@@ -419,7 +469,7 @@ ruby      15530        work   10w      REG              252,2  132784015     655
 
 &lt;p&gt;或者使用awk把所有相关进程关闭&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;lsof | grep &lt;span class=&quot;s1&quot;&gt;&#39;(deleted)&#39;&lt;/span&gt; | awk &lt;span class=&quot;s1&quot;&gt;&#39;{print $2}&#39;&lt;/span&gt; | xargs &lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; -9&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;lsof | grep &lt;span class=&quot;s1&quot;&gt;'(deleted)'&lt;/span&gt; | awk &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; | xargs &lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; -9&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Thu, 30 Jun 2016 00:00:00 +0800</pubDate>
@@ -557,7 +607,7 @@ and if you want to open a file from terminal using macvim, just type ‘vi file�
 &lt;h4 id=&quot;dont-want-to-reinstall-macvim&quot;&gt;Don’t want to reinstall macvim?&lt;/h4&gt;
 &lt;p&gt;If you don’t want to reinstall your macvim, making a alias is a recommend way. And a line to you &lt;code class=&quot;highlighter-rouge&quot;&gt;bashrc&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;zshrc&lt;/code&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;mvim -v&#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'mvim -v'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Sat, 12 Dec 2015 00:00:00 +0800</pubDate>
@@ -580,7 +630,7 @@ In your &lt;code class=&quot;highlighter-rouge&quot;&gt;config/application.rb&lt
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;YourAPPName&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Application&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url_root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;/subdir&#39;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url_root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/subdir'&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;# some other configuration code&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -654,23 +704,23 @@ location @proxy_rails_app {
 
 &lt;p&gt;create a new account call “timlen” and it can only connect to server at localhost&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;CREATE USER &lt;span class=&quot;s1&quot;&gt;&#39;timlen&#39;&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;&#39;localhost&#39;&lt;/span&gt; IDENTIFIED BY &lt;span class=&quot;s1&quot;&gt;&#39;foo&#39;&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;CREATE USER &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt; IDENTIFIED BY &lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Now we can see the new account existed in table &lt;code class=&quot;highlighter-rouge&quot;&gt;mysql.user&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;If you want to connect mysql server remotely, just run the following command:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;CREATE USER &lt;span class=&quot;s1&quot;&gt;&#39;timlen&#39;&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;&#39;%&#39;&lt;/span&gt; IDENTIDIED BY &lt;span class=&quot;s1&quot;&gt;&#39;foo&#39;&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;CREATE USER &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt; IDENTIDIED BY &lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h3 id=&quot;grant-privileges-to-the-new-account&quot;&gt;2. Grant privileges to the new account&lt;/h3&gt;
 &lt;p&gt;We can grant account ‘timlen’ with all privileges, which means it can perform &lt;code class=&quot;highlighter-rouge&quot;&gt;select, delete, update, create ...&lt;/code&gt; on target table and the sql as the following:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;GRANT ALL PRIVILEGES ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TO &lt;span class=&quot;s1&quot;&gt;&#39;timlen&#39;&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;&#39;localhost&#39;&lt;/span&gt; WITH GRANT OPTION;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;GRANT ALL PRIVILEGES ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TO &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt; WITH GRANT OPTION;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Flush privileges and show the grants for &lt;code class=&quot;highlighter-rouge&quot;&gt;timlen&lt;/code&gt;&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;FLUSH PRIVILEGES;
-&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SHOW GRANTS &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;timlen&#39;&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;&#39;localhost&#39;&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SHOW GRANTS &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/CF730E2D-5C45-423F-9A1D-9366B5FCB828.png&quot; alt=&quot;show grant&quot; /&gt;&lt;/p&gt;
 
@@ -678,12 +728,12 @@ location @proxy_rails_app {
 &lt;p&gt;Mysql offer many options for us to set different privileges for different users and we can easily do this:
 remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/code&gt; that we have just granted for &lt;code class=&quot;highlighter-rouge&quot;&gt;timlen&lt;/code&gt;&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;REVOKE ALL PRIVILEGES  ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; FROM &lt;span class=&quot;s1&quot;&gt;&#39;timlen&#39;&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;&#39;localhost&#39;&lt;/span&gt;;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;REVOKE ALL PRIVILEGES  ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; FROM &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt;;
 &lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;FLUSH PRIVILEGES;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Now we can grant &lt;code class=&quot;highlighter-rouge&quot;&gt;select&lt;/code&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;timlen&lt;/code&gt; on all databases&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;GRANT SELECT ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TO &lt;span class=&quot;s1&quot;&gt;&#39;timlen&#39;&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;&#39;localhost&#39;&lt;/span&gt;;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;GRANT SELECT ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TO &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt;;
 &lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;FLUSH PRIVILEGES;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h3 id=&quot;other-privileges-are-as-following&quot;&gt;4. Other privileges are as following&lt;/h3&gt;
@@ -837,7 +887,7 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
 &lt;span class=&quot;c1&quot;&gt;# Writing Before_fork&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;before_fork&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;worker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# the following is highly recomended for Rails + &quot;preload_a true&quot;&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# as there&#39;s no need for the master process to hold a connection&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# as there's no need for the master process to hold a connection&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;disconnect!&lt;/span&gt;
 
   &lt;span class=&quot;c1&quot;&gt;##&lt;/span&gt;
@@ -845,7 +895,7 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
   &lt;span class=&quot;c1&quot;&gt;# immediately start loading up a new version of itself (loaded with a new&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# version of our a). When this new Unicorn is completely loadedded&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# it will begin spawning workers. The first worker spawned will check to&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# see if an .oldbin pidfile exists. If so, this means we&#39;ve just booted up&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# see if an .oldbin pidfile exists. If so, this means we've just booted up&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# a new Unicorn and need to tell the old one that it can now die. To do so&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# we send it a QUIT.&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
@@ -864,7 +914,7 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
 &lt;span class=&quot;n&quot;&gt;after_fork&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;worker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;##&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# Unicorn master loads the a then forks off workers - because of the way&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Unix forking works, we need to make sure we aren&#39;t using any of the parent&#39;s&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Unix forking works, we need to make sure we aren't using any of the parent's&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# sockets, e.g. db connection&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;##&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;establish_connection&lt;/span&gt;
@@ -927,7 +977,7 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;HUP&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reloaded&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OK&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Couldn&#39;t reload, starting &#39;$CMD&#39; instead&quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Couldn't reload, starting '$CMD' instead&quot;&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$CMD&quot;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;upgrade&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -936,7 +986,7 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
   &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$TIMEOUT&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$OLD_PIN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ge&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;.&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'.'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;done&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt;
 
@@ -947,7 +997,7 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
   &lt;span class=&quot;n&quot;&gt;fi&lt;/span&gt;
   &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;fi&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Couldn&#39;t upgrade, starting &#39;$CMD&#39; instead&quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Couldn't upgrade, starting '$CMD' instead&quot;&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$CMD&quot;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;reopen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -961,17 +1011,17 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
 
 &lt;h3 id=&quot;configdeployrb-&quot;&gt;config/deploy.rb 的配置&lt;/h3&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;3.4.0&#39;&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'3.4.0'&lt;/span&gt;
 
-&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:alication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;your_app_name&#39;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:repo_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;your_app_git_url&#39;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:deploy_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;your_deploy_dir&#39;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:alication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'your_app_name'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:repo_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'your_app_git_url'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:deploy_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'your_deploy_dir'&lt;/span&gt;
 
 &lt;span class=&quot;c1&quot;&gt;# Default value for :linked_files is []&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;# set :linked_file, %w{Gemfile Gemfile.lock}&lt;/span&gt;
 
 &lt;span class=&quot;c1&quot;&gt;# Default value for linked_dirs is []&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:linked_dirs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:linked_dirs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;log&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;tmp/pids&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;tmp/cache&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;tmp/sockets&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;vendor/bundle&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;public/sitemap&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:linked_dirs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:linked_dirs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'log'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tmp/pids'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tmp/cache'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tmp/sockets'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'vendor/bundle'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'public/sitemap'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:deploy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
 
@@ -1020,64 +1070,6 @@ $http_x_forwarded_for记录的是原始用户的IP&lt;/p&gt;
         <pubDate>Mon, 17 Aug 2015 02:00:00 +0800</pubDate>
         <link>/2015/08/17/get-the-real-ip-nginx.html</link>
         <guid isPermaLink="true">/2015/08/17/get-the-real-ip-nginx.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>ActiveRecord connection via ssh</title>
-        <description>&lt;p&gt;Making a ssh connection of ActiveRecord is very easy and the following will show 
-you how to achieve it&lt;/p&gt;
-
-&lt;h3 id=&quot;gems-dependencies&quot;&gt;gems dependencies&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;active_record&lt;/li&gt;
-  &lt;li&gt;mysql2&lt;/li&gt;
-  &lt;li&gt;net-ssh-gateway&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;make-a-ssh-connection&quot;&gt;make a ssh connection&lt;/h3&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;net/ssh/gateway&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;active_record&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;mysql2&#39;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SSH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gateway&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&#39;host&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#Host which could connect to desired database&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&#39;user&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Username of the host&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;:password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;your vps password&#39;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;port&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;sem3&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;3306&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# database configuration&lt;/span&gt;
-&lt;span class=&quot;vg&quot;&gt;$CONFIG&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;adapter:  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mysql2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;host:     &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;username: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;public_user&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;password: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;public_user&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;database: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;production&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;port: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;pool: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;timeout: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;reconnect: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BaseGeneralHotelPoi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;establish_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$CONFIG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;BaseGeneralHotelPoi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;take&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;shutdown!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;use-ssh-authentication&quot;&gt;Use ssh authentication&lt;/h3&gt;
-&lt;p&gt;Just like ssh-login, we can also use ssh key as the identification&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SSH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gateway&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;seo&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;op&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:keys&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;/Users/timlen/.ssh/id_rsa&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;You get it !&lt;/p&gt;
-</description>
-        <pubDate>Sat, 13 Jun 2015 18:00:00 +0800</pubDate>
-        <link>/2015/06/13/active_record-connection-via-ssh.html</link>
-        <guid isPermaLink="true">/2015/06/13/active_record-connection-via-ssh.html</guid>
         
         
       </item>
