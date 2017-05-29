@@ -1,35 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:og="og: http://ogp.me/ns#">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{{ page.title }} | {{ site.name }}</title>
-        {% if site.links.github %}
-        <meta name="author" content="{{ site.links.github }}">
-        {% endif %}
-        <meta name="title" content="{{ page.title }}" >
-        <link rel="icon" type="image/ico" href="{{site.url}}/favicon.ico">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        {% include ssn.html %}
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="/css/style.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    </head>
-    <body class="wrap">
-        <!--[if lt IE 8]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        {% include header.html %}
-        <section class="content">
-            {{ content }}
-        </section>
-        <footer class="grid site-footer">
-            <p><span style="padding:0px 10px 0px 10px"><a href="http://www.tan90.cn">酒店预订</a></span> | <span style="padding:0px 10px 0px 10px"><a href="http://www.timlentse.com">民宿预订</a></span></p>
-            <p class="footer"><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme &copy; timelntse.github.io.</small></p>
-        </footer>
-        {% if site.ga_id %}
-        {% include analytics.html %}
-        {% endif %}
-        <script src="/js/script.js"></script>
-    </body>
+<html lang="en">
+{% include head.html %}
+<body>
+  <div class="content-container">
+    {{ content }}
+
+    {% include footer.html %}
+  </div>
+</body>
 </html>

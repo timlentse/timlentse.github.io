@@ -2,19 +2,20 @@
 layout: post
 title: "ActiveRecord connection via ssh"
 date: 2015-06-13 18:00
+description: "Making a ssh connection of ActiveRecord is very easy and the following will show you how to achieve it"
+tags: [activerecord,net-ssh-gateway]
 ---
-Making a ssh connection of ActiveRecord is very easy and the following will show 
-you how to achieve it
+Making a ssh connection of ActiveRecord is very easy and the following will show you how to achieve it
 
-### gems dependencies
+#### gems dependencies
 
 * active_record
 * mysql2
 * net-ssh-gateway
 
-### make a ssh connection
+#### make a ssh connection
 
-{% highlight ruby %}
+```ruby
 
 require 'net/ssh/gateway'
 require 'active_record'
@@ -45,11 +46,13 @@ end
 p BaseGeneralHotelPoi.take
 tunnel.shutdown!
 
-{% endhighlight %}
+```
 
-### Use ssh authentication
+#### Use ssh authentication
 Just like ssh-login, we can also use ssh key as the identification
-{% highlight ruby %}
+
+```ruby
 tunnel = Net::SSH::Gateway.new('seo','op', :keys => ['/Users/timlen/.ssh/id_rsa'])
-{% endhighlight %}
+```
+
 You get it !

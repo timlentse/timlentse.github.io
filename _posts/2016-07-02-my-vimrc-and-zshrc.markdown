@@ -1,14 +1,15 @@
 ---
 layout: post
 title: "我的vimrc和zshrc配置"
-date: "2016-07-02"
+date: 2016-07-02
+tags: [vim,zsh]
 ---
 
-Vim跟zsh(配合oh-my-zsh)是\*unix生态下的两大神器。如果懂得把vim跟zsh配置好，不仅能打造一个舒适的开发环境，而且大大提高开发效率。
+Vim跟zsh(配合oh-my-zsh)是unix生态下的两大神器。如果懂得把vim跟zsh配置好，不仅能打造一个舒适的开发环境，而且大大提高开发效率。
 
-### Vimrc 
-{% highlight vim %}
+#### Vimrc 
 
+```vim
 " Vundle automatical installation
   let iCanHazVundle=1
   let vundle_readme=expand('~/.vim/bundle/Vundle.vim/README.md')
@@ -193,11 +194,11 @@ Vim跟zsh(配合oh-my-zsh)是\*unix生态下的两大神器。如果懂得把vim
     set nowritebackup
   endif
 
-{% endhighlight %}
+```
 
-### Zshrc
+#### Zshrc
 
-{% highlight zsh %}
+```zsh
 # ZSH variable setting
 
 # Set name of the theme to load.
@@ -306,14 +307,14 @@ alias crontab="VIM_CRONTAB=true crontab"
 
 # }
 
+```
 
-{% endhighlight %}
+#### What it looks
 
-### What it looks
-* in iterm2 (mac os x)
+* In iterm2 (MAC OS X )
 
-![alt](/img/shell.png)
+![alt](/images/shell.png)
 
-* vim
+* Vim
 
-![alt](/img/vim.png)
+![alt](/images/vim.png)

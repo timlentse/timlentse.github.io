@@ -1,200 +1,234 @@
 <!DOCTYPE html>
-<html xmlns:og="og: http://ogp.me/ns#">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Home | Timlentse</title>
-        
-        <meta name="author" content="timlentse">
-        
-        <meta name="title" content="Home" >
-        <link rel="icon" type="image/ico" href="/favicon.ico">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta property="og:title" content="Home" />
-<meta name="twitter:title" content="Home" />
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>timlentse's blog</title>
 
-<meta name="keywords" content="mysql, ruby, nginx, ssh" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css" type="text/css">
+
+  <!-- Font -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono" rel="stylesheet">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for timlentse's blog" href="/feed.xml" />
+  <!-- Begin Jekyll SEO tag v2.2.3 -->
+<title>timlentse’s blog</title>
+<meta property="og:title" content="timlentse’s blog" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/" />
+<meta property="og:url" content="http://localhost:4000/" />
+<meta property="og:site_name" content="timlentse’s blog" />
+<link rel="next" href="http://localhost:4000/page2/">
+<script type="application/ld+json">
+{"@context":"http://schema.org","@type":"WebSite","name":"timlentse’s blog","headline":"timlentse’s blog","author":{"@type":"Person","name":null},"url":"http://localhost:4000/"}</script>
+<!-- End Jekyll SEO tag -->
 
 
-<link rel="canonical" href="https://timlentse.github.io/" />
-<meta property="og:site_name" content="Timlentse" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://timlentse.github.io" />
-<meta name="description" content="Put website description for your home page. (about 50 words or more)">
-<meta property="og:description" content="Put website description for your home page. (about 50 words or more)" />
-<meta name="twitter:description" content="Put website description for your home page. (about 50 words or more)" />
 
-<meta property="og:image" content="https://timlentse.github.io/sharer.png" />
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:image" content="https://timlentse.github.io/sharer.png" />
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="/css/style.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    </head>
-    <body class="wrap">
-        <!--[if lt IE 8]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <header>
-    <nav class="main-nav">
-        <a href="#" class="opener show-on-mobiles">...</a>
-        <div class="clear-opener show-on-mobiles"></div>
-        <div class="grid">
-            <ul>
-                <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
-                <li><a href="https://github.com/timlentse"><i class="fa fa-github"></i>Github</a></li>
-                <li><a href="https://twitter.com/timlentse"><i class="fa fa-twitter"></i>Twitter</a></li>
-                <li><a href="https://www.facebook.com/timlentse"><i class="fa fa-facebook"></i>Facebook</a></li>
-                <li><a href="/about.html"><i class="fa fa-info-circle"></i>About</a></li>
-            </ul>
-        </div>
-    </nav>
-</header>
+  <!-- Google Analytics -->
 
-        <section class="content">
-            <div id="home" class="grid">
-    <div class="unit whole posts">
-        
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2016/09/19/SSH-ProxyCommand-%E9%85%8D%E7%BD%AE%E8%B7%B3%E6%9D%BF%E6%9C%BA%E7%99%BB%E5%BD%95%E7%94%9F%E6%88%90%E7%8E%AF%E5%A2%83%E6%9C%BA%E5%99%A8.html">使用SSH ProxyCommand 配置跳板机登录生产环境机器</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2016-09-19"><i class="fa fa-calendar"></i>September 19, 2016</time></span>
-		
-	</div>
-	<p class="description">在公司开发中，为了安全起见，生产环境跟开发环境是相互隔离开来的。也就是说在开发环境网络中无法直接ssh登录到生产环境的机器，
-如果需要登录生产环境的机器，通常会需要借助跳板机，先登录到跳板机，然后通过跳板机登录到生产环境。
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-</p>
-</div>
+ga('create', 'UA-67464730-1', 'auto');
+ga('send', 'pageview');
 
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2016/07/02/my-vimrc-and-zshrc.html">我的vimrc和zshrc配置</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2016-07-02"><i class="fa fa-calendar"></i>July 2, 2016</time></span>
-		
-	</div>
-	<p class="description">Vim跟zsh(配合oh-my-zsh)是*unix生态下的两大神器。如果懂得把vim跟zsh配置好，不仅能打造一个舒适的开发环境，而且大大提高开发效率。
-
-</p>
-</div>
-
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2016/06/30/difference-between-df-and-du.html">使用df, du查看磁盘空间使用情况的区别</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2016-06-30"><i class="fa fa-calendar"></i>June 30, 2016</time></span>
-		
-	</div>
-	<p class="description">剖析使用df,du查看磁盘空间使用情况的区别。
-
-</p>
-</div>
-
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2016/04/04/install-ss-service.html">VPS搭建shadowsocks服务以及配置shadowsocks多用户</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2016-04-04"><i class="fa fa-calendar"></i>April 4, 2016</time></span>
-		
-	</div>
-	<p class="description">介绍在VPS中（虚拟主机）搭建shadowsocks服务，从而实现科学上网，配置多个shadowsocks用户实现多用户共享。
-
-</p>
-</div>
-
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2016/02/27/Remove-duplicate-rows-in-mysql.html">Remove duplicate rows from a table in mysql</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2016-02-27"><i class="fa fa-calendar"></i>February 27, 2016</time></span>
-		
-	</div>
-	<p class="description">This is a simple sql for removing duplicate rows from a table and just keep only one having the lowest id
-
-</p>
-</div>
-
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2015/12/12/Run-macvim-from-terminal.html">Run macvim from terminal</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2015-12-12"><i class="fa fa-calendar"></i>December 12, 2015</time></span>
-		
-	</div>
-	<p class="description">MacVim is a wonderful tool in mac. It is a port of the text editor Vim to Mac OS X that is meant to look better and integrate more seamlessly with the Mac than the older Carbon port of Vim. This article show you how to run macvim from terminal.
-
-</p>
-</div>
-
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2015/12/06/How-to-mount-a-rails-app-in-a-subdirectory-with-NGINX.html">How to mount a rails app to subdirectory with Nginx</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2015-12-06"><i class="fa fa-calendar"></i>December 6, 2015</time></span>
-		
-	</div>
-	<p class="description">This article mainly focus on how to mount a rails app to a subdirectory Using Nginx. And you can also learn how to use Nginx as a reverse proxy server to serve your rails+unicorn app after reading this article.
-
-</p>
-</div>
-
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2015/10/26/Grant-permission-to-user-in-mysql.html">How to create user and grant privileges in mysql</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2015-10-26"><i class="fa fa-calendar"></i>October 26, 2015</time></span>
-		
-	</div>
-	<p class="description">This blog instructs about how to create user and grant different privileges to different users in mysql.
-
-</p>
-</div>
-
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2015/08/29/elegant-way-to-deploy-your-rails-app.html">Elegant way to deploy your rails app</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2015-08-29"><i class="fa fa-calendar"></i>August 29, 2015</time></span>
-		
-	</div>
-	<p class="description">介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目, 实现zero down time restart
-
-</p>
-</div>
-
-<div class="unit whole single-post-excerpt">
-	<h2><a href="/2015/08/17/get-the-real-ip-nginx.html">Get the real remote ip in nginx</a></h2>
-	<div class="meta-info">
-		<span class="meta"><time class="timeago postlist-meta" datetime="2015-08-17"><i class="fa fa-calendar"></i>August 17, 2015</time></span>
-		
-	</div>
-	<p class="description">多层nginx中获取真实ip
-
-</p>
-</div>
-
-<div class="unit whole paginator">
-	
-	<span>Page: 1 of 2</span>
-	
-	<a href="/page2" class="next">Next</a>
-	
-</div>
-
-    </div>
-</div>
-
-        </section>
-        <footer class="grid site-footer">
-            <p><span style="padding:0px 10px 0px 10px"><a href="http://www.tan90.cn">酒店预订</a></span> | <span style="padding:0px 10px 0px 10px"><a href="http://www.timlentse.com">民宿预订</a></span></p>
-            <p class="footer"><small>Powered by <a href="http://jekyllrb.com" target="_blank"><em>Jekyll</em></a> using <a href="http://bitwiser.in/bitwiser/" target="_blank"><em>Bitwiser</em></a> theme &copy; timelntse.github.io.</small></p>
-        </footer>
-        
-        <script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-	ga('create', 'UA-67464730-1', 'auto');
-	ga('require', 'displayfeatures');
-	ga('send', 'pageview');
 </script>
 
-        
-        <script src="/js/script.js"></script>
-    </body>
+
+
+</head>
+
+<body>
+  <div class="content-container">
+    <header class="header">
+  <div class="header-title">
+    <a href="http://localhost:4000">timlentse's blog</a>
+  </div>
+  <nav class="header-nav">
+    
+    
+    <a href="/about">About</a>
+    
+    
+    
+    <a href="/archive">Archive</a>
+    
+    
+    
+    <a href="/tags">Tags</a>
+    
+    
+    
+    <a href="https://github.com/timlentse">Github</a>
+    
+    
+  </nav>
+</header>
+
+<div class="list">
+
+<!-- This loops through the paginated posts -->
+
+  <div class="list-post">
+    
+    <a href="/2016-09-19/SSH-ProxyCommand-%E9%85%8D%E7%BD%AE%E8%B7%B3%E6%9D%BF%E6%9C%BA%E7%99%BB%E5%BD%95%E7%94%9F%E6%88%90%E7%8E%AF%E5%A2%83%E6%9C%BA%E5%99%A8/">
+      
+      <div class="list-post-date">
+        <time>19 Sep 2016</time>
+      </div>
+      <div class="list-post-title">
+        使用SSH ProxyCommand 配置跳板机登录生产环境机器
+      </div>
+      
+    </a>
+
+
+  </div>
+
+  <div class="list-post">
+    
+    <a href="/2016-07-02/my-vimrc-and-zshrc/">
+      
+      <div class="list-post-date">
+        <time>02 Jul 2016</time>
+      </div>
+      <div class="list-post-title">
+        我的vimrc和zshrc配置
+      </div>
+      
+    </a>
+
+
+  </div>
+
+  <div class="list-post">
+    
+    <a href="/2016-06-30/difference-between-df-and-du/">
+      
+      <div class="list-post-date">
+        <time>30 Jun 2016</time>
+      </div>
+      <div class="list-post-title">
+        使用df, du查看磁盘空间使用情况的区别
+      </div>
+      
+      <div class="list-post-desc">
+        剖析使用df,du查看磁盘空间使用情况的区别。
+      </div>
+      
+    </a>
+
+
+  </div>
+
+  <div class="list-post">
+    
+    <a href="/2016-04-04/install-ss-service/">
+      
+      <div class="list-post-date">
+        <time>04 Apr 2016</time>
+      </div>
+      <div class="list-post-title">
+        VPS搭建shadowsocks服务以及配置shadowsocks多用户
+      </div>
+      
+    </a>
+
+
+  </div>
+
+  <div class="list-post">
+    
+    <a href="/2016-02-27/Remove-duplicate-rows-in-mysql/">
+      
+      <div class="list-post-date">
+        <time>27 Feb 2016</time>
+      </div>
+      <div class="list-post-title">
+        Remove duplicate rows from a table in mysql
+      </div>
+      
+    </a>
+
+
+  </div>
+
+  <!-- Pagination links -->
+  <div class="list-pagination">
+    <span class="list-pagination-previous">
+      
+
+      
+    </span>
+
+    <span class="list-pagination-next">
+      
+        <a href="/page2/" class="next">
+          next &#xE001;
+        </a>
+      
+    </span>
+
+  </div>
+
+</div>
+
+
+    <!-- Documents about icons are here: http://fontawesome.io/icons/ -->
+<div class="footer">
+  <hr />
+  <div class="footer-link">
+    
+    <a href="https://www.facebook.com/timlentse"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+    
+	
+	
+	
+	
+
+    
+    <a href="https://twitter.com/timlentse"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+    
+
+    
+    <a href="https://github.com/timlentse"><i class="fa fa-github" aria-hidden="true"></i></a>
+    
+	
+	
+    <a href="http://stackoverflow.com/users/3526207/timlentse"><i class="fa fa-stack-overflow" aria-hidden="true"></i></a>
+    
+	
+	
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+
+    
+
+    
+
+    
+    <a href="mailto:tinglenxan@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+    
+
+  </div>
+  © 2017 Kiko. All rights reserved.
+</div>
+
+  </div>
+</body>
 </html>

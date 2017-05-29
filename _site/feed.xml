@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
-    <title></title>
-    <description>Put website description for your home page. (about 50 words or more)</description>
-    <link>/</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 01 Nov 2016 17:04:57 +0800</pubDate>
-    <lastBuildDate>Tue, 01 Nov 2016 17:04:57 +0800</lastBuildDate>
-    <generator>Jekyll v3.2.1</generator>
+    <title>timlentse's blog</title>
+    <link>http://localhost:4000</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
         <title>使用SSH ProxyCommand 配置跳板机登录生产环境机器</title>
@@ -18,16 +14,21 @@
   &lt;li&gt;大致的过程如下面的图示：&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;+-------------+       +----------+      +--------------+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+-------------+       +----------+      +--------------+
 | 开发环境机器  | &amp;lt;---&amp;gt; |   跳板机  | &amp;lt;--&amp;gt; | 生产环境机器   |
-+-------------+       +----------+      +--------------+&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
++-------------+       +----------+      +--------------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;换成shell 命令就是&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@jumphost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-----&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@production_host&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;ssh foo@jumphost -----&amp;gt; ssh bar@production_host
 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;ul&gt;
   &lt;li&gt;两步操作变一步操作&lt;/li&gt;
 &lt;/ul&gt;
@@ -35,8 +36,11 @@
 &lt;p&gt;正如上面说到的，如果你需要登录生产环境的机器，你需要输入两个命令
 。那能不能一个命令就搞定呢？答案是肯定的。&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;ssh -tt foo@jumphost ssh -tt bar@production_host&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;ssh -tt foo@jumphost ssh -tt bar@production_host
 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;ul&gt;
   &lt;li&gt;借助&lt;code class=&quot;highlighter-rouge&quot;&gt; ProxyCommand&lt;/code&gt; 把配置写到config文件里面&lt;/li&gt;
 &lt;/ul&gt;
@@ -45,27 +49,28 @@
 
 &lt;p&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/config&lt;/code&gt; 文件里面加上：&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;Host production
+&lt;div class=&quot;language-vim highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+Host production
 hostname &lt;span class=&quot;m&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;168&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;100&lt;/span&gt;
 user bar
-ProxyCommand ssh foo@jumphost &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;W %&lt;span class=&quot;k&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;%&lt;span class=&quot;k&quot;&gt;p&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+ProxyCommand ssh foo@jumphost &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;W %&lt;span class=&quot;k&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;%&lt;span class=&quot;k&quot;&gt;p&lt;/span&gt;
 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;p&gt;加入之后，直接执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh producton&lt;/code&gt; 就可以登录到生产环境。&lt;/p&gt;
 </description>
-        <pubDate>Mon, 19 Sep 2016 00:00:00 +0800</pubDate>
-        <link>/2016/09/19/SSH-ProxyCommand-%E9%85%8D%E7%BD%AE%E8%B7%B3%E6%9D%BF%E6%9C%BA%E7%99%BB%E5%BD%95%E7%94%9F%E6%88%90%E7%8E%AF%E5%A2%83%E6%9C%BA%E5%99%A8.html</link>
-        <guid isPermaLink="true">/2016/09/19/SSH-ProxyCommand-%E9%85%8D%E7%BD%AE%E8%B7%B3%E6%9D%BF%E6%9C%BA%E7%99%BB%E5%BD%95%E7%94%9F%E6%88%90%E7%8E%AF%E5%A2%83%E6%9C%BA%E5%99%A8.html</guid>
-        
-        
+        <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2016-09-19/SSH-ProxyCommand-%E9%85%8D%E7%BD%AE%E8%B7%B3%E6%9D%BF%E6%9C%BA%E7%99%BB%E5%BD%95%E7%94%9F%E6%88%90%E7%8E%AF%E5%A2%83%E6%9C%BA%E5%99%A8/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016-09-19/SSH-ProxyCommand-%E9%85%8D%E7%BD%AE%E8%B7%B3%E6%9D%BF%E6%9C%BA%E7%99%BB%E5%BD%95%E7%94%9F%E6%88%90%E7%8E%AF%E5%A2%83%E6%9C%BA%E5%99%A8/</guid>
       </item>
     
       <item>
         <title>我的vimrc和zshrc配置</title>
-        <description>&lt;p&gt;Vim跟zsh(配合oh-my-zsh)是*unix生态下的两大神器。如果懂得把vim跟zsh配置好，不仅能打造一个舒适的开发环境，而且大大提高开发效率。&lt;/p&gt;
+        <description>&lt;p&gt;Vim跟zsh(配合oh-my-zsh)是unix生态下的两大神器。如果懂得把vim跟zsh配置好，不仅能打造一个舒适的开发环境，而且大大提高开发效率。&lt;/p&gt;
 
-&lt;h3 id=&quot;vimrc&quot;&gt;Vimrc&lt;/h3&gt;
+&lt;h4 id=&quot;vimrc&quot;&gt;Vimrc&lt;/h4&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; Vundle automatical installation&lt;/span&gt;
+&lt;div class=&quot;language-vim highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&quot; Vundle automatical installation&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; iCanHazVundle&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; vundle_readme&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;expand&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'~/.vim/bundle/Vundle.vim/README.md'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!&lt;/span&gt;filereadable&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;vundle_readme&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -247,11 +252,14 @@ ProxyCommand ssh foo@jumphost &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;W %&
   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; $VIM_CRONTAB &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; nobackup
     &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; nowritebackup
-  &lt;span class=&quot;k&quot;&gt;endif&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+  &lt;span class=&quot;k&quot;&gt;endif&lt;/span&gt;
 
-&lt;h3 id=&quot;zshrc&quot;&gt;Zshrc&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-zsh&quot; data-lang=&quot;zsh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# ZSH variable setting&lt;/span&gt;
+&lt;h4 id=&quot;zshrc&quot;&gt;Zshrc&lt;/h4&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ZSH variable setting&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# Set name of the theme to load.&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;ZSH_THEME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;powerline&quot;&lt;/span&gt;
@@ -357,44 +365,48 @@ zle -N backward-delete-char check-cmd-backward-delete-char
 
 &lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;crontab&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;VIM_CRONTAB=true crontab&quot;&lt;/span&gt;
 
-&lt;span class=&quot;c&quot;&gt;# }&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;c&quot;&gt;# }&lt;/span&gt;
 
-&lt;h3 id=&quot;what-it-looks&quot;&gt;What it looks&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;in iterm2 (mac os x)&lt;/li&gt;
-&lt;/ul&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/shell.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;what-it-looks&quot;&gt;What it looks&lt;/h4&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;vim&lt;/li&gt;
+  &lt;li&gt;In iterm2 (MAC OS X )&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/vim.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/shell.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Vim&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/vim.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sat, 02 Jul 2016 00:00:00 +0800</pubDate>
-        <link>/2016/07/02/my-vimrc-and-zshrc.html</link>
-        <guid isPermaLink="true">/2016/07/02/my-vimrc-and-zshrc.html</guid>
-        
-        
+        <pubDate>Sat, 02 Jul 2016 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2016-07-02/my-vimrc-and-zshrc/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016-07-02/my-vimrc-and-zshrc/</guid>
       </item>
     
       <item>
         <title>使用df, du查看磁盘空间使用情况的区别</title>
         <description>&lt;p&gt;剖析使用df,du查看磁盘空间使用情况的区别。&lt;/p&gt;
 
-&lt;h3 id=&quot;why-this-blog&quot;&gt;1. Why this blog&lt;/h3&gt;
+&lt;h4 id=&quot;1-why-this-blog&quot;&gt;1. Why this blog&lt;/h4&gt;
 &lt;p&gt;最近在工作中遇到一个问题，就是公司线上服务器磁盘空间满了，导致nginx无法继续写入日志。于是尝试手动清空一些不需要的文件以腾出磁盘空间，后来发现事情远远不是这么简单，其他不需要的文件和历史日志文件加起来不过3-4G左右，不可能是导致磁盘满的罪魁祸首，于是想到 &lt;code class=&quot;highlighter-rouge&quot;&gt;du&lt;/code&gt; 来查看究竟是那些文件占满了磁盘。&lt;/p&gt;
 
-&lt;h3 id=&quot;du--df&quot;&gt;2. 奇怪的 &lt;code class=&quot;highlighter-rouge&quot;&gt;du&lt;/code&gt; 跟 &lt;code class=&quot;highlighter-rouge&quot;&gt;df&lt;/code&gt;&lt;/h3&gt;
+&lt;h4 id=&quot;2-奇怪的-du-跟-df&quot;&gt;2. 奇怪的 &lt;code class=&quot;highlighter-rouge&quot;&gt;du&lt;/code&gt; 跟 &lt;code class=&quot;highlighter-rouge&quot;&gt;df&lt;/code&gt;&lt;/h4&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;du&lt;/code&gt; 查看根目录下每一个文件夹占用的空间&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;du / --max-depth&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 -h&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;du / --max-depth&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 -h
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;结果输出:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;0    /sys
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0    /sys
 806M    /var
 20K    /data
 8.0K    /opt
@@ -413,23 +425,27 @@ zle -N backward-delete-char check-cmd-backward-delete-char
 4.0K    /srv
 21M    /lib64
 14M    /sbin
-6.4G    /&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+6.4G    /
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;df&lt;/code&gt; 查看磁盘剩余情况&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;df -h&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;df -h
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;结果是：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;Filesystem            Size  Used Avail Use% Mounted on
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Filesystem            Size  Used Avail Use% Mounted on
 /dev/vda2              40G  39.7G 300M  100% /
 tmpfs                 1.9G     0  1.9G   0% /dev/shm
 /dev/vda1             504M   58M  421M  13% /boot
-/dev/vda5             1.5G   35M  1.4G   3% /data&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+/dev/vda5             1.5G   35M  1.4G   3% /data
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;du&lt;/code&gt; 显示总共使用了 6.4G ,但是 &lt;code class=&quot;highlighter-rouge&quot;&gt;df&lt;/code&gt; 显示却是磁盘已经满了,为什么会显示不同的结果？Google 一下 在&lt;a href=&quot;http://askubuntu.com/questions/280342/why-do-df-and-du-commands-show-different-disk-usage&quot;&gt;这里&lt;/a&gt;找到答案。&lt;/p&gt;
 
-&lt;h3 id=&quot;df--du-&quot;&gt;3. &lt;code class=&quot;highlighter-rouge&quot;&gt;df&lt;/code&gt; 跟 &lt;code class=&quot;highlighter-rouge&quot;&gt;du&lt;/code&gt; 的区别&lt;/h3&gt;
+&lt;h4 id=&quot;3-df-跟-du-的区别&quot;&gt;3. &lt;code class=&quot;highlighter-rouge&quot;&gt;df&lt;/code&gt; 跟 &lt;code class=&quot;highlighter-rouge&quot;&gt;du&lt;/code&gt; 的区别&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;df 报告整个文件系统的使用情况，针对的是磁盘&lt;/li&gt;
   &lt;li&gt;du 计算文件，文件夹的占用的空间大小&lt;/li&gt;
@@ -439,13 +455,14 @@ tmpfs                 1.9G     0  1.9G   0% /dev/shm
 
 &lt;p&gt;原因在于不正当删除文件。当删除一个正在被其他进程使用的文件，其实这个文件描述符并没有被系统释放，也就是说这个文件占用的磁盘空间并没有被释放，而且进程仍然会不断往这个文件里面写入东西，导致占用的磁盘空间会越来越大，从而占满这个磁盘。但是由于这个文件的硬链接被删除了，&lt;code class=&quot;highlighter-rouge&quot;&gt;du&lt;/code&gt; 是没法统计到这类型文件的大小的(因为没法找到文件名)，从而导致上面的诡异事件。&lt;/p&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;4. 列出被删除但是仍然被使用的文件&lt;/h3&gt;
+&lt;h4 id=&quot;4-列出被删除但是仍然被使用的文件&quot;&gt;4. 列出被删除但是仍然被使用的文件&lt;/h4&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;lsof | grep &lt;span class=&quot;s1&quot;&gt;'(deleted)'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;lsof | grep &lt;span class=&quot;s1&quot;&gt;'(deleted)'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;结果我的机器显示一大堆：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;ruby       5132        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby       5132        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 ruby       5132        work    2w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 ruby       5132        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 ruby      14597        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -459,51 +476,57 @@ ruby      15367        work    2w      REG              252,2    2617890     655
 ruby      15367        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 ruby      15530        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 ruby      15530        work    2w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-ruby      15530        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+ruby      15530        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;deleted&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;上面显示很多虽然被删除但仍然被进程使用的文件&lt;/p&gt;
 
 &lt;p&gt;如果需要释放这些文件，需要把进程上面的进程关闭，如：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; -9 5132&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; -9 5132
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;p&gt;或者使用awk把所有相关进程关闭&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;lsof | grep &lt;span class=&quot;s1&quot;&gt;'(deleted)'&lt;/span&gt; | awk &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; | xargs &lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; -9&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lsof | grep &lt;span class=&quot;s1&quot;&gt;'(deleted)'&lt;/span&gt; | awk &lt;span class=&quot;s1&quot;&gt;'{print $2}'&lt;/span&gt; | xargs &lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; -9
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
-        <pubDate>Thu, 30 Jun 2016 00:00:00 +0800</pubDate>
-        <link>/2016/06/30/difference-between-df-and-du.html</link>
-        <guid isPermaLink="true">/2016/06/30/difference-between-df-and-du.html</guid>
-        
-        
+        <pubDate>Thu, 30 Jun 2016 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2016-06-30/difference-between-df-and-du/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016-06-30/difference-between-df-and-du/</guid>
       </item>
     
       <item>
         <title>VPS搭建shadowsocks服务以及配置shadowsocks多用户</title>
         <description>&lt;p&gt;介绍在VPS中（虚拟主机）搭建shadowsocks服务，从而实现科学上网，配置多个shadowsocks用户实现多用户共享。&lt;/p&gt;
 
-&lt;h3 id=&quot;shadowsocks&quot;&gt;1.安装shadowsocks服务端&lt;/h3&gt;
+&lt;h4 id=&quot;1安装shadowsocks服务端&quot;&gt;1.安装shadowsocks服务端&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;Ubuntu&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;python&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pip&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pip&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shadowsocks&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install python-pip
+sudo pip install shadowsocks 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Centos&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pip&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pip&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shadowsocks&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo yum install pip
+sudo pip install shadowsocks
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;shadowsocks-1&quot;&gt;2. 配置shadowsocks服务端配置文件&lt;/h3&gt;
+&lt;h4 id=&quot;2-配置shadowsocks服务端配置文件&quot;&gt;2. 配置shadowsocks服务端配置文件&lt;/h4&gt;
 &lt;p&gt;安装完成之后其实就可以执行命令来启动shadowsocks服务了。&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;ssserver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rc4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;md5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssserver -p 8000 -k password -m rc4-md5 -d start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h4 id=&quot;section&quot;&gt;配置文件内容&lt;/h4&gt;
+&lt;h5 id=&quot;配置文件内容&quot;&gt;配置文件内容&lt;/h5&gt;
 
 &lt;p&gt;更好的意见是把选项写在一个配置文件中，然后通过读取这个配置文件来配置shadowsocks的行为。vi &lt;code class=&quot;highlighter-rouge&quot;&gt;/path/to/your/config-file&lt;/code&gt;(注：配置文件放置的位置随意，我一般是放在 /etc/shadowsocks.conf )&lt;/p&gt;
 
@@ -511,7 +534,7 @@ ruby      15530        work   10w      REG              252,2  132784015     655
   &lt;li&gt;单用户配置&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;s2&quot;&gt;&quot;server&quot;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;你的VPS公网ip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;s2&quot;&gt;&quot;local_address&quot;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;s2&quot;&gt;&quot;lcoal_port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1080&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -519,13 +542,15 @@ ruby      15530        work   10w      REG              252,2  132784015     655
     &lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;你想设置的密码&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;s2&quot;&gt;&quot;method&quot;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;rc4-md5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#加密算法还有其他的如aes-256-cfb，aes-128-cfb，速度快的话就选择rc4-md5&lt;/span&gt;
       &lt;span class=&quot;s2&quot;&gt;&quot;timeout&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;多用户配置&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;s2&quot;&gt;&quot;server&quot;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;你的VPS公网ip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;s2&quot;&gt;&quot;local_address&quot;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;s2&quot;&gt;&quot;lcoal_port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1080&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -537,53 +562,54 @@ ruby      15530        work   10w      REG              252,2  132784015     655
       &lt;span class=&quot;s2&quot;&gt;&quot;port2&quot;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;passwd2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
       &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;ul&gt;
   &lt;li&gt;开启shawosocks服务&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;ssserver&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/s&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadowsocks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;json&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/tmp/s&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadowsocks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssserver -c /etc/shadowsocks.json --log-file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp/shadowsocks.log -d start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;3. 配置客户端&lt;/h3&gt;
+&lt;h4 id=&quot;3-配置客户端&quot;&gt;3. 配置客户端&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;各个平台的shadowsocks客户端下载地址——–&amp;gt; &lt;a href=&quot;https://shadowsocks.org/en/download/clients.html&quot;&gt;ClickMe&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;如何使用客户端懒得啰嗦&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Mon, 04 Apr 2016 00:00:00 +0800</pubDate>
-        <link>/2016/04/04/install-ss-service.html</link>
-        <guid isPermaLink="true">/2016/04/04/install-ss-service.html</guid>
-        
-        
+        <pubDate>Mon, 04 Apr 2016 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2016-04-04/install-ss-service/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016-04-04/install-ss-service/</guid>
       </item>
     
       <item>
         <title>Remove duplicate rows from a table in mysql</title>
         <description>&lt;p&gt;This is a simple sql for removing duplicate rows from a table and just keep only one having the lowest &lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt;&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;DELETE r1 FROM table_name r1, table_name r2 WHERE r1.id &amp;gt; r2.id AND r1.name &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; r2.name&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;DELETE r1 FROM table_name r1, table_name r2 WHERE r1.id &amp;gt; r2.id AND r1.name = r2.name
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Note that the &lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt; is the field name you want to ensure values are unique&lt;/p&gt;
 
-&lt;h3 id=&quot;constraint-unique&quot;&gt;Constraint unique&lt;/h3&gt;
+&lt;h4 id=&quot;constraint-unique&quot;&gt;Constraint unique&lt;/h4&gt;
 
 &lt;p&gt;If you want to remove duplicate rows decided by more than one column&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;DELETE r1 FROM table_name r1, table_name r2 WHERE r1.id &amp;gt; r2.id AND r1.name1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; r2.name1 
-and r1.name2&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;r2.name2 and ...&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;DELETE r1 FROM table_name r1, table_name r2 WHERE r1.id &amp;gt; r2.id AND r1.name1 = r2.name1 
+and r1.name2=r2.name2 and ...
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;reference&quot;&gt;Reference&lt;/h3&gt;
+&lt;h4 id=&quot;reference&quot;&gt;Reference&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/4685173/delete-all-duplicate-rows-except-for-one-in-mysql&quot;&gt;stackoverflow&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 </description>
-        <pubDate>Sat, 27 Feb 2016 17:00:00 +0800</pubDate>
-        <link>/2016/02/27/Remove-duplicate-rows-in-mysql.html</link>
-        <guid isPermaLink="true">/2016/02/27/Remove-duplicate-rows-in-mysql.html</guid>
-        
-        
+        <pubDate>Sat, 27 Feb 2016 17:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2016-02-27/Remove-duplicate-rows-in-mysql/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016-02-27/Remove-duplicate-rows-in-mysql/</guid>
       </item>
     
       <item>
@@ -593,13 +619,16 @@ and r1.name2&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;r2.name2 and ...&lt;/c
 &lt;h4 id=&quot;confusing-about-opening-a-gui-windows-when-run-mvim&quot;&gt;Confusing about opening a gui windows when run ‘mvim’?&lt;/h4&gt;
 &lt;p&gt;After you had your macvim installed and try to run the folllowing command:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;mvim&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;mvim
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;A new gui window will be opened instead of just staying on terminal.&lt;/p&gt;
 
 &lt;h4 id=&quot;try-to-reinstall-your-macvim-with-option---with-override-system-vim&quot;&gt;Try to reinstall your macvim with option &lt;code class=&quot;highlighter-rouge&quot;&gt;--with-override-system-vim&lt;/code&gt;&lt;/h4&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;brew install macvim --with-override-system-vim&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;brew install macvim --with-override-system-vim
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;it will create &lt;code class=&quot;highlighter-rouge&quot;&gt;vi&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt; command under &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/local/bin/&lt;/code&gt;
 and if you want to open a file from terminal using macvim, just type ‘vi file’ or ‘vim file ‘. These two commands acted as &lt;code class=&quot;highlighter-rouge&quot;&gt;mvim -v&lt;/code&gt;. That’s all.&lt;/p&gt;
@@ -607,48 +636,53 @@ and if you want to open a file from terminal using macvim, just type ‘vi file�
 &lt;h4 id=&quot;dont-want-to-reinstall-macvim&quot;&gt;Don’t want to reinstall macvim?&lt;/h4&gt;
 &lt;p&gt;If you don’t want to reinstall your macvim, making a alias is a recommend way. And a line to you &lt;code class=&quot;highlighter-rouge&quot;&gt;bashrc&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;zshrc&lt;/code&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'mvim -v'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;vi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'mvim -v'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
-        <pubDate>Sat, 12 Dec 2015 00:00:00 +0800</pubDate>
-        <link>/2015/12/12/Run-macvim-from-terminal.html</link>
-        <guid isPermaLink="true">/2015/12/12/Run-macvim-from-terminal.html</guid>
-        
-        
+        <pubDate>Sat, 12 Dec 2015 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-12-12/Run-macvim-from-terminal/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-12-12/Run-macvim-from-terminal/</guid>
       </item>
     
       <item>
         <title>How to mount a rails app to subdirectory with Nginx</title>
         <description>&lt;p&gt;This article mainly focus on how to mount a rails app to a subdirectory Using Nginx. And you can also learn how to use Nginx as a reverse proxy server to serve your rails+unicorn app after reading this article.&lt;/p&gt;
 
-&lt;h3 id=&quot;why-i-write-this-post&quot;&gt;Why I write this post&lt;/h3&gt;
+&lt;h4 id=&quot;why-i-write-this-post&quot;&gt;Why I write this post&lt;/h4&gt;
 &lt;p&gt;About two weeks ago, I came across a problem making rails to serve a subdirectory of a website instead of the whole website. It means that My rails app is only resposible for a specific subdirectory. For example, My website is &lt;code class=&quot;highlighter-rouge&quot;&gt;http://www.abc.com&lt;/code&gt; and I want every request from &lt;code class=&quot;highlighter-rouge&quot;&gt;/mysubdir/&lt;/code&gt; will be handled by rails and the others will be processed by other applications such &lt;code class=&quot;highlighter-rouge&quot;&gt;php、java...&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h3 id=&quot;configure-rails-first&quot;&gt;Configure rails first&lt;/h3&gt;
+&lt;h4 id=&quot;configure-rails-first&quot;&gt;Configure rails first&lt;/h4&gt;
 &lt;p&gt;After google for a while, I found rails provide an easy way for us to map our rails app to a subdirectory.
 In your &lt;code class=&quot;highlighter-rouge&quot;&gt;config/application.rb&lt;/code&gt; file, add the following code:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;YourAPPName&lt;/span&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;YourAPPName&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Application&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url_root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/subdir'&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;# some other configuration code&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;getting-rails-respond-on-subdirectory&quot;&gt;Getting Rails respond on subdirectory&lt;/h3&gt;
+&lt;h4 id=&quot;getting-rails-respond-on-subdirectory&quot;&gt;Getting Rails respond on subdirectory&lt;/h4&gt;
+
 &lt;p&gt;Now we had mounted rails on a subdirectory. The next step we need to do is configuring rack to pass requests on that subdirectory to our Rails application. Now modified config.ru file:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url_root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url_root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Application&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;check-if-everything-works-properly&quot;&gt;Check if everything works properly&lt;/h3&gt;
+&lt;h4 id=&quot;check-if-everything-works-properly&quot;&gt;Check if everything works properly&lt;/h4&gt;
 &lt;p&gt;Here we will check to see if our application has been configfigured with a relative_url_root. Staring the rails sever in development mode and make a request on ‘http://localhost:3000’, we will see all the static files are requested from &lt;code class=&quot;highlighter-rouge&quot;&gt;/subdir/assets/&lt;/code&gt; instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;/assets&lt;/code&gt;. If so, congratulation! Your rails application had been mounted on the desired subdirectory.&lt;/p&gt;
 
-&lt;h3 id=&quot;letting-nginx-to-serve-our-static-files&quot;&gt;Letting Nginx to serve our static files&lt;/h3&gt;
+&lt;h4 id=&quot;letting-nginx-to-serve-our-static-files&quot;&gt;Letting Nginx to serve our static files&lt;/h4&gt;
+
 &lt;p&gt;It is recommended letting Nginx to serve our static files(imges, css ,js) because of the speed of Nginx. But first we should tell Nginx where my static assets are. When a request comes to our rails application on our subdirectory path, For examplele http://abc.com/subdir/assets/images/favico.ico, Nginx will look in our public directory for a file mathing the path &lt;code class=&quot;highlighter-rouge&quot;&gt;/subdir/assets/images/favico.ico&lt;/code&gt;. The file doesn’t exist there, it exists at &lt;code class=&quot;highlighter-rouge&quot;&gt;/assets/images/favico.ico&lt;/code&gt;. So we have the following configuration:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;upstream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unicorn_sock&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;upstream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unicorn_sock&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;your_sock_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
@@ -666,12 +700,14 @@ location @proxy_rails_app {
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;try_files&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$uri&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@proxy_rails_app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;# some other configuration code&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;that-is-all&quot;&gt;That is all!&lt;/h3&gt;
+&lt;h4 id=&quot;that-is-all&quot;&gt;That is all!&lt;/h4&gt;
 &lt;p&gt;Now Nginx is correctlly handing the assets files and Rail application is successfully responding to subdirectory.&lt;/p&gt;
 
-&lt;h3 id=&quot;reference&quot;&gt;Reference&lt;/h3&gt;
+&lt;h4 id=&quot;reference&quot;&gt;Reference&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;a href=&quot;http://stevesaarinen.com/blog/2013/05/16/mounting-rails-in-a-subdirectory-with-nginx-and-unicorn/&quot;&gt;Mounting a Rails 4 A in a Subdirectory Using NGINX&lt;/a&gt;&lt;/p&gt;
@@ -681,194 +717,126 @@ location @proxy_rails_app {
   &lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Sun, 06 Dec 2015 00:00:00 +0800</pubDate>
-        <link>/2015/12/06/How-to-mount-a-rails-app-in-a-subdirectory-with-NGINX.html</link>
-        <guid isPermaLink="true">/2015/12/06/How-to-mount-a-rails-app-in-a-subdirectory-with-NGINX.html</guid>
-        
-        
+        <pubDate>Sun, 06 Dec 2015 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-12-06/How-to-mount-a-rails-app-in-a-subdirectory-with-NGINX/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-12-06/How-to-mount-a-rails-app-in-a-subdirectory-with-NGINX/</guid>
       </item>
     
       <item>
         <title>How to create user and grant privileges in mysql</title>
         <description>&lt;p&gt;This blog instructs about how to create user and grant different privileges to different users in mysql.&lt;/p&gt;
 
-&lt;h3 id=&quot;how-to-create-a-user-in-mysql&quot;&gt;1. How to create a user in mysql&lt;/h3&gt;
+&lt;h4 id=&quot;1-how-to-create-a-user-in-mysql&quot;&gt;1. How to create a user in mysql&lt;/h4&gt;
 &lt;p&gt;First you should login mysql server with root account or other account with grant options&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;mysql -uroot -p&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;mysql -uroot -p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Show existed accounts:
-&lt;img src=&quot;/img/5F32B806-C381-4F9C-AB9B-252949C325EC.png&quot; alt=&quot;show accounts&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/images/5F32B806-C381-4F9C-AB9B-252949C325EC.png&quot; alt=&quot;show accounts&quot; /&gt;&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SELECT Host, User FROM mysql.user;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;mysql&amp;gt; SELECT Host, User FROM mysql.user;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;create a new account call “timlen” and it can only connect to server at localhost&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;CREATE USER &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt; IDENTIFIED BY &lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;mysql&amp;gt; CREATE USER 'timlen'@'localhost' IDENTIFIED BY 'foo';
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now we can see the new account existed in table &lt;code class=&quot;highlighter-rouge&quot;&gt;mysql.user&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;If you want to connect mysql server remotely, just run the following command:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;CREATE USER &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt; IDENTIDIED BY &lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;mysql&amp;gt; CREATE USER 'timlen'@'%' IDENTIDIED BY 'foo';
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;grant-privileges-to-the-new-account&quot;&gt;2. Grant privileges to the new account&lt;/h3&gt;
+&lt;h4 id=&quot;2-grant-privileges-to-the-new-account&quot;&gt;2. Grant privileges to the new account&lt;/h4&gt;
 &lt;p&gt;We can grant account ‘timlen’ with all privileges, which means it can perform &lt;code class=&quot;highlighter-rouge&quot;&gt;select, delete, update, create ...&lt;/code&gt; on target table and the sql as the following:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;GRANT ALL PRIVILEGES ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TO &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt; WITH GRANT OPTION;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;mysql&amp;gt; GRANT ALL PRIVILEGES ON *.* TO 'timlen'@'localhost' WITH GRANT OPTION;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Flush privileges and show the grants for &lt;code class=&quot;highlighter-rouge&quot;&gt;timlen&lt;/code&gt;&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;FLUSH PRIVILEGES;
-&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SHOW GRANTS &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt;;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;mysql&amp;gt; FLUSH PRIVILEGES;
+mysql&amp;gt; SHOW GRANTS for 'timlen'@'localhost';
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/CF730E2D-5C45-423F-9A1D-9366B5FCB828.png&quot; alt=&quot;show grant&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/CF730E2D-5C45-423F-9A1D-9366B5FCB828.png&quot; alt=&quot;show grant&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;how-to-grant-readonly-permission-to-a-new-user&quot;&gt;3. How to grant readonly permission to a new user&lt;/h3&gt;
+&lt;h4 id=&quot;3-how-to-grant-readonly-permission-to-a-new-user&quot;&gt;3. How to grant readonly permission to a new user&lt;/h4&gt;
 &lt;p&gt;Mysql offer many options for us to set different privileges for different users and we can easily do this:
 remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/code&gt; that we have just granted for &lt;code class=&quot;highlighter-rouge&quot;&gt;timlen&lt;/code&gt;&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;REVOKE ALL PRIVILEGES  ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; FROM &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt;;
-&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;FLUSH PRIVILEGES;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;mysql&amp;gt; REVOKE ALL PRIVILEGES  ON *.* FROM 'timlen'@'localhost';
+mysql&amp;gt; FLUSH PRIVILEGES;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now we can grant &lt;code class=&quot;highlighter-rouge&quot;&gt;select&lt;/code&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;timlen&lt;/code&gt; on all databases&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;GRANT SELECT ON &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; TO &lt;span class=&quot;s1&quot;&gt;'timlen'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt;;
-&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;FLUSH PRIVILEGES;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;mysql&amp;gt; GRANT SELECT ON *.* TO 'timlen'@'localhost';
+mysql&amp;gt; FLUSH PRIVILEGES;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;other-privileges-are-as-following&quot;&gt;4. Other privileges are as following&lt;/h3&gt;
+&lt;h4 id=&quot;4-other-privileges-are-as-following&quot;&gt;4. Other privileges are as following&lt;/h4&gt;
 
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Privilege&lt;/th&gt;
-      &lt;th&gt;Meaning&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ALL PRIVILEGES&lt;/td&gt;
-      &lt;td&gt;Sets all simple privileges except GRANT OPTION&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ALTER&lt;/td&gt;
-      &lt;td&gt;Enables use of ALTER TABLE&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;CREATE&lt;/td&gt;
-      &lt;td&gt;Enables use of CREATE TABLE&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;CREATE TEMPORARY TABLES&lt;/td&gt;
-      &lt;td&gt;Enables use of CREATE TEMPORARY TABLE&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;DELETE&lt;/td&gt;
-      &lt;td&gt;Enables use of DELETE&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;DROP&lt;/td&gt;
-      &lt;td&gt;Enables use of DROP TABLE&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;EXECUTE&lt;/td&gt;
-      &lt;td&gt;Not implemented&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;FILE&lt;/td&gt;
-      &lt;td&gt;Enables use of SELECT … INTO OUTFILE and LOAD DATA INFILE&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;INDEX&lt;/td&gt;
-      &lt;td&gt;Enables use of CREATE INDEX and DROP INDEX&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;INSERT&lt;/td&gt;
-      &lt;td&gt;Enables use of INSERT&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;LOCK TABLES&lt;/td&gt;
-      &lt;td&gt;Enables use of LOCK TABLES on tables for which you have the SELECT privilege&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;PROCESS&lt;/td&gt;
-      &lt;td&gt;Enables the user to see all processes with SHOW PROCESSLIST&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;REFERENCES&lt;/td&gt;
-      &lt;td&gt;Not implemented&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;RELOAD&lt;/td&gt;
-      &lt;td&gt;Enables use of FLUSH&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;REPLICATION CLIENT&lt;/td&gt;
-      &lt;td&gt;Enables the user to ask where slave or master servers are&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;REPLICATION SLAVE&lt;/td&gt;
-      &lt;td&gt;Needed for replication slaves (to read binary log events from the master)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;SELECT&lt;/td&gt;
-      &lt;td&gt;Enables use of SELECT&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;SHOW DATABASES&lt;/td&gt;
-      &lt;td&gt;shows all databases&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;SHUTDOWN&lt;/td&gt;
-      &lt;td&gt;Enables use of MySQLadmin shutdown&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;SUPER&lt;/td&gt;
-      &lt;td&gt;Enables use of CHANGE MASTER, KILL, PURGE MASTER LOGS and SET GLOBAL statements.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;UPDATE&lt;/td&gt;
-      &lt;td&gt;Enables use of UPDATE&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;USAGE&lt;/td&gt;
-      &lt;td&gt;Synonym for privileges&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;GRANT OPTION&lt;/td&gt;
-      &lt;td&gt;Enables privileges to be granted&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| Privilege          | Meaning                                                                                                                                                                       |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ALL PRIVILEGES     | Sets all simple privileges except GRANT OPTION                                                                                                                                |
+| ALTER              | Enables use of ALTER TABLE                                                                                                                                                    |
+| CREATE             | Enables use of CREATE TABLE                                                                                                                                                   |
+| CREATE TEMPORARY TABLES              | Enables use of CREATE TEMPORARY TABLE                                                                                                                        |
+| DELETE             | Enables use of DELETE                                                                                                                                                         |
+| DROP               | Enables use of DROP TABLE                                                                                                                                                     |
+| EXECUTE            | Not implemented                                                                                                                                                               |
+| FILE               | Enables use of SELECT ... INTO OUTFILE and LOAD DATA INFILE                                                                                                                   |
+| INDEX              | Enables use of CREATE INDEX and DROP INDEX                                                                                                                                    |
+| INSERT             | Enables use of INSERT                                                                                                                                                         |
+| LOCK TABLES        | Enables use of LOCK TABLES on tables &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;which you have the SELECT privilege                                                                                                  |
+| PROCESS            | Enables the user to see all processes with SHOW PROCESSLIST                                                                                                                   |
+| REFERENCES         | Not implemented                                                                                                                                                               |
+| RELOAD             | Enables use of FLUSH                                                                                                                                                          |
+| REPLICATION CLIENT | Enables the user to ask where slave or master servers are                                                                                                                     |
+| REPLICATION SLAVE  | Needed &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;replication slaves &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;to &lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;binary log events from the master&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                     |
+| SELECT             | Enables use of SELECT                                                                                                                                                         |
+| SHOW DATABASES     | shows all databases                                                                                                                                                           |
+| SHUTDOWN           | Enables use of MySQLadmin shutdown                                                                                                                                            |
+| SUPER              | Enables use of CHANGE MASTER, KILL, PURGE MASTER LOGS and SET GLOBAL statements.|
+| UPDATE             | Enables use of UPDATE                                                                                                                                                         |
+| USAGE              | Synonym &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;privileges                                                                                                                                                        |
+| GRANT OPTION       | Enables privileges to be granted                                                                                                                                              |
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
-        <pubDate>Mon, 26 Oct 2015 00:00:00 +0800</pubDate>
-        <link>/2015/10/26/Grant-permission-to-user-in-mysql.html</link>
-        <guid isPermaLink="true">/2015/10/26/Grant-permission-to-user-in-mysql.html</guid>
-        
-        
+        <pubDate>Mon, 26 Oct 2015 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-10-26/Grant-permission-to-user-in-mysql/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-10-26/Grant-permission-to-user-in-mysql/</guid>
       </item>
     
       <item>
         <title>Elegant way to deploy your rails app</title>
         <description>&lt;p&gt;介绍如何使用capistrano自动化部署一个unicorn+nginx+rails的项目, 实现zero down time restart&lt;/p&gt;
 
-&lt;h3 id=&quot;capistrano&quot;&gt;关于capistrano&lt;/h3&gt;
+&lt;h4 id=&quot;关于capistrano&quot;&gt;关于capistrano&lt;/h4&gt;
 &lt;p&gt;capistrano 是一款能完成自动化部署工作的工具，它能把代码部署到远程服务器上的同时可以执行一些预定义的任务，这些任务可以是capistrano的buildin tasks 也可以是用户自定义的一些任务程序（比如&lt;code class=&quot;highlighter-rouge&quot;&gt;部署完重启服务器&lt;/code&gt;)
 本文介绍如何使用capistrano部署一个unicor+nginx+rails的项目,并且实现unicorn的zero down time restart.&lt;/p&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;假设你已经。。。&lt;/h3&gt;
+&lt;h4 id=&quot;假设你已经&quot;&gt;假设你已经。。。&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;有一个rails项目(并且已经被版本控制工具管理起来(git/svn))&lt;/li&gt;
   &lt;li&gt;已经安装capistrano依赖&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;config&quot;&gt;在项目根目录执行，生成config文件夹&lt;/h3&gt;
+&lt;h4 id=&quot;在项目根目录执行生成config文件夹&quot;&gt;在项目根目录执行，生成config文件夹&lt;/h4&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;cap install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;configunicronrb-&quot;&gt;config/unicron.rb 文件的配置&lt;/h3&gt;
+&lt;h4 id=&quot;configunicronrb-文件的配置&quot;&gt;config/unicron.rb 文件的配置&lt;/h4&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Basic variables&lt;/span&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Basic variables&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;../&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;__FILE__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;pid&lt;/span&gt;         &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/tmp/pids/unicorn.pid&quot;&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;stderr_path&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rails_root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/log/unicorn.err&quot;&lt;/span&gt;
@@ -920,98 +888,104 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
   &lt;span class=&quot;n&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;establish_connection&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# Redis and Memcached would go here but their connections are established&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# on demand, so the master never opens a socket&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;h3 id=&quot;configunicorninitsh-unicorn&quot;&gt;config/unicorn.init.sh 脚本的配置(用于启动、重启、停止unicorn服务器)&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#!/bin/sh&lt;/span&gt;
+&lt;h4 id=&quot;configunicorninitsh-脚本的配置用于启动重启停止unicorn服务器&quot;&gt;config/unicorn.init.sh 脚本的配置(用于启动、重启、停止unicorn服务器)&lt;/h4&gt;
 
-&lt;span class=&quot;c1&quot;&gt;### BEGIN INIT INFO&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Provides:          unicorn&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Required-Start:    $remote_fs $syslog&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Required-Stop:     $remote_fs $syslog&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Default-Start:     2 3 4 5&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Default-Stop:      0 1 6&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Short-Description: Manage unicorn server&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Description:       Start, stop, restart unicorn server for a specific alication.&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;### END INIT INFO&lt;/span&gt;
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
 
-&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;### BEGIN INIT INFO&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Provides:          unicorn&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Required-Start:    $remote_fs $syslog&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Required-Stop:     $remote_fs $syslog&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Default-Start:     2 3 4 5&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Default-Stop:      0 1 6&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Short-Description: Manage unicorn server&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Description:       Start, stop, restart unicorn server for a specific alication.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;### END INIT INFO&lt;/span&gt;
 
-&lt;span class=&quot;no&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;APP_ROOT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;your_app_absolute_path&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$APP_ROOT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pids&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unicorn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pid&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;CMD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cd $APP_ROOT &amp;amp;&amp;amp; bundle exec unicorn -c $APP_ROOT/config/unicorn.rb -E production -D&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -e
 
-&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;AS_USER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$USER&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;-60&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;APP_ROOT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;your_app_absolute_path
+&lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$APP_ROOT&lt;/span&gt;/tmp/pids/unicorn.pid
+&lt;span class=&quot;nv&quot;&gt;CMD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cd &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$APP_ROOT&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &amp;amp;&amp;amp; bundle exec unicorn -c &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$APP_ROOT&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/config/unicorn.rb -E production -D&quot;&lt;/span&gt;
 
-&lt;span class=&quot;no&quot;&gt;OLD_PIN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;$PID.oldbin&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -u
+&lt;span class=&quot;nv&quot;&gt;AS_USER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$USER&lt;/span&gt;
 
-&lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$PID&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kill&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`cat $PID`&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;OLD_PIN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PID&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.oldbin&quot;&lt;/span&gt;
 
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+sig &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; -s &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PID&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; -s &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;cat &lt;span class=&quot;nv&quot;&gt;$PID&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
 
-&lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$(id -un)&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$AS_USER&quot;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;];&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$1&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;su&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$AS_USER&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;fi&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+run &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;id -un&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$AS_USER&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;else
+    &lt;/span&gt;su -c &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; - &lt;span class=&quot;nv&quot;&gt;$AS_USER&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
 
-&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$1&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Already running&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$CMD&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in
+&lt;/span&gt;start&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  sig 0 &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &amp;gt;&amp;amp;2 &lt;span class=&quot;s2&quot;&gt;&quot;Already running&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+  run &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$CMD&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;QUIT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Not running&quot;&lt;/span&gt;
+stop&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  sig QUIT &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &amp;gt;&amp;amp;2 &lt;span class=&quot;s2&quot;&gt;&quot;Not running&quot;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;force&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;TERM&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Not running&quot;&lt;/span&gt;
+force-stop&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  sig TERM &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &amp;gt;&amp;amp;2 &lt;span class=&quot;s2&quot;&gt;&quot;Not running&quot;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;HUP&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reloaded&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OK&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Couldn't reload, starting '$CMD' instead&quot;&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$CMD&quot;&lt;/span&gt;
+restart|reload&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  sig HUP &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;reloaded OK &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &amp;gt;&amp;amp;2 &lt;span class=&quot;s2&quot;&gt;&quot;Couldn't reload, starting '&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$CMD&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;' instead&quot;&lt;/span&gt;
+  run &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$CMD&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;upgrade&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;USR2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$TIMEOUT&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$OLD_PIN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ge&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'.'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sleep&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;done&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt;
+upgrade&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;sig USR2 &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sleep 3
+  &lt;span class=&quot;k&quot;&gt;then
+  &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$TIMEOUT&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; -s &lt;span class=&quot;nv&quot;&gt;$OLD_PIN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt; -ge 0
+  &lt;span class=&quot;k&quot;&gt;do
+    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'.'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sleep 1 &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$((&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;done
+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo
 
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lt&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$OLD_PIN&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$OLD_PIN still exists after $TIMEOUT seconds&quot;&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;fi&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;fi&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Couldn't upgrade, starting '$CMD' instead&quot;&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;$CMD&quot;&lt;/span&gt;
+  &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt; -lt 0 &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; -s &lt;span class=&quot;nv&quot;&gt;$OLD_PIN&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;then
+    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &amp;gt;&amp;amp;2 &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$OLD_PIN&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; still exists after &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$TIMEOUT&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; seconds&quot;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
+  &lt;span class=&quot;k&quot;&gt;fi
+  &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+  &lt;span class=&quot;k&quot;&gt;fi
+  &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &amp;gt;&amp;amp;2 &lt;span class=&quot;s2&quot;&gt;&quot;Couldn't upgrade, starting '&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$CMD&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;' instead&quot;&lt;/span&gt;
+  run &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$CMD&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;reopen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;sig&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;USR1&lt;/span&gt;
+reopen-logs&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  sig USR1
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Usage: $0 &amp;lt;start|stop|restart|upgrade|force-stop|reopen-logs&amp;gt;&quot;&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &amp;gt;&amp;amp;2 &lt;span class=&quot;s2&quot;&gt;&quot;Usage: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &amp;lt;start|stop|restart|upgrade|force-stop|reopen-logs&amp;gt;&quot;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;esac&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+  &lt;span class=&quot;k&quot;&gt;esac&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;configdeployrb-&quot;&gt;config/deploy.rb 的配置&lt;/h3&gt;
+&lt;h4 id=&quot;configdeployrb-的配置&quot;&gt;config/deploy.rb 的配置&lt;/h4&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'3.4.0'&lt;/span&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'3.4.0'&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:alication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'your_app_name'&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:repo_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'your_app_git_url'&lt;/span&gt;
@@ -1032,46 +1006,366 @@ remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;all privileges&lt;/co
     &lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deploy_to&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/current/config/unicorn.init.sh upgrade&quot;&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;开始部署你的应用&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;开始部署你的应用&quot;&gt;开始部署你的应用&lt;/h4&gt;
+
 &lt;p&gt;在项目的根目录下执行&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;production&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deploy&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;cap production deploy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
-        <pubDate>Sat, 29 Aug 2015 00:00:00 +0800</pubDate>
-        <link>/2015/08/29/elegant-way-to-deploy-your-rails-app.html</link>
-        <guid isPermaLink="true">/2015/08/29/elegant-way-to-deploy-your-rails-app.html</guid>
-        
-        
+        <pubDate>Sat, 29 Aug 2015 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-08-29/elegant-way-to-deploy-your-rails-app/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-08-29/elegant-way-to-deploy-your-rails-app/</guid>
       </item>
     
       <item>
         <title>Get the real remote ip in nginx</title>
-        <description>&lt;h3 id=&quot;nginxip&quot;&gt;多层nginx中获取真实ip&lt;/h3&gt;
+        <description>&lt;h4 id=&quot;多层nginx中获取真实ip&quot;&gt;多层nginx中获取真实ip&lt;/h4&gt;
 
 &lt;p&gt;在多层nginx中，若在后层的代理服务器中获得真实的用户IP，而不是上一层的代理服务器的IP，在反向代理服务器在转发请求的http头信息中，可以增加x_forwarded_for信息，用以记录原有客户端的IP地址和原来客户端的请求的服务器地址；即如下添加：&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-nginx highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 
-  &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt;            &lt;span class=&quot;no&quot;&gt;Host&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt;            &lt;span class=&quot;s&quot;&gt;Host&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-  &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt;            &lt;span class=&quot;no&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Real&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Ip&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$remote_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt;            &lt;span class=&quot;s&quot;&gt;X-Real-Ip&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$remote_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-  &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt;            &lt;span class=&quot;no&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Forwarded&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;For&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt;            &lt;span class=&quot;s&quot;&gt;X-Forwarded-For&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for 一句会一层一层的记录转发信息
 $http_x_forwarded_for记录的是原始用户的IP&lt;/p&gt;
 
 </description>
-        <pubDate>Mon, 17 Aug 2015 02:00:00 +0800</pubDate>
-        <link>/2015/08/17/get-the-real-ip-nginx.html</link>
-        <guid isPermaLink="true">/2015/08/17/get-the-real-ip-nginx.html</guid>
-        
-        
+        <pubDate>Sun, 16 Aug 2015 18:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-08-16/get-the-real-ip-nginx/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-08-16/get-the-real-ip-nginx/</guid>
+      </item>
+    
+      <item>
+        <title>ActiveRecord connection via ssh</title>
+        <description>&lt;p&gt;Making a ssh connection of ActiveRecord is very easy and the following will show you how to achieve it&lt;/p&gt;
+
+&lt;h4 id=&quot;gems-dependencies&quot;&gt;gems dependencies&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;active_record&lt;/li&gt;
+  &lt;li&gt;mysql2&lt;/li&gt;
+  &lt;li&gt;net-ssh-gateway&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;make-a-ssh-connection&quot;&gt;make a ssh connection&lt;/h4&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'net/ssh/gateway'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'active_record'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'mysql2'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SSH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gateway&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;'host'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#Host which could connect to desired database&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;'user'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Username of the host&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'your vps password'&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;port&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sem3'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'3306'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# database configuration&lt;/span&gt;
+&lt;span class=&quot;vg&quot;&gt;$CONFIG&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;adapter:  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mysql2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;host:     &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;username: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;public_user&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;password: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;public_user&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;database: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;production&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;port: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;pool: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;timeout: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;reconnect: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BaseGeneralHotelPoi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;establish_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$CONFIG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;BaseGeneralHotelPoi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;take&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;shutdown!&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;use-ssh-authentication&quot;&gt;Use ssh authentication&lt;/h4&gt;
+&lt;p&gt;Just like ssh-login, we can also use ssh key as the identification&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;tunnel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SSH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gateway&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'seo'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'op'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:keys&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/Users/timlen/.ssh/id_rsa'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You get it !&lt;/p&gt;
+</description>
+        <pubDate>Sat, 13 Jun 2015 18:00:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-06-13/active_record-connection-via-ssh/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-06-13/active_record-connection-via-ssh/</guid>
+      </item>
+    
+      <item>
+        <title>Bad ownership or modes for file authorized_keys</title>
+        <description>&lt;p&gt;It is a good thing to set ssh keys for the remote host. We can login a remote host via 
+public key we have set so that no need to enter password every time we try to connect remote
+server.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-to-set-a-ssh-key&quot;&gt;How to set a ssh-key&lt;/h4&gt;
+&lt;p&gt;If you google for a bit , you will find some many tutorials about how to set ssh keys.
+A good article about that is &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;still-need-to-enter-password-even-though-ssh-key-was-set&quot;&gt;Still need to enter password even though ssh-key was set?&lt;/h4&gt;
+
+&lt;p&gt;In some case, though ssh-keys was properly set, we still need enter password as if ssh-key not existed.
+SSH has a verbose mode , just add the &lt;code class=&quot;highlighter-rouge&quot;&gt;-v&lt;/code&gt; option.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/screenshot/ssh_keys_error/verbose-ssh.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The above way seems told nothing, but &lt;code class=&quot;highlighter-rouge&quot;&gt;cat /var/log/secure&lt;/code&gt; will give more useful information.
+In the terminal of remote host, type :&lt;/p&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo cat /var/log/secure  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;we found something as the following:&lt;/p&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Apr 19 09:54:19 iZ94z0jz2inZ sshd[5704]: Authentication refused: bad ownership or modes 
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;file /home/test/.ssh/authorized_keys
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For security reason, the mode of files under .ssh directorys is strictly set. SSH doesn’t like it if your home or ~/.ssh directories
+or ~./ssh/authorized_keys have group write permissions. Your home directory should be writable only by you, ~/.ssh should be 700, 
+and authorized_keys should be 600.&lt;/p&gt;
+
+&lt;p&gt;The following shot is the wrong mode:
+&lt;img src=&quot;/images/screenshot/ssh_keys_error/wrong_mode.png&quot; alt=&quot;alt&quot; /&gt; &lt;br /&gt;
+we can see that authorized_keys file has writable permissions for group, which is not allowed by ssh:&lt;/p&gt;
+
+&lt;p&gt;Change to right mode:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/screenshot/ssh_keys_error/right_mode.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now you can login you remote host without entering  passwd, enjoy!&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 19 Apr 2015 10:02:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-04-19/SSH-Authentication-Refused-Bad-Ownership-or-Modes-for-Authorized_keys/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-04-19/SSH-Authentication-Refused-Bad-Ownership-or-Modes-for-Authorized_keys/</guid>
+      </item>
+    
+      <item>
+        <title>Change gem sources</title>
+        <description>&lt;p&gt;简单介绍修改ruby gems 下载源的方法&lt;/p&gt;
+
+&lt;h4 id=&quot;为什么需要换ruby-gems-安装源&quot;&gt;为什么需要换ruby gems 安装源&lt;/h4&gt;
+&lt;p&gt;在国内网络环境中安装gems经常会失败，这是因为rubygems.org 中的资源文件是存放在 Amazon S3 上面的,
+很多时候，在安装gem的过程中会出现资源文件间歇性连接失败，为了避免这些问题，我们需要从另外一个gem服务器下载安装。
+通过gem sources命令配置源，或通过修改Gemfile中的source语句可以实现。&lt;/p&gt;
+
+&lt;h4 id=&quot;常用的源&quot;&gt;常用的源&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;官方下载源：https://rubygems.org/&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ruby-china镜像下载源：https://gems.ruby-china.org
+这是一个国内最权威的gems下载源，你可以用此代替官方版本，同步频率目前为15分钟一次以保证尽量与官方服务同步。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;显示当前使用的sources&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem sources    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;添加一个source&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem sources -a &lt;span class=&quot;c&quot;&gt;#{url} &lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;删除一个source&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem sources -r &lt;span class=&quot;c&quot;&gt;#{url}      &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;更新source cache&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem sources -u
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;从固定地址安装gem&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install bundler -p https://gems.ruby-china.org
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 05 Feb 2015 14:15:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-02-05/Change-gem-sources/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-02-05/Change-gem-sources/</guid>
+      </item>
+    
+      <item>
+        <title>Fix conflict when updating git</title>
+        <description>&lt;p&gt;It is a cool thing to use git for version control. The idea is simple, when the developers update it I simply have to update 
+the local repository to the recent HEAD in the master branch and I have the up-to-date stuff to link against.&lt;/p&gt;
+
+&lt;h3&gt;But how to do this?&lt;/h3&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;git pull
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Should do the trick when executed in the directory where the &lt;code class=&quot;highlighter-rouge&quot;&gt;.git&lt;/code&gt; is located (find this with ls -lah to show hidden files).&lt;/p&gt;
+
+&lt;p&gt;You may get an error like:&lt;/p&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;timlentse@timlentse:~/Gitpro/daodao$ &lt;/span&gt;git pull   
+Updating d9319e1..3ce366f   
+error: Your &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;changes to the following files would be overwritten by merge:   
+	daodao.gemspec   
+Please, commit your changes or stash them before you can merge.   
+Aborting      
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;How to fix?&lt;/h3&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;timlentse@timlentse:~/Gitpro/daodao$ &lt;/span&gt;git stash save &lt;span class=&quot;s2&quot;&gt;&quot;update the daodao.gemspec&quot;&lt;/span&gt;   
+Saved working directory and index state On master: update the daodao.gemspec   
+HEAD is now at d9319e1 reserve the pure gem   
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;Finished!&lt;/h3&gt;
+
+&lt;div class=&quot;language-zsh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Updating d9319e1..3ce366f   
+Fast-forward   
+ daodao.gemspec           | 9 +++++++--   
+ lib/daodao.rb            | 4 ++++   
+ lib/daodao/hotel.rb      | 6 +++---   
+ lib/daodao/hotel_list.rb | 6 +++---   
+ lib/daodao/rank.rb       | 8 ++++----   
+ spec/hotel_list_spec.rb  | 5 +++--   
+ spec/hotel_spec.rb       | 5 +++--   
+ spec/rank_spec.rb        | 4 ++--   
+ spec/spec_helper.rb      | 2 +-   
+ 9 files changed, 30 insertions&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 19 deletions&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 07 Jan 2015 19:31:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-01-07/Fix-conflict-when-updating-git/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-01-07/Fix-conflict-when-updating-git/</guid>
+      </item>
+    
+      <item>
+        <title>Strip() to remove non-space characters from a string</title>
+        <description>&lt;p&gt;The following method can &lt;code class=&quot;highlighter-rouge&quot;&gt;strip&lt;/code&gt; non-space characters from a string as well.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;strip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;new_str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each_byte&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;new_str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;chr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;chr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;char&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;new_str&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Example&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;n&quot;&gt;strip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Hello World'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'o'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; 'Hell wrld'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Mon, 05 Jan 2015 17:55:00 +0000</pubDate>
+        <link>http://localhost:4000/2015-01-05/Strip()-to-remove-non-space-characters-from-a-string/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015-01-05/Strip()-to-remove-non-space-characters-from-a-string/</guid>
+      </item>
+    
+      <item>
+        <title>How to learn 50% of a language</title>
+        <description>&lt;h4 id=&quot;这篇文章来源于以前的上司内容关于快速掌握一个语言最常用的50&quot;&gt;这篇文章来源于以前的上司，内容关于“快速掌握一个语言最常用的50%”&lt;/h4&gt;
+
+&lt;p style=&quot;line-height: 1.4&quot;&gt;  现在的开发工作要求我们能够快速掌握一门语言。一般来说应对这种挑战有两种态度：   
+ 其一，粗粗看看语法，就撸起袖子开干，边查Google边学习；其二是花很多时间完整地把整个语言学习一遍，做到胸有成竹，然后再开始做实际工作。然而这两种方法都有弊病。第二种方法的问题当然很明显，不仅浪费了时间，偏离了目标，而且学习效率不高。因为没有实际问题驱动的语言学习通常是不牢固不深入的。有的人学着学着成了语言专家，反而忘了自己原本是要解决问题来的。第一种路子也有问题，在对于这种语言的脾气秉性还没有了解的情况下大刀阔斧地拼凑代码，写出来的东西肯定不入流。说穿新鞋走老路，新瓶装旧酒，那都是小问题，真正严重的是这样的程序员可以在短时间内堆积大量充满缺陷的垃圾代码。由于通常开发阶段的测试完备程度有限，这些垃圾代码往往能通过这个阶段，从而潜伏下来，在后期成为整个项目的毒瘤，反反复复让后来的维护者陷入西西弗斯困境。
+实际上语言学习有一定规律可循，对于已经掌握一门语言的开发者来说，对于一般的语言，完全可以以最快的速度，在几天至一周之内掌握其最常用的50%，而且保证路子基本正宗，没有出偏的弊病。其实真正写程序不怕完全不会，最怕一知半解的去攒解决方案。因为你完全不会，就自然会去认真查书学习，如果学习能力好的话，写出来的代码质量不会差。而一知半解，自己动手土法炼钢，那搞出来的基本上都是废铜烂铁。比如错误处理和序列化，很多人不去了解“正路子”，而是凭借自己的一知半解去攒野路子，这是最危险的。因此，即使时间再紧张，这些内容也是必须首先完整了解一遍的。掌握这些内容之后进入实际开发，即使有问题，也基本不会伤及项目大体。而开发者本人则可以安步当车，慢慢在实践中提高自己。
+以下列出一个学习提纲，主要针对的是有经验的人，初学者不合适。这个提纲只能用于一般的庸俗编程语言学习，目前在流行编程语言排行榜上排前20的基本上都是庸俗语言。如果你要学的是LISP之类非庸俗语言，或是某个软件中的二次开发语言，这里的建议未必合适。还是那句话，仅供参考。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;首先了解该语言的基本数据类型，基本语法和主要语言构造，主要数学运算符和print函数的使用，达到能够写谭浩强程序设计书课后数学习题的程度；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;其次掌握数组和其他集合类的使用，有基础的话可以理解一下泛型，如果理解不了也问题不大，后面可以补；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;简单字符串处理。所谓简单，就是Regex和Parser以下的内容，什么查找替换，截断去字串之类的。不过这个阶段有一个难点，就是字符编码问题。如果理解不了，可以先跳过，否则的话最好在这时候把这个问题搞定，免留后患；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基本面向对象或者函数式编程的特征，无非是什么继承、多态、Lambda函数之类的，如果有经验的话很快就明白了；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;异常、错误处理、断言、日志和调试支持，对单元测试的支持。你不一定要用TDD，但是在这个时候应该掌握在这个语言里做TDD的基本技能；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;程序代码和可执行代码的组织机制，运行时模块加载、符号查找机制，这是初学时的一个难点，因为大部分书都不太注意介绍这个极为重要的内容；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基本输入输出和文件处理，输入输出流类的组织，这通常是比较繁琐的一部分，可以提纲挈领学一下，搞清楚概念，用到的时候查就是了。到这个阶段可以写大部分控制台应用了；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;该语言如何进行callback方法调用，如何支持事件驱动编程模型。在现代编程环境下，这个问题是涉及开发思想的一个核心问题，几乎每种语言在这里都会用足功夫，.NET的delegate，Java的anonymous inner class，Java 7的closure，五花八门。如果能彻底理解这个问题，不但程序就不至于写得太走样，而且对该语言的设计思路也能有比较好的认识；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果有必要，可在这时研究regex和XML处理问题，如无必要可跳过；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;序列化和反序列化，掌握一下缺省的机制就可以了；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果必要，可了解一下线程、并发和异步调用机制，主要是为了读懂别人的代码，如果自己要写这类代码，必须专门花时间严肃认真系统地学习，严禁半桶水上阵；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;动态编程，反射和元数据编程，数据和程序之间的相互转化机制，运行时编译和执行的机制，有抱负的开发者在这块可以多下些功夫，能够使你对语言的认识高出一个层面；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果有必要，可研究一下该语言对于泛型的支持，不必花太多时间，只要能使用现成的泛型集合和泛型函数就可以了，可在以后闲暇时抽时间系统学习。需要注意的是，泛型技术跟多线程技术一样，用不好就成为万恶之源，必须系统学习，谨慎使用，否则不如不学不用；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果还有时间，最好咨询一下有经验的人，看看这个语言较常用的特色features是什么，如果之前没学过，应当补一下。比如Ruby的block interator, Java的dynamic proxy，C#的LINQ和extension method。没时间的话，我认为也可以边做边学，没有大问题。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;有必要的话，在工作的闲暇时间，可以着重考察两个问题，第一，这个语言有哪些惯用法和模式，第二，这个语言的编译/解释执行机制。
+至此语言的基本部分就可以说掌握了，之后是做数据库、网络还是做图形，可以根据具体需求去搞，找相应的成熟框架或库，边做边学，加深理解。对于一个庸俗语言，我自己把上面的内容走一遍大概要花2-3周时间，不能算很快，但也耽误不了太多事情，毕竟不是每个月都学新语言。掌握了以上的内容，就给练武术打好了基本功，虽然不见得有多优秀，但是肯定是根正苗红，将来不必绕大弯子。就算是临时使用的语言，把上面这个提纲精简一下，只看蓝色重体字的部分，大致能在几天到一周内搞定，不算是太耗时，而且写出来的代码不会太不靠谱。
+以上提纲未设及内存模型。对于C/C++，这个问题很重要，要放在显著位置来考虑，但对于其他语言，这个问题被透明化了，除非你要做hardcore项目，否则不必太关注。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sun, 28 Dec 2014 16:03:33 +0000</pubDate>
+        <link>http://localhost:4000/2014-12-28/How-to-learn-50-of-a-language/</link>
+        <guid isPermaLink="true">http://localhost:4000/2014-12-28/How-to-learn-50-of-a-language/</guid>
       </item>
     
   </channel>
