@@ -23,6 +23,6 @@ and r1.name2=r2.name2 and ...
 ```
 
 #### Reference 
-* [stackoverflow](http://stackoverflow.com/questions/4685173/delete-all-duplicate-rows-except-for-one-in-mysql)
+* [Delete all Duplicate Rows except for One in MySQL](http://stackoverflow.com/questions/4685173/delete-all-duplicate-rows-except-for-one-in-mysql)
 
 
