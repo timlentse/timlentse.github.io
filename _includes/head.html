@@ -1,20 +1,11 @@
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.name }}{% endif %}</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css" type="text/css">
-
-  <!-- Font -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
-  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono" rel="stylesheet">
-
-  <link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ site.name }}" href="{{ site.baseurl }}/feed.xml" />
-  {% seo %}
-
-
-  {% include google-analytics.html %}
-
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <link rel="stylesheet" href="{{ "/css/normalize.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{ "/css/iconfont.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="/css/highlight.css" />
+    <script src="/js/jquery.min.js"></script>
 </head>

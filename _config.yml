@@ -1,83 +1,18 @@
-# # # # # # # # # # # # #
-#   K i k o - p l u s   #
-# # # # # # # # # # # # #
+# Site settings
+title: timlentse
+nickname: timlentse
+email: tinglenxan@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://localhost:4000/" # the base hostname & protocol for your site
+twitter_username: 
+github_username: 
 
-# Basic
-name:               "timlentse's blog"
-
-author:
-  facebook:         timlentse
-  twitter:          timlentse
-  github:           timlentse
-  stackoverflow:    3526207/timlentse 
-  email:            tinglenxan@gmail.com
-
-copyright:
-  year:             2017
-  name:             Kiko
-
-# Google-analytics
-google-analytics:
-  id:               "UA-67464730-1"
-
-# Disqus
-disqus:
-  id:               "timlentse"
-
-# URL
-url:                "https://timlentse.github.io" # the base hostname & protocol for your site
-# url:                "http://localhost:4000" # use this url when you develop
-baseurl:            "" # the subpath of your site, e.g. /blog
-
-
-# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-timezone:           Asia/Beijing
-permalink:          /:year-:month-:day/:title/
-
-# Pagination
-paginate:           5
-paginate_path:      /page:num/
-
-# Markdown
-markdown:           kramdown
-kramdown:
-  input:            GFM
-
-# Navigation
-nav:
-  - name:           "About"
-    url:            "/about"
-  - name:           "Archive"
-    url:            "/archive"
-  - name:           "Tags"
-    url:            "/tags"
-  - name:           "Github"
-    url:            "https://github.com/timlentse"
-
-# Sass
-sass:
-  sass_dir:         _sass
-  style:            :compressed
-
-# Scopes
-defaults:
-  -
-    scope:
-      path:         ""
-      type:         "pages"
-    values:
-      layout:       "page"
-  -
-    scope:
-      path:         ""
-      type:         "posts"
-    values:
-      layout:       "post"
-
-# jekyll-seo-tag, see: http://www.rubydoc.info/gems/jekyll-seo-tag/1.2.0
-gems:
-  - jekyll-seo-tag
-  - jekyll-paginate
-  - jekyll-admin
-
-exclude:            [vendor]
+# Build settings
+highlighter: pygments
+markdown: redcarpet
+redcarpet:
+  extensions: ["smart", "tables", "no_intra_emphasis", "fenced_code_blocks", "autolink", "strikethrough", "superscript", "with_toc_data"]

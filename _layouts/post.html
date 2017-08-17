@@ -1,37 +1,30 @@
 ---
 layout: default
 ---
-<header>
-  <div class="header-small">
-    <a href="{{site.url}}{{site.baseurl}}">{{ site.name }}</a>
-  </div>
-</header>
-<div class="post">
-  <div class="post-title">{{ page.title }}</div>
-  <span class="post-date">
-    <time>{{ page.date | date_to_string }}</time>
-  </span>
-  <div class="post-tag">
-    <ul>
-      {% for tag in page.tags %}
-      <li>
-        <a href="{{ site.url }}{{ site.baseurl }}/tags#{{ tag }}">
-          <span>{{ tag }}</span>
-        </a>
-      </li>
-      {% unless forloop.last %}{% endunless %}
-      {% endfor %}
-    </ul>
-  </div>
-
-  {{ content }}
-
-  <!-- Disqus -->
-  {% if page.comments != false and site.disqus.id %}
-  <div class="post-disqus">
-      <section id="disqus_thread"></section>
-      {% include disqus.html %}
-  </div>
-  {% endif %}
-
+<div class="content markdown">
+    <div class="title">
+        <h1>{{ page.title }}</h1>
+    </div>
+    {{ content }}
+    <!-- 下面的代码可以使用键盘文章翻页,兼容Vim和游戏快键键 上一篇: h,←, a 下一篇: l,→, d -->
+    <script type="text/javascript">
+$(function(){
+    $(document).keydown(function(e) {
+        var url = false;
+        if (e.which == 37 || e.which == 72|| e.which == 65) {
+            {% if page.previous %}
+            url = '{{ site.url }}{{ page.previous.url }}';
+            {% endif %}
+        }
+        else if (e.which == 39 || e.which == 76|| e.which == 68) {
+            {% if page.next %}
+            url = '{{ site.url }}{{ page.next.url }}';
+            {% endif %}
+        }
+        if (url) {
+            window.location = url;
+        }
+    });
+})
+    </script>
 </div>

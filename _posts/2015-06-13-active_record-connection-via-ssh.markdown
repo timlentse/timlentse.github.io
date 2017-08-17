@@ -7,13 +7,13 @@ tags: [activerecord,net-ssh-gateway]
 ---
 Making a ssh connection of ActiveRecord is very easy and the following will show you how to achieve it
 
-#### gems dependencies
+#### Gems dependencies
 
 * active_record
 * mysql2
 * net-ssh-gateway
 
-#### make a ssh connection
+#### Make a ssh connection
 
 ```ruby
 
@@ -27,7 +27,7 @@ tunnel = Net::SSH::Gateway.new(
   )
 port = tunnel.open('sem3','3306')
 # database configuration
-$CONFIG = {
+CONFIG = {
   adapter:  "mysql2",
   host:     "127.0.0.1",
   username: "public_user",
@@ -40,7 +40,7 @@ $CONFIG = {
 }
 
 class BaseGeneralHotelPoi < ActiveRecord::Base
-  self.establish_connection($CONFIG)
+  self.establish_connection(CONFIG)
 end
 
 p BaseGeneralHotelPoi.take

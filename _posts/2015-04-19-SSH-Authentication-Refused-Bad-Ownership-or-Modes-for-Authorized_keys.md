@@ -25,13 +25,13 @@ SSH has a verbose mode , just add the `-v` option.
 The above way seems told nothing, but `cat /var/log/secure` will give more useful information.
 In the terminal of remote host, type :
 
-```zsh
+```shell
 sudo cat /var/log/secure  
 ```
 
 we found something as the following:
 
-```zsh
+```shell
 Apr 19 09:54:19 iZ94z0jz2inZ sshd[5704]: Authentication refused: bad ownership or modes 
 for file /home/test/.ssh/authorized_keys
 ```

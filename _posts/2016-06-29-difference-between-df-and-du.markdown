@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "使用df, du查看磁盘空间使用情况的区别"
-description: "剖析使用df,du查看磁盘空间使用情况的区别。"
+title: "使用df、du查看磁盘空间使用情况的区别"
+description: "剖析使用df、du查看磁盘空间使用情况的区别。"
 date: 2016-06-30
 tags: [linux]
 comments: true
 ---
-剖析使用df,du查看磁盘空间使用情况的区别。
+剖析使用df、du查看磁盘空间使用情况的区别。
 
 #### 1. Why this blog
 最近在工作中遇到一个问题，就是公司线上服务器磁盘空间满了，导致nginx无法继续写入日志。于是尝试手动清空一些不需要的文件以腾出磁盘空间，后来发现事情远远不是这么简单，其他不需要的文件和历史日志文件加起来不过3-4G左右，不可能是导致磁盘满的罪魁祸首，于是想到 `du` 来查看究竟是那些文件占满了磁盘。
@@ -15,13 +15,13 @@ comments: true
 
 使用 `du` 查看根目录下每一个文件夹占用的空间
 
-```zsh
+```shell
 $ du / --max-depth=1 -h
 ```
 
 结果输出:
 
-```zsh
+```shell
 0    /sys
 806M    /var
 20K    /data
@@ -45,12 +45,14 @@ $ du / --max-depth=1 -h
 ```
 
 使用 `df` 查看磁盘剩余情况
-```zsh
+
+```shell
 $ df -h
 ```
 
 结果是：
-```zsh
+
+```shell
 Filesystem            Size  Used Avail Use% Mounted on
 /dev/vda2              40G  39.7G 300M  100% /
 tmpfs                 1.9G     0  1.9G   0% /dev/shm
@@ -70,12 +72,13 @@ tmpfs                 1.9G     0  1.9G   0% /dev/shm
 
 #### 4. 列出被删除但是仍然被使用的文件
 
-```zsh
+```shell
 $ lsof | grep '(deleted)'
 ```
 
 结果我的机器显示一大堆：
-```zsh
+
+```shell
 ruby       5132        work    1w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log (deleted)
 ruby       5132        work    2w      REG              252,2    2617890     655377 /home/work/rails_project/shared/log/unicorn.log (deleted)
 ruby       5132        work   10w      REG              252,2  132784015     655397 /home/work/rails_project/shared/log/production.log (deleted)
@@ -96,10 +99,12 @@ ruby      15530        work   10w      REG              252,2  132784015     655
 上面显示很多虽然被删除但仍然被进程使用的文件
 
 如果需要释放这些文件，需要把进程上面的进程关闭，如：
-```zsh
+
+```shell
 $ kill -9 5132
 ```
 或者使用awk把所有相关进程关闭
-```zsh
+
+```shell
 lsof | grep '(deleted)' | awk '{print $2}' | xargs kill -9
 ```

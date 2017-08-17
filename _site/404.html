@@ -1,110 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>404 Not Found</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="/assets/css/main.css" type="text/css">
-
-  <!-- Font -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
-  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono" rel="stylesheet">
-
-  <link rel="alternate" type="application/rss+xml" title="RSS Feed for timlentse's blog" href="/feed.xml" />
-  <!-- Begin Jekyll SEO tag v2.2.3 -->
-<title>404 Not Found | timlentse’s blog</title>
-<meta property="og:title" content="404 Not Found" />
-<meta property="og:locale" content="en_US" />
-<link rel="canonical" href="http://localhost:4000/404.html" />
-<meta property="og:url" content="http://localhost:4000/404.html" />
-<meta property="og:site_name" content="timlentse’s blog" />
-<script type="application/ld+json">
-{"@context":"http://schema.org","@type":"WebPage","headline":"404 Not Found","author":{"@type":"Person","name":null},"url":"http://localhost:4000/404.html"}</script>
-<!-- End Jekyll SEO tag -->
-
-
-
-  <!-- Google Analytics -->
-
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-67464730-1', 'auto');
-ga('send', 'pageview');
-
-</script>
-
-
-
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>404 Not Found</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/highlight.css" />
+    <script src="/js/jquery.min.js"></script>
 </head>
 
-<body>
-  <div class="content-container">
-    <header>
+    <body>
+        <div class="container">
+            <header>
+    <h1>timlentse</h1>
+    <nav>
+        <a href="/">首页</a> /
+        <a href="/book/">书单</a> /
+        <a href="/about/">关于</a>
+    </nav>
+</header>
+
+            <header>
   <h1 class="header-small">
-    <a href="http://localhost:4000">timlentse's blog</a>
+    <a href="http://localhost:4000"></a>
   </h1>
 </header>
-<div class="page">
+<div class="page" style='text-align:center'>
   <h1 class="page-title">404 Not Found</h1>
   <span>Sorry, but the page you were trying to view does not exist.</span>
 </div>
 
+            <div class="pc_qrcode_outer" style="display: none;">
+                <div class="pc_qrcode_pc_inner">
+                    <div class="qr_code_pc">
+                        <img src="/img/qrcode.jpg" alt="">
+                        <p>微信扫一扫<br>关注我的公众号</p>
+                    </div>
+                </div>
+            </div>
+            <div class="back_top_outer">
+                <div class="back_top_inner">
+                    <div id="back-top">
+                        <a href="#top"><span></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <footer>
+    <p>Designed by <a class='cpr' href='https://github.com/jekyll/jekyll'>Jeklly</a> with <a class='cpr' href='https://github.com/runfastlynda/sparrow'>Sparrow</a> theme</p>
+    <p>
+    <a href="https://github.com/timlentse" class="iconfont social github">&#xe69f;</a>
+    <i class="iconfont social twitter">&#xf000e;</i>
+    <i class="iconfont social weibo">&#xe603;</i>
+    </p>
+</footer>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){
+    $("#back-top").hide()
 
-    <!-- Documents about icons are here: http://fontawesome.io/icons/ -->
-<div class="footer">
-  <hr />
-  <div class="footer-link">
-    
-    <a href="https://www.facebook.com/timlentse"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-    
-	
-	
-	
-	
+    $(function(){
+        $(window).scroll(function(){
+            if($(this).scrollTop() > 100){
+                $('#back-top').fadeIn();
+            } else {
+                $('#back-top').fadeOut();
+            }
+        });
+        $('#back-top a').click(function(){
+            $('body, html').animate({
+                scrollTop: 0
+            }, 800);
 
-    
-    <a href="https://twitter.com/timlentse"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-    
+            return false;
+        });
+    });
+});
+</script>
 
-    
-    <a href="https://github.com/timlentse"><i class="fa fa-github" aria-hidden="true"></i></a>
-    
-	
-	
-    <a href="http://stackoverflow.com/users/3526207/timlentse"><i class="fa fa-stack-overflow" aria-hidden="true"></i></a>
-    
-	
-	
-
-    
-	
-	
-	
-	
-	
-	
-	
-	
-
-    
-
-    
-
-    
-    <a href="mailto:tinglenxan@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-    
-
-  </div>
-  © 2017 Kiko. All rights reserved.
-</div>
-
-  </div>
-</body>
+    </body>
 </html>

@@ -11,7 +11,7 @@ This blog instructs about how to create user and grant different privileges to d
 #### 1. How to create a user in mysql
 First you should login mysql server with root account or other account with grant options
 
-```zsh
+```shell
 $ mysql -uroot -p
 ```
 
@@ -50,8 +50,6 @@ mysql> FLUSH PRIVILEGES;
 mysql> SHOW GRANTS for 'timlen'@'localhost';
 ```
 
-![show grant](/images/CF730E2D-5C45-423F-9A1D-9366B5FCB828.png)
-
 #### 3. How to grant readonly permission to a new user
 Mysql offer many options for us to set different privileges for different users and we can easily do this:
 remove the `all privileges` that we have just granted for `timlen`
@@ -76,7 +74,7 @@ mysql> FLUSH PRIVILEGES;
 | ALL PRIVILEGES     | Sets all simple privileges except GRANT OPTION                                                                                                                                |
 | ALTER              | Enables use of ALTER TABLE                                                                                                                                                    |
 | CREATE             | Enables use of CREATE TABLE                                                                                                                                                   |
-| CREATE TEMPORARY TABLES              | Enables use of CREATE TEMPORARY TABLE                                                                                                                        |
+| CREATE TEMPORARY TABLES              | Enables use of CREATE TEMPORARY TABLE                                                                                                                       |
 | DELETE             | Enables use of DELETE                                                                                                                                                         |
 | DROP               | Enables use of DROP TABLE                                                                                                                                                     |
 | EXECUTE            | Not implemented                                                                                                                                                               |

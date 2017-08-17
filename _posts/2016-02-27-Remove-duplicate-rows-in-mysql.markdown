@@ -5,13 +5,13 @@ date: 2016-02-27 17:00
 tags: [mysql]
 ---
 
-This is a simple sql for removing duplicate rows from a table and just keep only one having the lowest `id`
+This is a simple sql for removing duplicate rows from a table and keep one with lowest `id`
 
 ```mysql
 DELETE r1 FROM table_name r1, table_name r2 WHERE r1.id > r2.id AND r1.name = r2.name
 ```
 
-Note that the `name` is the field name you want to ensure values are unique
+Note: the `name` is the field name you want to ensure values are unique
 
 #### Constraint unique
 

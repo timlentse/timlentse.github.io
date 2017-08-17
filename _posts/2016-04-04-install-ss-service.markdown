@@ -6,17 +6,17 @@ tags: [shadowsocks]
 ---
 介绍在VPS中（虚拟主机）搭建shadowsocks服务，从而实现科学上网，配置多个shadowsocks用户实现多用户共享。
 
-#### 1.安装shadowsocks服务端
+#### 1. 安装shadowsocks服务端
 * Ubuntu
 
-```zsh
+```shell
 sudo apt-get install python-pip
 sudo pip install shadowsocks 
 ```
 
-* Centos
+* CentOS
 
-```zsh
+```shell
 sudo yum install pip
 sudo pip install shadowsocks
 ```
@@ -24,7 +24,7 @@ sudo pip install shadowsocks
 #### 2. 配置shadowsocks服务端配置文件
 安装完成之后其实就可以执行命令来启动shadowsocks服务了。
 
-```zsh
+```shell
 ssserver -p 8000 -k password -m rc4-md5 -d start
 ```
 
@@ -65,7 +65,7 @@ ssserver -p 8000 -k password -m rc4-md5 -d start
 ```
 * 开启shawosocks服务
 
-```zsh
+```shell
 ssserver -c /etc/shadowsocks.json --log-file=/tmp/shadowsocks.log -d start
 ```
 

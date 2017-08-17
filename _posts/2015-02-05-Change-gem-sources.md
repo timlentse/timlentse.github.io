@@ -20,31 +20,31 @@ tags: [rubygems]
 
 * 显示当前使用的sources  
 
-```zsh 
+```shell 
 gem sources    
 ```
 
 * 添加一个source    
 
-```zsh 
+```shell 
 gem sources -a #{url} 
 
 ```
 
 * 删除一个source 
 
-```zsh 
+```shell 
 gem sources -r #{url}      
 ```
 
 * 更新source cache  
 
-```zsh 
+```shell 
 gem sources -u
 ```
  
 * 从固定地址安装gem  
 
-```zsh 
+```shell 
 gem install bundler -p https://gems.ruby-china.org
 ```

@@ -11,7 +11,7 @@ the local repository to the recent HEAD in the master branch and I have the up-t
 
 <h3>But how to do this?</h3>   
 
-```zsh
+```shell
 $ git pull
 ``` 
 
@@ -19,7 +19,7 @@ Should do the trick when executed in the directory where the `.git` is located (
 
 You may get an error like: 
 
-```zsh
+```shell
 timlentse@timlentse:~/Gitpro/daodao$ git pull   
 Updating d9319e1..3ce366f   
 error: Your local changes to the following files would be overwritten by merge:   
@@ -30,7 +30,7 @@ Aborting
 
 <h3>How to fix?</h3>   
 
-```zsh
+```shell
 timlentse@timlentse:~/Gitpro/daodao$ git stash save "update the daodao.gemspec"   
 Saved working directory and index state On master: update the daodao.gemspec   
 HEAD is now at d9319e1 reserve the pure gem   
@@ -38,7 +38,7 @@ HEAD is now at d9319e1 reserve the pure gem
 
 <h3>Finished!</h3>       
 
-```zsh
+```shell
 Updating d9319e1..3ce366f   
 Fast-forward   
  daodao.gemspec           | 9 +++++++--   
